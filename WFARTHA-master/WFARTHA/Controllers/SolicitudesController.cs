@@ -1124,7 +1124,8 @@ namespace WFARTHA.Controllers
             "MONTO_BASE_NS_PCT_ML2,PORC_ADICIONAL,IMPUESTO,ESTATUS_EXT,PAYER_ID,MONEDA_ID,MONEDAL_ID,MONEDAL2_ID," +
             "TIPO_CAMBIO,TIPO_CAMBIOL,TIPO_CAMBIOL2,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL," +
             "AGENTE_ACTUAL,FECHA_PASO_ACTUAL,PUESTO_ID,GALL_ID,CONCEPTO_ID,DOCUMENTO_SAP,FECHACON,FECHA_BASE,REFERENCIA," +
-            "CONDICIONES,TEXTO_POS,ASIGNACION_POS,CLAVE_CTA, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,DOCUMENTOA_TAB,Anexo")] Models.DOCUMENTO_MOD doc, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc,
+            "CONDICIONES,TEXTO_POS,ASIGNACION_POS,CLAVE_CTA, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,DOCUMENTOA_TAB,Anexo,"+
+            "DOCUMENTOCOC,EBELN,AMOR_ANT,RETPC,DPPCT,TOAD,ANTR,AMORANT")] Models.DOCUMENTO_MOD doc, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc,
             //MGC 02-10-2018 Cadenas de autorización
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string mtTot, string DETTA_USUARIOA_ID, string borr, string FECHADO, string Uuid
             //MGC 11-12-2018 Agregar Contabilizador 0
@@ -1246,10 +1247,20 @@ namespace WFARTHA.Controllers
                     //Estatus wf
                     //dOCUMENTO.ESTATUS_WF = "P";//MGC 30-10-2018 Si el wf es p es que no se ha creado, si es A, es que se creo el archivo, cambia al generar el preliminar
 
+                    //LEJGG 12-12-2018
+                    dOCUMENTO.EBELN = doc.EBELN;
+                    dOCUMENTO.AMOR_ANT = doc.AMOR_ANT;
+                    dOCUMENTO.RETPC = doc.RETPC;
+                    dOCUMENTO.DPPCT = doc.DPPCT;
+                    dOCUMENTO.TOAD = doc.TOAD;
+                    dOCUMENTO.ANTR = doc.ANTR;
+                    //LEJGG 12-12-2018
+
                     db.DOCUMENTOes.Add(dOCUMENTO);
                     db.SaveChanges();//Codigolej
 
                     doc.NUM_DOC = dOCUMENTO.NUM_DOC;
+                    var _ndoc = dOCUMENTO.NUM_DOC;
                     //return RedirectToAction("Index");
 
                     //Redireccionar al inicio
@@ -1329,6 +1340,63 @@ namespace WFARTHA.Controllers
                         //Guardar número de documento creado
 
                     }
+
+
+                    //LEJGG 12-12-2018----------------------------------------I
+                    if (doc.TSOL_ID == "SCO")
+                    {
+                        try
+                        {
+                            for (int i = 0; i < doc.DOCUMENTOCOC.Count; i++)
+                            {
+                                try
+                                {
+                                    DOCUMENTOCOC dcoc = new DOCUMENTOCOC();
+                                    dcoc.NUM_DOC = _ndoc;
+                                    dcoc.POSD = i + 1;
+                                    dcoc.POS = doc.DOCUMENTOCOC[i].POS;
+                                    dcoc.MATNR = doc.DOCUMENTOCOC[i].MATNR;
+                                    dcoc.PS_PSP_PNR = doc.DOCUMENTOCOC[i].PS_PSP_PNR;
+                                    dcoc.WAERS = doc.DOCUMENTOCOC[i].WAERS;
+                                    dcoc.MEINS = doc.DOCUMENTOCOC[i].MEINS;
+                                    dcoc.MENGE_BIL = doc.DOCUMENTOCOC[i].MENGE_BIL;
+                                    db.DOCUMENTOCOCs.Add(dcoc);
+                                    db.SaveChanges();
+                                }
+                                catch (Exception e)
+                                {
+                                    //
+                                }
+                            }
+
+                            for (int i = 0; i < doc.AMORANT.Count; i++)
+                            {
+                                var ej = doc.AMORANT[i].GJAHR.ToString().Split('.');
+                                //sacar una pos
+                                int n = db.AMOR_ANT.ToList().Count + 1;
+                                AMOR_ANT am = new AMOR_ANT();
+                                am.POS = n;
+                                am.NUM_DOC = _ndoc;
+                                am.EBELN = doc.EBELN;
+                                am.EBELP = doc.AMORANT[i].EBELP;//
+                                am.BELNR = doc.AMORANT[i].BELNR;//
+                                am.GJAHR = decimal.Parse(ej[0]);//
+                                am.BUZEI = doc.AMORANT[i].BUZEI;//
+                                am.ANTAMOR = doc.AMORANT[i].ANTAMOR;//
+                                am.TANT = doc.AMORANT[i].TANT;//
+                                am.WAERS = doc.AMORANT[i].WAERS;//
+                                am.ANTTRANS = doc.AMORANT[i].ANTTRANS;//
+                                am.ANTXAMORT = doc.AMORANT[i].ANTXAMORT;//
+                                db.AMOR_ANT.Add(am);
+                                db.SaveChanges();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //
+                        }
+                    }
+                    //LEJGG 12-12-2018----------------------------------------T
 
                     //FRT25112018 cambio para guardar anexos
 
@@ -6060,6 +6128,18 @@ namespace WFARTHA.Controllers
         }
 
         //------------------------------------------------------------------------------->
+        //LEJGG 18-12-2018-----
+        [HttpPost]
+        public JsonResult getPorMult(string id)
+        {
+            //Obtener el concepto           
+            var ret = db.IIMPUESTOes.Where(co => co.MWSKZ == id && co.ACTIVO == true).FirstOrDefault();//lejgg 03-11-18 Convertir a decimal
+            JsonResult jc = Json(ret.KBETR, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+        //-------------------------------------------------------------------------------<
+
+        //------------------------------------------------------------------------------->
         //Lejggg 22-10-2018
         [HttpPost]
         public JsonResult procesarXML(IEnumerable<HttpPostedFileBase> file)
@@ -7653,15 +7733,27 @@ namespace WFARTHA.Controllers
         }
         //BEGIN OF INSERT RSG 17.10.2018
         [HttpPost]
-        public JsonResult getPedidos(string Prefix, string lifnr)
+        public JsonResult getPedidos(string lifnr, string bukrs)
         {
             try
             {
-                var c = (from N in db.EKKO_DUMMY
-                         where (N.LIFNR == lifnr)// & N.EBELN.Contains(Prefix))
-                         select new { N.EBELN }).ToList();
-
-                JsonResult jc = Json(c, JsonRequestBehavior.AllowGet);
+                //LEJGG 10-12-2018
+                for (int i = 0; i < lifnr.ToCharArray().Length; i++)
+                {
+                    if (lifnr.ToCharArray().Length < 10)
+                    {
+                        var _li = "0" + lifnr;
+                        lifnr = _li;
+                    }
+                }
+                List<string> lstebeln = new List<string>();
+                //LEJGG 10-12-2018
+                var c = db.EKKOes.Where(x => x.LIFNR == lifnr && x.BUKRS == bukrs).ToList();
+                for (int i = 0; i < c.Count; i++)
+                {
+                    lstebeln.Add(c[i].EBELN);
+                }
+                JsonResult jc = Json(lstebeln, JsonRequestBehavior.AllowGet);
                 return jc;
             }
             catch (Exception e)
@@ -7741,6 +7833,196 @@ namespace WFARTHA.Controllers
             JsonResult jc = Json(_r, JsonRequestBehavior.AllowGet);
             return jc;
         }
+
+        //LEJGG 11-12-2018 Llenar Tablas OC------------------------------------------------->
+        [HttpPost]
+        public JsonResult getEKKOInfo(string ebeln)
+        {
+            //Traigo la info
+            var ekko = db.EKKOes.Where(x => x.EBELN == ebeln).FirstOrDefault();
+
+            EKKO_MOD ekmo = new EKKO_MOD();
+            ekmo.RETPC = ekko.RETPC;
+            ekmo.DPPCT = ekko.DPPCT;
+            ekmo.DPAMT = ekko.DPAMT;
+
+            //Traigo los montos
+            var ekbe = db.EKBEs.Where(x => x.EBELN == ebeln).ToList();
+            decimal? As = 0;
+            decimal? Tres = 0;
+            decimal? unos = 0;
+            for (int i = 0; i < ekbe.Count; i++)
+            {
+                if (ekbe[i].BEWTP == "A")
+                {
+                    if (ekbe[i].SHKZG == "H")
+                    {
+                        As = As + (ekbe[i].WRBTR * (-1));
+                    }
+                    else
+                    {
+                        As = As + ekbe[i].WRBTR;
+                    }
+                }
+                if (ekbe[i].BEWTP == "3")
+                {
+                    if (ekbe[i].SHKZG == "H")
+                    {
+                        Tres = Tres + (ekbe[i].WRBTR * (-1));
+                    }
+                    else
+                    {
+                        Tres = Tres + ekbe[i].WRBTR;
+                    }
+                }
+                if (ekbe[i].BEWTP == "1")
+                {
+                    if (ekbe[i].SHKZG == "H")
+                    {
+                        unos = unos + (ekbe[i].WRBTR * (-1));
+                    }
+                    else
+                    {
+                        unos = unos + ekbe[i].WRBTR;
+                    }
+                }
+            }
+
+            //Traigo el monto en transito
+            var docmt = db.DOCUMENTOes.Where(x => x.EBELN == ebeln && x.ESTATUS != "A" && x.ESTATUS_C != "C").ToList();
+            decimal? mtr = 0;
+            for (int i = 0; i < docmt.Count; i++)
+            {
+                mtr = mtr + docmt[i].MONTO_DOC_MD;
+            }
+            decimal? brtwr = 0;
+            var dnetwr = db.EKPOes.Where(x => x.EBELN == ebeln && x.ESTATUS != "F").ToList();
+            for (int i = 0; i < dnetwr.Count; i++)
+            {
+                if (dnetwr[i].NETWR == null)
+                { }
+                else
+                {
+                    brtwr = brtwr + dnetwr[i].NETWR;
+                }
+            }
+
+            string res = As + "?" + Tres + "?" + unos;
+            var _r = new { ekmo, res, mtr, brtwr };
+            JsonResult jc = Json(_r, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult getEKBEInfo(string ebeln)
+        {
+            var r = db.EKBEs.Where(x => x.EBELN == ebeln && x.BEWTP == "A" && x.XREVERSED != "X" && x.XREVERSEING != "X").ToList();
+            JsonResult jc = Json(r, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult getEKPOInfo(string ebeln)
+        {
+            //Traigo el usuario
+            var ekpo = db.EKPOes.Where(x => x.EBELN == ebeln && x.ESTATUS != "F").ToList();
+            List<EKPO_MOD> lstekpo = new List<EKPO_MOD>();
+            for (int i = 0; i < ekpo.Count; i++)
+            {
+                EKPO_MOD ekp = new EKPO_MOD();
+                ekp.EBELN = ekpo[i].EBELN;
+                ekp.EBELP = ekpo[i].EBELP;
+                ekp.BEDAT = ekpo[i].BEDAT;
+                ekp.MATNR = ekpo[i].MATNR;
+                ekp.TXZ01 = ekpo[i].TXZ01;
+                ekp.MATKL = ekpo[i].MATKL;
+                ekp.WERKS = ekpo[i].WERKS;
+                ekp.LGORT = ekpo[i].LGORT;
+                ekp.MENGE = ekpo[i].MENGE;
+                ekp.MEINS = ekpo[i].MEINS;
+                ekp.NETPR = ekpo[i].NETPR;
+                ekp.WAERS = ekpo[i].WAERS;
+                ekp.PEINH = ekpo[i].PEINH;
+                ekp.MENGE_DEL = ekpo[i].MENGE_DEL;
+                ekp.NETPR_DEL = ekpo[i].NETPR_DEL;
+                ekp.MENGE_BIL = ekpo[i].MENGE_BIL;
+                ekp.NETPR_BIL = ekpo[i].NETPR_BIL;
+                ekp.MWSKZ = ekpo[i].MWSKZ;
+                ekp.SAKTO = ekpo[i].SAKTO;
+                ekp.KNTTP = ekpo[i].KNTTP;
+                ekp.PS_PSP_PNR = ekpo[i].PS_PSP_PNR;
+                ekp.KOSTL = ekpo[i].KOSTL;
+                ekp.EREKZ = ekpo[i].EREKZ;
+                ekp.NETWR = ekpo[i].NETWR;
+                lstekpo.Add(ekp);
+            }
+            JsonResult jc = Json(lstekpo, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult calculoAntAmor(string ebeln, string belnr)
+        {
+            //Traigo el usuario
+            var ekbe = db.EKBEs.Where(x => x.BEWTP == "3" && x.EBELN == ebeln && x.REBZG == belnr).ToList();
+            List<EKBE> lstek = new List<EKBE>();
+            for (int i = 0; i < ekbe.Count; i++)
+            {
+                lstek.Add(ekbe[i]);
+                if (ekbe[i].AUGBL != null || ekbe[i].AUGBL != "")
+                {
+                    var d = ekbe[i].AUGBL;
+                    var augblD = db.EKBEs.Where(x => x.EBELN == ebeln && x.BELNR == d).FirstOrDefault();
+                    if (augblD != null)
+                    {
+                        lstek.Add(augblD);
+                    }
+                }
+            }
+            decimal? sum = 0;
+            for (int i = 0; i < lstek.Count; i++)
+            {
+                if (lstek[i].WRBTR != null)
+                {
+                    if (lstek[i].SHKZG == "H")
+                    {
+                        sum = sum + (lstek[i].WRBTR * -1);
+                    }
+                    else
+                    {
+                        sum = sum + lstek[i].WRBTR;
+                    }
+                }
+            }
+            JsonResult jc = Json(sum, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult calculoAntTr()
+        {
+            //Traigo el usuario
+            var amorant = db.AMOR_ANT.ToList();
+            decimal? sum = 0;
+            for (int i = 0; i < amorant.Count; i++)
+            {
+                var nd = amorant[i].NUM_DOC;
+                //traigo su estatus
+                var est = db.DOCUMENTOes.Where(e => e.NUM_DOC == nd && e.ESTATUS_C != "C" && e.ESTATUS != "A").FirstOrDefault();
+                //si es diferente a null, significa que trae datos
+                if (est != null)
+                {
+                    if (amorant[i].ANTXAMORT != null)
+                    {
+                        //shkzg si es h es negativo
+                        sum = sum + amorant[i].ANTXAMORT;
+                    }
+                }
+            }
+            JsonResult jc = Json(sum, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+        //LEJGG 11-12-2018 Llenar Tablas OC-------------------------------------------------<
 
         //MGC 18-10-2018 Firma del usuario ------------------------------------------------->
         [HttpPost]

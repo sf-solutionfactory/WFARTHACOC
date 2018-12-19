@@ -553,71 +553,66 @@
                         @*MGC 29-10-2018 Agregar funcionalidad de proyecto ---------------------------------------------------->*@
 
                         @{string proy = ViewBag.pid + "";}
-                        @Html.Hidden("PROY_SEL", proy);
+                        @Html.Hidden("PROY_SEL", proy)
                         @*MGC 29-10-2018 Agregar funcionalidad de proyecto ----------------------------------------------------<*@
-
                         <div class="row" style="margin-bottom:0px;">
                             <div class="col s12 m12 l3">
                                 <div id="div_norden_compra" class="input-field col s12" style="display:none">
-                                    <!--ADD RSG 19.10.2018-->
-                                    @*@Html.LabelFor(model => model.FECHA_BASE, "Fecha Base Line NT", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.FECHA_BASE, new { htmlAttributes = new { @class = "form-control fechaVal", @disabled = "disabled" } })
-                                        </div>*@
-
-                                    @*<input type="text" id="norden_compra" value="" />*@<!--ADD RSG 19.10.2018-->
-                                    <select id="norden_compra" onchange="addPedido(this.value);"><option></option></select><!--ADD RSG 19.10.2018-->
+                                    <select id="norden_compra"></select><!--ADD RSG 19.10.2018-->
                                     <label for="norden_compra" id="lbl_norden_compra">Orden de compra</label>
                                 </div>
                             </div>
                             <div class="col s12 m12 l9">
                                 <div class="row" style="margin-bottom:0px;">
-                                    @*<div class="input-field col s12 m12 l3 offset-l3">
-                                            <input id="fondo_g" name="fondo_g" type="text" class="validate" disabled />
-                                            <label for="fondo_g">Fondo de garantía</label>
-                                        </div>
-                                        <div class="input-field col s12 m12 l3">
-                                            <input id="Rfondo_g" name="Rfondo_g" type="text" class="validate" disabled />
-                                            <label for="Rfondo_g">Retenido fondo de garantía</label>
-                                        </div>
-                                        <div class="input-field col s12 m12 l3">
-                                            <input id="Resfondo_g" name="Resfondo_g" type="text" class="validate" disabled />
-                                            <label for="Resfondo_g">Restante fondo de garantía</label>
-                                        </div>
-                                        <div class="input-field col s12 m12 l3 offset-l3">
-                                            <input id="fondo_g" name="fondo_g" type="text" class="validate" disabled />
-                                            <label for="fondo_g">Fondo de garantía</label>
-                                        </div>
-                                        <div class="input-field col s12 m12 l3">
-                                            <input id="Rfondo_g" name="Rfondo_g" type="text" class="validate" disabled />
-                                            <label for="Rfondo_g">Retenido fondo de garantía</label>
-                                        </div>
-                                        <div class="input-field col s12 m12 l3">
-                                            <input id="Resfondo_g" name="Resfondo_g" type="text" class="validate" disabled />
-                                            <label for="Resfondo_g">Restante fondo de garantía</label>
-                                        </div>*@
-                                    <div class="col s12">
-                                        <table class="mdl-data-table striped">
+                                    <div class="col s12" style="overflow-x:auto;">
+                                        <table class="mdl-data-table striped" id="tableOC">
                                             <thead>
                                                 <tr>
-                                                    <th>Total<br />Contrato</th>
+                                                    <th>Monto Contrato</th>
+                                                    <th>% Fondo de Garantía</th>
                                                     <th>% Anticipo</th>
-                                                    <th>% Fondo<br />de Garantía</th>
-                                                    <th>Fondo de Garantía</th>
-                                                    <th>Retenido<br />Fondo de Garantía</th>
-                                                    <th>Restante<br />Fondo de Garantía</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l12" style="margin-top:5px;">
+                                <div class="row" style="margin-bottom:0px;">
+                                    <div class="col s12" style="overflow-x:auto;">
+                                        <table class="mdl-data-table striped" id="tableOC2" style="width:100%;">
+                                            <thead>
                                                 <tr>
-                                                    <td><span id="totPed"></span></td>
-                                                    <td><span id="por_ant"></span></td>
-                                                    <td><span id="por_fondo"></span></td>
-                                                    <td><span id="fondo_g"></span></td>
-                                                    <td><span id="Rfondo_g"></span></td>
-                                                    <td><span id="Resfondo_g"></span></td>
+                                                    <th>Fila</th>
+                                                    <th>Pos</th>
+                                                    <th>No. Doc. SAP</th>
+                                                    <th>Ejercicio</th>
+                                                    <th>Anticipo Amortizado</th>
+                                                    <th>Total Anticipo</th>
+                                                    <th>Moneda</th>
+                                                    <th>Anticipo en Transito</th>
+                                                    <th>Anticipo por Amortizar</th>
                                                 </tr>
-                                            </tbody>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        @*-----TABLA AMORANT HIDDEN----- 15-12-2018*@
+                                        <table class="mdl-data-table striped" id="tableOC2H" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pos Compra</th>
+                                                    <th>Pos</th>
+                                                    <th>Ndoc</th>
+                                                    <th>Ejercicio</th>
+                                                    <th>Anticipo Amortizado</th>
+                                                    <th>Total Anticipo</th>
+                                                    <th>Moneda</th>
+                                                    <th>Anticipo en Transito</th>
+                                                    <th>Anticipo por Amortizar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -910,11 +905,12 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div style="text-align:right">
-                            <label id="lbl_status" style="font-size: 1.1rem;font-weight: bold;">Total:</label>
-                            <label id="total_info1" style="font-size: 1.1rem;font-weight: bold;"></label>
+                        <div id="divTot">
+                            <div style="text-align:right" class="lblTot">
+                                <label id="lbl_status" style="font-size: 1.1rem;font-weight: bold;">Total:</label>
+                                <label id="total_info1" style="font-size: 1.1rem;font-weight: bold;"></label>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>

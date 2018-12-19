@@ -533,6 +533,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AMORANT_MOD.cs" />
     <Compile Include="Models\Appsetting.cs" />
     <Compile Include="Models\AppsettingNuevo.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
@@ -544,6 +545,7 @@
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DOCUMENTOA_TAB.cs" />
     <Compile Include="Models\DOCUMENTOA_MOD.cs" />
+    <Compile Include="Models\DOCUMENTOCOC_MOD.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\DOCUMENTOP_MODSTR.cs" />
@@ -551,6 +553,8 @@
     <Compile Include="Models\DOCUMENTOR_MOD.cs" />
     <Compile Include="Models\DOCUMENTO_MOD.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\EKKO_MOD.cs" />
+    <Compile Include="Models\EKPO_MOD.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProyectoSociedadNuevo.cs" />

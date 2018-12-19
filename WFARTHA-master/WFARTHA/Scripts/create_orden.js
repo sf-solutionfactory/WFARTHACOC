@@ -777,11 +777,13 @@ function mostrarTabla(ban) {
         $("#div_sinPedido").addClass("hide");
         $("#div_conPedido").removeClass("hide");
         $("#div_garantia").removeClass("hide");
+        $("#divTot").addClass("hide");
         $("#conOrden").val("X");
     } else {
         $("#div_conPedido").addClass("hide");
         $("#div_sinPedido").removeClass("hide");
         $("#div_garantia").addClass("hide");
+        $("#divTot").removeClass("hide");
         $("#conOrden").val("");
     }
 }

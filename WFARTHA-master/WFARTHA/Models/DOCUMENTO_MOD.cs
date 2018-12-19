@@ -75,6 +75,12 @@ namespace WFARTHA.Models
         public string TEXTO_POS { get; set; }
         public string ASIGNACION_POS { get; set; }
         public string CLAVE_CTA { get; set; }
+        public string EBELN { get; set; }//Agregado LEJGG.10.12.2018
+        public Nullable<decimal> AMOR_ANT { get; set; }//Agregado LEJGG.10.12.2018
+        public Nullable<decimal> RETPC { get; set; }//Agregado LEJGG.10.12.2018
+        public Nullable<decimal> DPPCT { get; set; }//Agregado LEJGG.10.12.2018
+        public Nullable<decimal> TOAD { get; set; }//Agregado LEJGG.10.12.2018
+        public Nullable<decimal> ANTR { get; set; }//Agregado LEJGG.10.12.2018
         public List<DOCUMENTOP_MOD> DOCUMENTOP { get; set; } //Agregado
         public List<DOCUMENTOP_MODSTR> DOCUMENTOPSTR { get; set; } //Agregado
         public List<DOCUMENTOR_MOD> DOCUMENTOR { get; set; } //Agregado
@@ -82,6 +88,8 @@ namespace WFARTHA.Models
         public List<DOCUMENTOA> DOCUMENTOAL { get; set; }//Agregado LEJ14.09.2018
         public List<WFARTHA.Controllers.Anexo> Anexo { get; set; }
         public List<DOCUMENTOA_TAB> DOCUMENTOA_TAB { get; set; }//Agregado LEJGG02.11.2018
+        public List<DOCUMENTOCOC_MOD> DOCUMENTOCOC { get; set; }//Agregado LEJGG-12.12.2018
+        public List<AMORANT_MOD> AMORANT { get; set; }//Agregado LEJGG-12.12.2018
         public string DESC_CONDICION { get; set; }   //aGERGADO frt 06112018
         public string ESTATUS_PRE { get; set; } //MGC 17-12-2018 Reprocesar Archivo preliminar
 

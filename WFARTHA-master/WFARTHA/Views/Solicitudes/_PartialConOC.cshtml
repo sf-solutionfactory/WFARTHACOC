@@ -1,0 +1,18 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+@if (Model.AMORANT != null)
+{
+    for (var i = 0; i < Model.AMORANT.Count; i++)
+    {
+        <tr>
+            <td>@Html.EditorFor(m => m.AMORANT[i].EBELP)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].BUZEI)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].BELNR)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].GJAHR)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].ANTAMOR)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].TANT)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].WAERS)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].ANTTRANS)</td>
+            <td>@Html.EditorFor(m => m.AMORANT[i].ANTXAMORT)</td>
+        </tr>
+    }
+}

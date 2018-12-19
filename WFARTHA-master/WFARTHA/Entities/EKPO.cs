@@ -14,6 +14,12 @@ namespace WFARTHA.Entities
     
     public partial class EKPO
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EKPO()
+        {
+            this.AMOR_ANT = new HashSet<AMOR_ANT>();
+        }
+    
         public string EBELN { get; set; }
         public string EBELP { get; set; }
         public Nullable<System.DateTime> BEDAT { get; set; }
@@ -38,5 +44,9 @@ namespace WFARTHA.Entities
         public string KOSTL { get; set; }
         public string ESTATUS { get; set; }
         public string EREKZ { get; set; }
+        public Nullable<decimal> NETWR { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AMOR_ANT> AMOR_ANT { get; set; }
     }
 }

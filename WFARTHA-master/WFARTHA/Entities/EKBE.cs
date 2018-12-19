@@ -25,7 +25,17 @@ namespace WFARTHA.Entities
         public string WAERS { get; set; }
         public Nullable<decimal> DMBTR { get; set; }
         public Nullable<decimal> WRBTR { get; set; }
+        public string SHKZG { get; set; }
         public Nullable<System.DateTime> BUDAT { get; set; }
         public string XBLNR { get; set; }
+        public string REBZG { get; set; }
+        public string REBZJ { get; set; }
+        public Nullable<decimal> REBZZ { get; set; }
+        public string XREVERSED { get; set; }
+        public string XREVERSEING { get; set; }
+        public string STJAAH { get; set; }
+        public string STBLG { get; set; }
+        public Nullable<System.DateTime> AUDT { get; set; }
+        public string AUGBL { get; set; }
     }
 }

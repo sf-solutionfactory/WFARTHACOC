@@ -17,6 +17,7 @@ namespace WFARTHA.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DOCUMENTO()
         {
+            this.AMOR_ANT1 = new HashSet<AMOR_ANT>();
             this.DOCUMENTOAS = new HashSet<DOCUMENTOA1>();
             this.DOCUMENTOPs = new HashSet<DOCUMENTOP>();
             this.DOCUMENTOPREs = new HashSet<DOCUMENTOPRE>();
@@ -91,7 +92,15 @@ namespace WFARTHA.Entities
         public string EJERCICIO_PRE { get; set; }
         public string ESTATUS_PRE { get; set; }
         public string ID_PSPNR { get; set; }
+        public string EBELN { get; set; }
+        public Nullable<decimal> AMOR_ANT { get; set; }
+        public Nullable<decimal> RETPC { get; set; }
+        public Nullable<decimal> DPPCT { get; set; }
+        public Nullable<decimal> TOAD { get; set; }
+        public Nullable<decimal> ANTR { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AMOR_ANT> AMOR_ANT1 { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TSOL TSOL { get; set; }
         public virtual USUARIO USUARIO { get; set; }

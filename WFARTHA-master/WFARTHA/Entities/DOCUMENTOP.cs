@@ -40,6 +40,7 @@ namespace WFARTHA.Entities
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOA> DOCUMENTOAs { get; set; }
+        public virtual DOCUMENTOCOC DOCUMENTOCOC { get; set; }
         public virtual IMPUESTO IMPUESTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTORP> DOCUMENTORPs { get; set; }

@@ -223,6 +223,9 @@
     <Compile Include="Entities\ACCION.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AMOR_ANT.cs">
+      <DependentUpon>WFARTHA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\APPSETTING.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
@@ -268,7 +271,13 @@
     <Compile Include="Entities\DET_AGENTECA.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTECAV.cs">
+      <DependentUpon>WFARTHA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_AGENTECC.cs">
+      <DependentUpon>WFARTHA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_AGENTECCV.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DET_APROB.cs">
@@ -320,6 +329,9 @@
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOA1.cs">
+      <DependentUpon>WFARTHA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOCOC.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOLOG.cs">
@@ -457,9 +469,6 @@
     <Compile Include="Entities\SP_DETALLE_Result.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SP_FIRMAS_Result.cs">
-      <DependentUpon>WFARTHA.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\TCAMBIO.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
@@ -524,7 +533,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AMORANT_MOD.cs" />
     <Compile Include="Models\Appsetting.cs" />
     <Compile Include="Models\AppsettingNuevo.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
@@ -536,7 +544,6 @@
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DOCUMENTOA_TAB.cs" />
     <Compile Include="Models\DOCUMENTOA_MOD.cs" />
-    <Compile Include="Models\DOCUMENTOCOC_MOD.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\DOCUMENTOP_MODSTR.cs" />
@@ -844,8 +851,6 @@
     <Content Include="Views\UsuarioC1\Edit.cshtml" />
     <Content Include="Views\Usuarios\CambioPass.cshtml" />
     <Content Include="Views\Report\ReportTemplate2.cshtml" />
-    <Content Include="Views\Solicitudes\_PartialConOC.cshtml" />
-    <Content Include="Views\Solicitudes\_PartialConTr5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,6 +28,7 @@ namespace WFARTHA.Entities
         }
     
         public virtual DbSet<ACCION> ACCIONs { get; set; }
+        public virtual DbSet<AMOR_ANT> AMOR_ANT { get; set; }
         public virtual DbSet<APPSETTING> APPSETTINGs { get; set; }
         public virtual DbSet<BANCO> BANCOS { get; set; }
         public virtual DbSet<CAMPOS> CAMPOS { get; set; }
@@ -53,6 +54,7 @@ namespace WFARTHA.Entities
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
         public virtual DbSet<DOCUMENTOA1> DOCUMENTOAS1 { get; set; }
+        public virtual DbSet<DOCUMENTOCOC> DOCUMENTOCOCs { get; set; }
         public virtual DbSet<DOCUMENTOLOG> DOCUMENTOLOGs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
         public virtual DbSet<DOCUMENTOPRE> DOCUMENTOPREs { get; set; }
@@ -110,6 +112,8 @@ namespace WFARTHA.Entities
         public virtual DbSet<IIMPUESTO> IIMPUESTOes { get; set; }
         public virtual DbSet<ASIGN_PROY_SOC> ASIGN_PROY_SOC { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
+        public virtual DbSet<DET_AGENTECAV> DET_AGENTECAV { get; set; }
+        public virtual DbSet<DET_AGENTECCV> DET_AGENTECCV { get; set; }
         public virtual DbSet<DET_APROB0V> DET_APROB0V { get; set; }
         public virtual DbSet<DET_APROBV> DET_APROBV { get; set; }
         public virtual DbSet<DET_PROVEEDORV> DET_PROVEEDORV { get; set; }
@@ -138,13 +142,13 @@ namespace WFARTHA.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_DETALLE_Result>("SP_DETALLE", nUM_DOCParameter);
         }
     
-        public virtual ObjectResult<SP_FIRMAS_Result> SP_FIRMAS(Nullable<decimal> nUM_DOC)
+        public virtual int SP_FIRMAS(Nullable<decimal> nUM_DOC)
         {
             var nUM_DOCParameter = nUM_DOC.HasValue ?
                 new ObjectParameter("NUM_DOC", nUM_DOC) :
                 new ObjectParameter("NUM_DOC", typeof(decimal));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_FIRMAS_Result>("SP_FIRMAS", nUM_DOCParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_FIRMAS", nUM_DOCParameter);
         }
     
         public virtual int SP_REPORTESOLS(Nullable<decimal> nUM_DOC, string bUKRS, string uSER, Nullable<int> num)

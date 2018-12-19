@@ -1,0 +1,32 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+
+@if (Model.DOCUMENTOR != null)
+{
+    for (var i = 0; i < Model.DOCUMENTOR.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].BUKRS)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].LIFNR)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].WITHT)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].DESC)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].WT_WITHCD)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].BIMPONIBLE)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOR[i].IMPORTE_RET)
+            </td>          
+        </tr>
+    }
+}
+

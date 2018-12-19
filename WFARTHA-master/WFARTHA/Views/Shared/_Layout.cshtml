@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <meta name="theme-color" content="#d81b60" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>*@
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <title>@ViewBag.Title - ARTHA</title>
+    @Styles.Render("~/Content/materialize")
+    @Scripts.Render("~/bundles/materialize")
+
+    <style>
+        .sidenav
+        .collapsible-body > ul:not(.collapsible) > li.active,
+        .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
+            background-color: #4e342e;
+        }
+    </style>
+</head>
+<body onkeydown="javascript:EnterKeyFilter();" style="background-color:#f4f4f4;">
+    <div style="width:100%;height:100%;z-index:999;display:none;position:fixed;padding:0;
+                margin:0;top:0;left:0;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
+        <div style="padding-left:50%;padding-top:20%;">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-fixed" style="z-index: 998;">
+        <nav class="nav-extended">
+            <div class="nav-wrapper #4e342e brown darken-3" @*style="background-repeat: repeat-x;background-image: url(/images/header-transient.png);"*@>
+                @*<a href="@Url.Action("Index", "Home")" class="brand-logo left">*@
+                <a href="#" class="brand-logo left">
+                    <img src="http://www.artha.com.mx/home/wp-content/themes/temaArtha/images/logo.svg" style="padding-top: 8px; padding-left: 8px;" />
+                </a>
+                <ul id="nav_mobile" class="right" runat="server">
+                    @*@if (ViewBag.flag != true)
+            {
+                if (ViewBag.PrSl != null)
+                {
+                    <li>
+                        <a href="@Url.Action("Proyectos", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                            <input type="text" id="txtPr" value="@ViewBag.PrSl" style="width: 30px; height: 20px; color:white; border:0;" readonly onclick="location.href='@Url.Action("Proyectos", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Proyectos", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                            @*<input type="text" id="txtPr" value="-" style="width: 30px; height: 20px; color:white; border:0" readonly onclick="location.href='@Url.Action("Proyectos", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
+                        <i class='material-icons white-text' id="icnPr">list</i>
+                        </a>
+                        </li>
+                        }
+                        }*@
+                    <li>
+                        <a href="@Url.Action("CambioPass","Usuarios",new { id = @ViewBag.usuario.ID })" style="display:none">Cambiar Contraseña</a>
+                    </li>
+                    <li>
+                        @using Microsoft.AspNet.Identity
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()" id="lbl_loggoff">Salir</a>
+                        }
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <ul id="slide-out" class="sidenav sidenav-fixed" style="z-index: 997; transform: translateX(-105%);">
+        <li>
+            <div class="navbar-fixed">
+                <div class="nav-wrapper #4e342e brown darken-3" style="height: 68px;">
+                </div>
+            </div>
+        </li>
+        <li>
+            <a id="cerrar-menu" href="#!" data-target="slide-out" class="sidenav-close #4e342e brown darken-3" onclick="cerrar();"><i class="material-icons right white-text" style="margin: 0; font-size: 1.3rem;">menu</i></a>
+        </li>
+        <li>
+            <div class="user-view" style="padding: 0">
+                <div class="background #4e342e brown darken-3">
+                    @*<%--<img src="images/office.jpg">--%>*@
+                </div>
+                <table>
+                    <tr>
+                        <td style="display:none;">
+                            <a href="#!user" style="padding: 0;">
+                                <img class="circle" src="~/images/sf-logo.jpg" />
+                            </a>
+                        </td>
+                        <td>
+                            <div class="white-text">
+                                <a href='#' style='padding: 0;'><span class='white-text name' style='margin: 0'>@ViewBag.usuario.NOMBRE @ViewBag.usuario.APELLIDO_P @ViewBag.usuario.APELLIDO_M</span></a>
+                                <a href='#' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.usuario.EMAIL</span></a>
+                                <a href='#' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.rol</span></a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </li>
+        <li class='no-padding'>
+            <ul class='collapsible collapsible-accordion'>
+                @foreach (WFARTHA.Entities.CARPETAV c in ViewBag.carpetas)
+                {
+                    if (c.URL.Equals(""))
+                    {
+                        foreach (WFARTHA.Entities.PAGINAV p in ViewBag.permisos)
+                        {
+                            try
+                            {
+                                if (c.ID.Equals(p.CARPETA_ID))
+                                {
+                                    if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
+                                    {
+                                        <li class='bold active'><a href='#'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
+                                    }
+                                    else
+                                    {
+                                        string[] uu = p.PAGINA_URL.Split('/');
+                                        <li class='bold'><a href='@Url.Action(uu[1], uu[0])'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (ViewBag.carpeta_r.Equals(c.ID))
+                        {
+
+                            <li class='bold active'>
+                                <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
+                                <div class='collapsible-body'>
+                                    <ul>
+                                        @foreach (WFARTHA.Entities.PAGINAV p in ViewBag.permisos)
+                                        {
+                                            if (c.ID.Equals(p.CARPETA_ID))
+                                            {
+                                                if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
+                                                {
+                                                    <li class="active"><a href='@Url.Action(p.PAGINA_URL,c.URL)'>@p.TXT50</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a href="@Url.Action(p.PAGINA_URL,c.URL)">@p.TXT50</a></li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class='bold'>
+                                <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
+                                <div class='collapsible-body'>
+                                    <ul>
+                                        @foreach (WFARTHA.Entities.PAGINAV p in ViewBag.permisos)
+                                        {
+                                            if (c.ID.Equals(p.CARPETA_ID))
+                                            {
+                                                <li><a href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a></li>
+
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </li>
+    </ul>
+    @*@RenderSection("noticia")
+
+        <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
+        </div>*@
+    @*<div id="container" class="container body-content">
+        </div>*@
+    <div class="row" style="margin-bottom:0;">
+        <div id="div-menu" class="col s1" style="width:320px;margin-top:8px;">
+            <div id="btn-menu">
+                <a class="sidenav-trigger btn #4e342e brown darken-3" data-target="slide-out" onclick="abrir(this);" style="z-index: 0">
+                    <i class="large material-icons">menu</i>
+                </a>
+            </div>
+        </div>
+        <div class="col s11" style="width:70%;">
+            <div>
+                <h4 id="lbl_titleh">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <div id="container" class="container body-content">
+        @Styles.Render("~/Content/menu")
+        @Scripts.Render("~/bundles/menu")
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ARTHA</p>
+        </footer>
+    </div>
+    @using WFARTHA.Entities;
+    @if (ViewBag.warnings != null)
+    {
+        foreach (WARNINGV w in ViewBag.warnings)
+        {
+            <script>
+                var elem = document.getElementById("@w.ID");
+                if (elem != undefined) {
+                    var wa = "@w.WARNING";
+                    wa = wa.replace(/&lt;/g, "<");
+                    wa = wa.replace(/&gt;/g, ">");
+                var options = {
+                    html: wa,
+                    position: "@w.POSICION"
+                };
+                var instance = M.Tooltip.init(elem, options);
+            }
+            </script>
+        }
+    }
+    @if (ViewBag.textos != null)
+    {
+        foreach (TEXTO t in ViewBag.textos)
+        {
+            <script>
+                try {
+                    var elem = document.getElementById("@t.CAMPO_ID").innerHTML = "@t.TEXTOS";
+                } catch (e) {
+                    try {
+                        var divs = document.getElementsByClassName("@t.CAMPO_ID");
+                        [].slice.call(divs).forEach(function (div) {
+                            div.innerHTML = "@t.TEXTOS";
+                        });
+                    }
+                    catch (ee) {
+
+                    }
+                 }
+            </script>
+        }
+    }
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+    <script>
+        function EnterKeyFilter() {
+            var enter = window.event.target.id;
+            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
+                if (window.event.keyCode == 13) {
+                    event.returnValue = false;
+                    event.cancel = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

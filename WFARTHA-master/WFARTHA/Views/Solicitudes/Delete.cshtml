@@ -1,0 +1,681 @@
+﻿@model WFARTHA.Entities.DOCUMENTO
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>DOCUMENTO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NUM_PRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUM_PRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TALL_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TALL_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAIS_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAIS_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTADO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CIUDAD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CIUDAD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERIODO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERIODO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EJERCICIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EJERCICIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_TECNICO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_TECNICO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_RECURRENTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_RECURRENTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CANTIDAD_EV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CANTIDAD_EV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIOD_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIOD_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HORAC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HORAC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAC_PLAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAC_PLAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAC_USER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAC_USER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HORAC_USER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HORAC_USER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTATUS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTATUS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTATUS_C)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTATUS_C)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTATUS_SAP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTATUS_SAP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTATUS_WF)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTATUS_WF)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOCUMENTO_REF)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOCUMENTO_REF)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CONCEPTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CONCEPTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOTAS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOTAS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_DOC_MD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_DOC_MD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_FIJO_MD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_FIJO_MD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_GS_PCT_MD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_GS_PCT_MD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_NS_PCT_MD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_NS_PCT_MD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_DOC_ML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_DOC_ML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_FIJO_ML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_FIJO_ML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_GS_PCT_ML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_GS_PCT_ML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_NS_PCT_ML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_NS_PCT_ML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_DOC_ML2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_DOC_ML2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_FIJO_ML2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_FIJO_ML2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_GS_PCT_ML2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_GS_PCT_ML2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_BASE_NS_PCT_ML2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_BASE_NS_PCT_ML2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PORC_ADICIONAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PORC_ADICIONAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IMPUESTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IMPUESTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAI_VIG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAI_VIG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAF_VIG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAF_VIG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTATUS_EXT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTATUS_EXT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SOLD_TO_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SOLD_TO_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAYER_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAYER_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAYER_NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAYER_NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAYER_EMAIL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAYER_EMAIL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GRUPO_CTE_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GRUPO_CTE_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CANAL_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CANAL_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONEDA_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONEDA_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONEDAL_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONEDAL_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONEDAL2_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONEDAL2_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_CAMBIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIOL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_CAMBIOL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPO_CAMBIOL2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPO_CAMBIOL2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NO_FACTURA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NO_FACTURA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHAD_SOPORTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHAD_SOPORTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.METODO_PAGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.METODO_PAGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NO_PROVEEDOR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NO_PROVEEDOR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PASO_ACTUAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PASO_ACTUAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AGENTE_ACTUAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AGENTE_ACTUAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_PASO_ACTUAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_PASO_ACTUAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VKORG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VKORG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VTWEG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VTWEG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SPART)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SPART)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PUESTO_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PUESTO_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GALL_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GALL_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CONCEPTO_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CONCEPTO_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOCUMENTO_SAP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOCUMENTO_SAP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PORC_APOYO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PORC_APOYO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LIGADA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LIGADA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBJETIVOQ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBJETIVOQ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FRECUENCIA_LIQ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FRECUENCIA_LIQ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBJQ_PORC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBJQ_PORC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHACON)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHACON)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_BASE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_BASE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.REFERENCIA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.REFERENCIA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TEXTO_POS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TEXTO_POS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ASIGNACION_POS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ASIGNACION_POS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CLAVE_CTA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CLAVE_CTA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MONTO_DOC_IMP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MONTO_DOC_IMP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SOCIEDAD.BUTXT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SOCIEDAD.BUTXT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TSOL.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TSOL.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO.PASS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO.PASS)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

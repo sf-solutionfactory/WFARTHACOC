@@ -1,0 +1,138 @@
+﻿@model WFARTHA.Models.ProyectoSociedadNuevo
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 721;
+    ViewBag.carpeta_r = 500;
+}
+
+
+<div class="row">
+    <div class="col s12 right-align">
+        <a class="btn-small" id="btn_nuevo" href="@Url.Action("Create")">Agregar</a>
+        @*<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nuevo</a>*@
+    </div>
+</div>
+<div class="card-panel">
+    @*<div class="row">*@
+    <div class="row" style="margin-bottom:0;">
+        <div class="input-field col s3 m3 l3">
+            <select id="selecc">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label id="btn_length">Ver por página</label>
+        </div>
+        <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
+            <input type="text" class="global_filter" id="global_filter">
+            <label for="global_filter" id="lbl_search">Buscar</label>
+        </div>
+    </div>
+    <script>
+        var elem = document.querySelector('select');
+        var options = [];
+        var instance = M.FormSelect.init(elem, options);
+    </script>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+    <link href="~/Content/dataTable.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+    <div style="width:100%;">
+        <table class="table mdl-data-table striped" id="table" style="width:100%;">
+            <thead>
+                <tr>
+                    <th class="lblSociedad">
+                        @Html.DisplayName("PROYECTO")
+                    </th>
+                    <th class="lblUsuario">
+                        @Html.DisplayName("SOCIEDAD")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.L)
+                {
+                    <tr style="cursor:pointer">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NOMBRE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BUTXT)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Delete", "ProyectoSociedad", new { ID_PSPNR = item.ID_PSPNR , ID_BUKRS = item.ID_BUKRS})">
+                                <i class='material-icons red-text'>delete</i>
+                            </a>&nbsp;
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @*</div>*@
+</div>
+
+<script type="text/javascript">
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("action", action);
+            form.submit();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            scrollY: "35vh",
+            language: {
+                "url": "../Scripts/lang/ES.json"
+            },
+            columnDefs: [
+                {
+                    targets: [0, 1, 2],
+                    className: 'mdl-data-table__cell--non-numeric'
+                }
+            ]
+        });
+
+        var a = $('#selecc').val();
+        table.page.len(a).draw();
+        $('#selecc').on('change', function () {
+            table.page.len(this.value).draw();
+        });
+
+        $('input.global_filter').on('keyup click', function () {
+            filterGlobal();
+        });
+    });
+
+    function filterGlobal() {
+        $('#table').DataTable().search(
+            $('#global_filter').val()).draw();
+    }
+
+</script>
+
+<style>
+
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_scrollHeadInner, .mdl-data-table {
+        width: 100%;
+    }
+</style>
+

@@ -1,0 +1,94 @@
+﻿@model TAT001.Entities.DELEGAR
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 607;
+    ViewBag.carpeta_r = 500;
+}
+<link href="~/Content/materialize.clockpicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/materialize.clockpicker.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+@using (Html.BeginForm("EditBackup", "Usuarios", FormMethod.Post, new { @id = "editbackup" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            <button type="submit" id="btn_guardar" class="btn" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.USUARIO_ID)
+                    @Html.HiddenFor(model => model.USUARIOD_ID)
+                    @Html.HiddenFor(model => model.FECHAI)
+                    @Html.HiddenFor(model => model.FECHAF)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.USUARIOD_ID, htmlAttributes: new { id = "lbl_usrbackup" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.USUARIOD_ID, new { htmlAttributes = new { required = true, @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.USUARIOD_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FECHAI, htmlAttributes: new { @class = "", id = "lbl_fechai" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FECHAI, new { htmlAttributes = new { @class = "datepicker", required = true, @disabled = "disabled", @Value = Model.FECHAI.ToShortDateString() } })
+                            @Html.ValidationMessageFor(model => model.FECHAI, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FECHAF, htmlAttributes: new { @class = "", id = "lbl_fechaf" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FECHAF, new { htmlAttributes = new { @class = "datepicker", @disabled = "disabled", required = true, @Value = Model.FECHAF.ToShortDateString() } })
+                            @Html.ValidationMessageFor(model => model.FECHAF, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            @Html.CheckBoxFor(model => model.ACTIVO)
+                            <span id="lbl_activo"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a id="lbl_regresar" href="@Url.Action("Details",new { id=Model.USUARIO_ID})"></a>
+</div>
+<script type="text/javascript" src="~/Scripts/fnCommon.js"></script>
+<script>
+    $("input[type='hidden']").each(function (index, element) {
+        $(this).appendTo($(element).parent());
+    });
+            var spras_id ="@ViewBag.spras_id";
+        //---- Inicializador de componentes Materialize----
+        fnCommon.materializeInit('datepicker', spras_id);
+        fnCommon.materializeInit( 'timepicker');
+        fnCommon.materializeInit( 'select');
+
+        // Remover Fecha y Hora
+        var sinFecha = "01/01/0001";
+        document.querySelectorAll('.datepicker').forEach(function (datePicker) {
+            if (datePicker.value.indexOf(sinFecha)>-1) { datePicker.value = ''; }
+        });
+
+        //----  Se agrega validaciones al formulario----
+        fnCommon.selectRequired();
+    fnCommon.formValidation('editbackup');
+    fnCommon.dateRangeValidation('FECHAI', 'FECHAF');
+
+        // Valida si ocurrio un error al intentar crear el periodo y otro.
+        var mnjError = '@ViewBag.mnjError';
+        if (mnjError) {
+            M.toast({ html: mnjError });
+        }
+</script>
+

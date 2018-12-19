@@ -1,0 +1,598 @@
+﻿@model TAT001.Entities.USUARIO
+@{
+    //ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+<style>
+
+    .ui-autocomplete {
+        z-index: 10010;
+    }
+</style>
+<script>
+    var auto = $.noConflict(true);
+</script>
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()*@
+<div class="row">
+    <div class="col s12 l12 right-align">
+        <a class="btn" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>
+        <a class="btn" href="@Url.Action("Edit", new { id = Model.ID})">Editar</a>
+    </div>
+</div>
+<div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.PASS)
+    @*<div class="input-field col s6">
+                    @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
+                    @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
+                <div class="input-field col s6">
+                    <div style="height:54px;"></div>
+                </div>
+        </div>*@
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
+                    @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @id = "lbl_appPat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @id = "lbl_appMat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @id = "lbl_email" })
+                    @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s6">
+                    @Html.EditorFor(model => model.SPRAS_ID, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    <label id="lbl_spras">SPRAS</label>
+                    @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
+                    @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
+                </div>
+                @*<div class="input-field col s12">
+                        @Html.EditorFor(model => model.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                        @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
+                    </div>*@
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @id = "lbl_bukrs" })
+                    @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var elem = document.querySelectorAll('select');
+        var options = [];
+        var instance = M.FormSelect.init(elem, options);
+    </script>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <h5>Grupos</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sociedad</th>
+                            <th>País</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GAUTORIZACIONs)
+                        {
+                            TAT001.Entities.DET_AGENTEH dah = item.DET_AGENTEH.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID)).FirstOrDefault();
+                            TAT001.Entities.DET_TAXEO dta = Model.DET_TAXEO.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID) & a.SOCIEDAD_ID.Equals(item.BUKRS) & a.PAIS_ID.Equals(item.LAND)).FirstOrDefault();
+                            if (dah != null)
+                            {
+                                if (dah.PUESTOC_ID == Model.PUESTO_ID)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BUKRS)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LAND)
+                                        </td>
+                                        <td class="right-align">
+                                            <a class="btn-small modal-trigger" href="#@item.BUKRS@item.LAND">Editar</a>
+                                            @using (Html.BeginForm("ModificarRol", "Usuarios"))
+                                            {
+                                                @Html.AntiForgeryToken()
+
+                                                <div id="@item.BUKRS@item.LAND" class="modal modal-fixed-footer left-align">
+                                                    <div class="modal-content">
+                                                        <h4>Modificar Rol</h4>
+                                                        <div class="row">
+                                                            @Html.HiddenFor(model => model.ID)
+                                                            @Html.HiddenFor(model => model.PUESTO_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_puestoid" })
+                                                            @Html.HiddenFor(itemm => item.BUKRS, new { @id = item.BUKRS + "-" + item.LAND + "-txt_soc" })
+                                                            @Html.HiddenFor(itemm => item.LAND, new { @id = item.BUKRS + "-" + item.LAND + "-txt_pai" })
+                                                            <input type="hidden" value="@dah.AGROUP_ID" name="txt_agroup" />
+                                                            <div class="input-field col s6">
+                                                                <select id="@item.BUKRS-@item.LAND-txt_rol" name="@item.BUKRS-@item.LAND-txt_rol" required="required">
+                                                                    @foreach (var itemm in ViewBag.ROLES)
+                                                                    {
+                                                                        <option value="@itemm.ROL_ID">@itemm.TXT50</option>
+                                                                        break;
+                                                                    }
+                                                                </select>
+                                                                <label for="txt_rol">Rol</label>
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            var elem2 = document.getElementById('@item.BUKRS-@item.LAND-txt_rol');
+                                                            var instance2 = M.FormSelect.init(elem2, []);
+                                                        </script>
+                                                        <div class="row" id="div_crea">
+                                                            <div class="input-field col s6">
+                                                                <input type="text" id="mtxt_soc" name="txt_soc" disabled="disabled" value="@item.BUKRS" />
+                                                                <label for="mtxt_soc">Sociedad</label>
+                                                            </div>
+                                                            <div class="input-field col s6">
+                                                                <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.LAND" />
+                                                                <label for="mtxt_pai">País</label>
+                                                            </div>
+
+                                                            <div id="q">
+                                                                @foreach (var input in dah.DET_AGENTEP)
+                                                                {
+                                                                    <div class="input-field col s6">
+                                                                        <input type="text" value="@input.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" />
+                                                                        <label for="@item.BUKRS-@item.LAND-@input.PUESTOA_ID">@input.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
+                                                                    </div>
+                                                                    <script>
+                                                                    auto("#" + "@item.BUKRS-@item.LAND-@input.PUESTOA_ID").autocomplete({
+                                                                        source: function (request, response) {
+                                                                            auto.ajax({
+                                                                                url: "../../Listas/UsuariosPuesto",
+                                                                                type: "GET",
+                                                                                dataType: "json",
+                                                                                data: { puesto: '@input.PUESTOA_ID', Prefix: request.term },
+                                                                                success: function (data) {
+                                                                                    response($.map(data, function (item) {
+                                                                                        return { label: item.ID, value: item.ID };
+                                                                                    }))
+                                                                                },
+                                                                                error: function (data) {
+                                                                                    alert("error");
+                                                                                }
+                                                                            })
+                                                                        },
+                                                                        messages: {
+                                                                            noResults: '',
+                                                                            results: function (resultsCount) { }
+                                                                        },
+                                                                        change: function (e, ui) {
+                                                                            if (!(ui.item)) {
+                                                                                e.target.value = "";
+                                                                                   document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                            }
+
+                                                                                for (var i = 1; i <= @input.PUESTOA_ID; i++) {
+                                                                                    try {
+                                                                                        var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
+                                                                                if (value != "") {
+                                                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat";
+                                                                                } else {
+                                                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                                    break;
+                                                                                        }
+                                                                                    } catch
+                                                                                    { }
+                                                                            }
+                                                                        },
+                                                                        autoFocus: true,
+                                                                        minLength: 1
+                                                                    });
+
+                                                                    </script>
+                                                                }
+
+                                                                @if (dta != null)
+                                                                {
+                                                                    <div class="input-field col s6">
+                                                                        <input type="text" value="@dta.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" />
+                                                                        <label for="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID">@dta.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
+                                                                    </div>
+                                                                    <script>
+                                                                    auto("#" + "@item.BUKRS-@item.LAND-@dta.PUESTOA_ID").autocomplete({
+                                                                        source: function (request, response) {
+                                                                            auto.ajax({
+                                                                                url: "../../Listas/UsuariosPuesto",
+                                                                                type: "GET",
+                                                                                dataType: "json",
+                                                                                data: { puesto: '@dta.PUESTOA_ID', Prefix: request.term },
+                                                                                success: function (data) {
+                                                                                    response($.map(data, function (item) {
+                                                                                        return { label: item.ID, value: item.ID };
+                                                                                    }))
+                                                                                },
+                                                                                error: function (data) {
+                                                                                    alert("error");
+                                                                                }
+                                                                            })
+                                                                        },
+                                                                        messages: {
+                                                                            noResults: '',
+                                                                            results: function (resultsCount) { }
+                                                                        },
+                                                                        change: function (e, ui) {
+                                                                            if (!(ui.item)) {
+                                                                                e.target.value = "";
+                                                                                   document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                            }
+
+                                                                                for (var i = 1; i <= @dta.PUESTOA_ID; i++) {
+                                                                                    try {
+                                                                                        var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
+                                                                                if (value != "") {
+                                                                                    document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat";
+                                                                                } else {
+                                                                                    document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                                    break;
+                                                                                        }
+                                                                                    } catch
+                                                                                    { }
+                                                                            }
+                                                                        },
+                                                                        autoFocus: true,
+                                                                        minLength: 1
+                                                                    });
+
+                                                                    </script>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" class="modal-action modal-close btn-flat" value="Guardar" id="@item.BUKRS-@item.LAND-btn_submit2" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col s12 right-align">
+                    <a class="btn modal-trigger" href="#modal1">Agregar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    <h5>Roles</h5>
+                    <div class="col s12">
+                        <table class="table">
+                            <thead><tr><th>Rol</th></tr></thead>
+                            <tbody>
+                                @foreach (var item in Model.MIEMBROS)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 right-align">
+                        <a class="btn modal-trigger" href="#modal1">Agregar</a>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+@using (Html.BeginForm("AgregarRol", "Usuarios"))
+{
+    @Html.AntiForgeryToken()
+
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Agregar Rol</h4>
+            <div class="row">
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.PUESTO_ID, new { @id = "txt_puestoid" })
+                <div class="input-field col s6">
+                    <select id="txt_rol" name="txt_rol" required="required" onchange="cambioRol(this);">
+                        @foreach (var item in ViewBag.ROLES)
+                        {
+                            <option value="@item.ROL_ID">@item.TXT50</option>
+                        }
+                    </select>
+                    <label for="txt_rol">Rol</label>
+                </div>
+            </div>
+            <div class="row" id="div_crea">
+                <div class="input-field col s6">
+                    <select id="txt_soc" name="txt_soc" required="required" onchange="selSoci(this.id)">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.SOCIEDADES)
+                        {
+                            <option value="@item.BUKRS">@item.BUKRS</option>
+                        }
+                    </select>
+                    <label for="txt_soc">Sociedad</label>
+                </div>
+                <div class="input-field col s6">
+                    <select id="txt_pai" name="txt_pai" required="required" onchange="selPais('txt_soc')">
+                        <option value=""></option>
+                        @*@foreach (var item in ViewBag.PAISES)
+                            {
+                                <option value="@item.LAND">@item.LANDX</option>
+                            }*@
+                    </select>
+                    <label for="txt_pai">País</label>
+                </div>
+                <div id="lbl_puestos"></div>
+                @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
+                    {
+                        <div class="input-field col s6">
+                            <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
+                            <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
+                        </div>
+                    }*@
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="modal-action modal-close btn-flat disabled" value="Agregar" id="btn_submit" />
+        </div>
+    </div>
+}
+<script>
+    var elem = document.querySelectorAll('.modal');
+    var options = {
+        onCloseEnd: function () {
+            $("#lbl_puestos").empty();
+            document.getElementById("txt_soc").value = "";
+            document.getElementById("txt_pai").value = "";
+            var elem2 = document.getElementById('txt_soc');
+            var instance2 = M.FormSelect.init(elem2, []);
+            var elem2 = document.getElementById('txt_pai');
+            var instance2 = M.FormSelect.init(elem2, []);
+        }
+    };
+    var instance = M.Modal.init(elem, options);
+    var elem2 = document.getElementById('txt_rol');
+    var instance2 = M.FormSelect.init(elem2, []);
+    var elem2 = document.getElementById('txt_soc');
+    var instance2 = M.FormSelect.init(elem2, []);
+    var elem2 = document.getElementById('txt_pai');
+    var instance2 = M.FormSelect.init(elem2, []);
+
+    function cambioRol(campo) {
+        if (campo.value == "1") {
+            document.getElementById("div_crea").style.display = "initial";
+            //$("#txt_soc option[value='']").attr('selected', true);
+            document.getElementById("txt_soc").value = "";
+            document.getElementById("txt_pai").value = "";
+            var elem2 = document.getElementById('txt_soc');
+            var instance2 = M.FormSelect.init(elem2, []);
+            var elem2 = document.getElementById('txt_pai');
+            var instance2 = M.FormSelect.init(elem2, []);
+            $("#lbl_puestos").empty();
+            document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+        } else {
+            document.getElementById("div_crea").style.display = "none";
+            document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+        }
+    }
+    var campos_p = [];
+    function selSoci(id) {
+        var campo = document.getElementById(id);
+        $('#txt_pai').find('option').remove();
+        $("#lbl_puestos").empty();
+
+        var soc = campo.value;
+        if (soc != "") {
+            $.ajax({
+                url: "../../Listas/Paises",
+                type: "GET",
+                async: false,
+                timeout: 30000,
+                dataType: "json",
+                data: { bukrs: campo.value },
+                success: function (data) {
+                    var pp = ($.map(data, function (item) {
+                        return { label: item.LANDX, value: item.LAND };
+                    }))
+                    $('#txt_pai')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text(""));
+                    for (var i = 0; i < pp.length; i++) {
+                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
+                        //$("#txt_pai").append(div);
+                        $('#txt_pai')
+                            .append($("<option></option>")
+                                .attr("value", pp[i].value)
+                                .text(pp[i].label));
+                    }
+                    var el = document.getElementById("txt_pai");
+                    var instances = M.FormSelect.init(el, []);
+                }
+            });
+        }
+    }
+
+    var campos_p = [];
+    function selPais(id) {
+        var campo = document.getElementById(id);
+        var pais = document.getElementById("txt_pai").value;
+        $("#lbl_puestos").empty();
+        if (pais != "") {
+            var soc = campo.value;
+            var pu = document.getElementById("txt_puestoid").value;
+            $.ajax({
+                url: "../../Listas/Det_Aprob2",
+                type: "GET",
+                async: false,
+                timeout: 30000,
+                dataType: "json",
+                data: { bukrs: campo.value, puesto: pu, spras: 'ES' },
+                success: function (data) {
+                    var pp = ($.map(data, function (item) {
+                        return { label: item.TXT50, value: item.Value };
+                    }))
+                    for (var i = 0; i < pp.length; i++) {
+                        //var div = "<div class='input-field col s6'>" + formaInpPuestos(pp[i]) + "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"
+                        var div = "<div class='input-field col s6'>" +
+                            "<input id='txt_p-" + pp[i].value + "' name='txt_p-" + pp[i].value + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                            "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"
+                        $("#lbl_puestos").append(div);
+                        autocompleta("txt_p-" + pp[i].value, pp[i].value, false);
+                    }
+                    campos_p = pp;
+                }
+            });
+
+            if (pais != "" & soc != "") {
+                var p = pais;
+                var s = soc;
+                var u = '@Model.ID'
+                $.ajax({
+                    url: "../../Listas/Grupos",
+                    type: "GET",
+                    async: false,
+                    timeout: 30000,
+                    dataType: "json",
+                    data: { bukrs: s, pais: p, user: u },
+                    success: function (data) {
+                        var pp = ($.map(data, function (item) {
+                            return { label: item.AGROUP_ID, value: item.AGROUP_ID };
+                        }));
+                        if (pp.length > 0) {
+                            $("#lbl_puestos").empty();
+                            M.toast({ html: 'No se puede elegir!' })
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function formaInpPuestos(p) {
+         $.ajax({
+            url: "../Listas/UsuariosPuesto",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { puesto: p.value },
+            success: function (data) {
+                var uu = ($.map(data, function (item) {
+                    return { label: item.ID, value: item.ID };
+                }))
+                var ret = "<select id='txt_p-" + p.value + "' name='txt_p-" + p.value + "'>";
+                for (var i = 0; i < uu.length; i++) {
+                    ret += "<option value='" + uu[i].label + "'>" + uu[i].value+"</option>"}
+                ret += "</select>"
+                return ret
+            }
+        });
+    }
+
+    function autorizadores() {
+        //for (var i = 0; i < campos_p.length; i++) {
+        //    var value = document.getElementById("txt_p-" + campos_p[i].value).value;
+        //    if (value != "") {
+        //        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+        //    } else {
+        //        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+        //        break;
+        //    }
+        //}
+    }
+</script>
+@*<link href="~/Content/autocomplete.css" rel="stylesheet" />
+    <script src="~/Scripts/autocomplete1.10.2.js"></script>
+    <script src="~/Scripts/autocomplete1.11.4.js"></script>*@
+
+<script>
+    //var auto = $.noConflict(true);
+    function autocompleta(id, p, freeInput) {
+        auto("#" + id).autocomplete({
+            source: function (request, response) {
+                auto.ajax({
+                    url: "../../Listas/UsuariosPuesto",
+                    type: "GET",
+                    dataType: "json",
+                    data: { puesto: p, Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.ID, value: item.ID };
+                        }))
+                    },
+                    error: function (data) {
+                        alert("error");
+                    }
+                })
+            },
+            messages: {
+                noResults: '',
+                results: function (resultsCount) { }
+            },
+            change: function (e, ui) {
+                if (!(freeInput || ui.item)) {
+                    e.target.value = "";
+                }
+
+                for (var i = 0; i < campos_p.length; i++) {
+                    var value = document.getElementById("txt_p-" + campos_p[i].value).value;
+                    if (value != "") {
+                        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+                    } else {
+                        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+                        break;
+                    }
+                }
+            },
+            autoFocus: true,
+            minLength: 1
+        });
+    }
+
+</script>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

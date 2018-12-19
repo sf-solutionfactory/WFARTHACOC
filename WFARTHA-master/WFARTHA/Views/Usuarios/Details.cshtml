@@ -1,0 +1,528 @@
+﻿@model WFARTHA.Entities.USUARIO
+@{
+    //ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+<style>
+
+    .ui-autocomplete {
+        z-index: 10010;
+    }
+</style>
+<script>
+    var auto = $.noConflict(true);
+</script>
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()*@
+<div class="row">
+    <div class="col s12 l12 right-align">
+        @*<a class="btn" id="btn_changepassword" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>*@
+        <a class="btn" id="btn_editar" href="@Url.Action("Edit", new { id = Model.ID})">Editar</a>
+    </div>
+</div>
+<div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.PASS)
+    @*<div class="input-field col s6">
+                    @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
+                    @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
+                <div class="input-field col s6">
+                    <div style="height:54px;"></div>
+                </div>
+        </div>*@
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
+                    @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @id = "lbl_appPat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @id = "lbl_appMat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @id = "lbl_email" })
+                    @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                </div>
+
+                @*//MGC 24-10-2018 Usuarios
+                <div class="input-field col s6">
+                    @Html.EditorFor(model => model.SPRA.DESCRIPCION, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    <label id="lbl_spras">SPRAS</label>
+                    @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
+                </div>
+                //MGC 24-10-2018 Usuarios*@
+
+            </div>
+        </div>
+    </div>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
+                    @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
+                </div>
+
+                @*<div class="input-field col s12">
+                    @Html.EditorFor(model => model.BUNIT, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.BUNIT, "SOCIEDAD", htmlAttributes: new { @id = "lbl_bukrs" })
+                    @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
+                </div>*@
+
+                @*<div class="input-field col s12">
+            @Html.EditorFor(model => model.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+            @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
+        </div>*@
+
+
+                @*//MGC 24-10-2018 Usuarios
+        @*<div class="input-field col s12">
+            @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
+            @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @id = "lbl_bukrs" })
+            @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
+        </div>*@
+                @*//MGC 24-10-2018 Usuarios*@
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+@using (Html.BeginForm("AgregarRol", "Usuarios"))
+{
+    @Html.AntiForgeryToken()
+
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Agregar flujo</h4>
+            <div class="row">
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.PUESTO_ID, new { @id = "txt_puestoid" })
+                <div class="input-field col s6 hide">
+                    <select id="txt_rol" name="txt_rol" required="required" onchange="cambioRol(this);">
+                        @foreach (var item in ViewBag.ROLES)
+                        {
+                            <option value="@item.ROL_ID">@item.TXT50</option>
+                            break;
+                        }
+                    </select>
+                    <label for="txt_rol">Rol</label>
+                </div>
+            </div>
+            <div class="row" id="div_crea">
+                @*<div class="input-field col s6">
+            <select id="txt_soc" name="txt_soc" required="required" onchange="selSoci(this.id)">
+                <option value=""></option>
+                @foreach (var item in ViewBag.SOCIEDADES)
+                {
+                    <option value="@item.BUKRS">@item.BUKRS</option>
+                }
+            </select>
+            <label for="txt_soc">Sociedad</label>
+        </div>*@
+
+                @*//MGC 24-10-2018 Usuarios*@
+                @*<div class="input-field col s6">
+                    <select id="txt_pai" name="txt_pai" required="required" onchange="document.getElementById('txt_clie').value = '';$('#lbl_puestos').empty();">
+                        <option value=""></option>
+                        @foreach (WFARTHA.Entities.PAI item in ViewBag.PAISES)
+                        {
+                            <option value="@item.LAND-@item.SOCIEDAD_ID">@item.LANDX</option>
+                        }
+                    </select>
+                    <label for="txt_pai">País</label>
+                </div>*@
+                @*//MGC 24-10-2018 Usuarios*@
+
+                <input type="hidden" id="txt_vkor" name="txt_vkor" />
+                <input type="hidden" id="txt_vtwe" name="txt_vtwe" />
+                <input type="hidden" id="txt_spar" name="txt_spar" />
+                <div class="input-field col s6">
+                    <input type="text" id="txt_clie" name="txt_clie" required onchange="selPais(this.value)" />
+                    <label for="txt_clie">Cliente</label>
+                    <script>
+                        auto(document).ready(function () {
+                            auto("#txt_clie").autocomplete({
+                                source: function (request, response) {
+                                    auto.ajax({
+                                        url: "../../Listas/Clientes",
+                                        type: "GET",
+                                        dataType: "json",
+                                        data: { Prefix: request.term, usuario: '', pais: '' },
+                                        success: function (data) {
+                                            response(auto.map(data, function (item) {
+                                                return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+                                            }))
+                                        }
+                                    })
+                                },
+                                messages: {
+                                    noResults: '',
+                                    results: function (resultsCount) { }
+                                },
+                                change: function (e, ui) {
+                                    if (!(ui.item)) {
+                                        e.target.value = "";
+                                        selPais("");
+                                    }
+                                },
+
+                                select: function (event, ui) {
+
+                                    var label = ui.item.label;
+                                    var value = ui.item.value;
+                                    selectCliente(value);
+                                    selPais(value);
+                                }
+                            });
+                        });
+
+                        function selectCliente(valu) {
+                            if (valu != "") {
+                                document.getElementById("loader").style.display = "flex";//RSG 03.07.2018
+                                $.ajax({
+                                    type: "POST",
+                                    url: '../../Listas/SelectCliente',
+                                    data: { "kunnr": valu },
+
+                                    success: function (data) {
+
+                                        if (data !== null || data !== "") {
+                                            $('#txt_vkor').val(data.VKORG);
+                                            $('#txt_vtwe').val(data.VTWEG);
+                                            $('#txt_spar').val(data.SPART);
+                                        } else {
+                                            $('#txt_vkor').val("");
+                                            $('#txt_vtwe').val("");
+                                            $('#txt_spar').val("");
+                                        }
+
+                                        document.getElementById("loader").style.display = "none";//RSG 03.07.2018
+                                    },
+                                    error: function (data) {
+                                        $('#txt_vkor').val("");
+                                        $('#txt_vtwe').val("");
+                                        $('#txt_spar').val("");
+                                        document.getElementById("loader").style.display = "none";//RSG 03.07.2018
+                                    },
+                                    async: true
+                                });
+                            } else {
+                                $('#txt_vkor').val("");
+                                $('#txt_vtwe').val("");
+                                $('#txt_spar').val("");
+                            }
+
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="lbl_puestos"></div>
+                @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
+                    {
+                        <div class="input-field col s6">
+                            <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
+                            <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
+                        </div>
+                    }*@
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="modal-action modal-close btn-flat disabled" value="Agregar" id="btn_submit" />
+        </div>
+    </div>
+}
+<script>
+    var elem = document.querySelectorAll('.modal');
+    var options = {
+        onCloseEnd: function () {
+            $("#lbl_puestos").empty();
+            document.getElementById("txt_pai").value = "";
+            document.getElementById("txt_clie").value = "";
+            //var elem2 = document.getElementById('txt_soc');
+            //var instance2 = M.FormSelect.init(elem2, []);
+            var elem2 = document.getElementById('txt_pai');
+            var instance2 = M.FormSelect.init(elem2, []);
+        }
+    };
+    var instance = M.Modal.init(elem, options);
+    var elem2 = document.getElementById('txt_rol');
+    var instance2 = M.FormSelect.init(elem2, []);
+    //var elem2 = document.getElementById('txt_soc');
+    //var instance2 = M.FormSelect.init(elem2, []);
+    var elem2 = document.getElementById('txt_pai');
+    var instance2 = M.FormSelect.init(elem2, []);
+
+    function cambioRol(campo) {
+        if (campo.value == "1") {
+            document.getElementById("div_crea").style.display = "initial";
+            //$("#txt_soc option[value='']").attr('selected', true);
+            //document.getElementById("txt_soc").value = "";
+            document.getElementById("txt_pai").value = "";
+            //var elem2 = document.getElementById('txt_soc');
+            //var instance2 = M.FormSelect.init(elem2, []);
+            var elem2 = document.getElementById('txt_pai');
+            var instance2 = M.FormSelect.init(elem2, []);
+            $("#lbl_puestos").empty();
+            document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+        } else {
+            document.getElementById("div_crea").style.display = "none";
+            document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+        }
+    }
+    var campos_p = [];
+    function selSoci(id) {
+        var campo = document.getElementById(id);
+        $('#txt_pai').find('option').remove();
+        $("#lbl_puestos").empty();
+
+        var soc = campo.value;
+        if (soc != "") {
+            $.ajax({
+                url: "../../Listas/Paises",
+                type: "GET",
+                async: false,
+                timeout: 30000,
+                dataType: "json",
+                data: { bukrs: campo.value },
+                success: function (data) {
+                    var pp = ($.map(data, function (item) {
+                        return { label: item.LANDX, value: item.LAND };
+                    }))
+                    $('#txt_pai')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text(""));
+                    for (var i = 0; i < pp.length; i++) {
+                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
+                        //$("#txt_pai").append(div);
+                        $('#txt_pai')
+                            .append($("<option></option>")
+                                .attr("value", pp[i].value)
+                                .text(pp[i].label));
+                    }
+                    var el = document.getElementById("txt_pai");
+                    var instances = M.FormSelect.init(el, []);
+                }
+            });
+        }
+    }
+
+    var campos_p = [];
+    function selPais(clie) {
+        var pais = document.getElementById("txt_pai").value.split('-')[0];
+        var soc = document.getElementById("txt_pai").value.split('-')[1];
+        //var clie = document.getElementById("txt_clie").value;
+        var vkor = document.getElementById("txt_vkor").value;
+        var vtwe = document.getElementById("txt_vtwe").value;
+        var spar = document.getElementById("txt_spar").value;
+        $("#lbl_puestos").empty();
+        if (soc != "" & clie != "") {
+            //var soc = campo.value;
+            var pu = document.getElementById("txt_puestoid").value;
+            $.ajax({
+                url: "../../Listas/Det_Aprob2",
+                type: "GET",
+                async: false,
+                timeout: 30000,
+                dataType: "json",
+                data: { bukrs: soc, puesto: pu, spras: '@Session["spras"].ToString()' },
+                success: function (data) {
+                    var pp = ($.map(data, function (item) {
+                        return { pos: item.POS, label: item.TXT50, value: item.Value, monto: item.MONTO, presup: item.PRESUPUESTO };
+                    }))
+                    var poss = 0;
+                    for (var i = 0; i < pp.length; i++) {
+                        if (pp[i].pos < 98) {
+                            if (pp[i].pos > poss)
+                                poss = pp[i].pos;
+                        }
+                    }
+                    var div = "<div class='row'><ul class='collapsible expandable' ><li class='active'><div class='collapsible-header'>Aprobadores</div><div class='collapsible-body'>";
+                    for (var i = 0; i < pp.length; i++) {
+                        if (pp[i].pos < 97) {
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+
+                            if (pp[i].pos != poss && pp[i].pos < 97) {
+                                if (pp[i].presup) {
+                                    div += "<div class='col s2'><label>Presupuesto</label><div class='switch'><label>" +
+                                        "<input checked type='checkbox' id='txt_presup-" + pp[i].pos + "'  name='txt_presup'><span class='lever'></span></label></div></div>";
+                                } else {
+                                    div += "<div class='col s2'><label>Presupuesto</label><div class='switch'><label>" +
+                                        "<input type='checkbox' id='txt_presup' name='txt_presup-" + pp[i].pos + "' ><span class='lever'></span></label></div></div>";
+                                }
+                                if (pp[i].monto == null) {
+                                    div += "<div class='col s2'><label>Monto</label><div class='switch'><label>" +
+                                        "<input onchange='cambiaMonto(this.id)' type='checkbox' id='" + pp[i].pos + "-t-t-ch_monto' name='" + pp[i].pos + "-t-t-ch_monto'><span class='lever'></span></label></div></div>";
+                                    div += "<div class='input-field col s4 hide' id='" + pp[i].pos + "-t-t-montoDiv'><input type='text' value='0' name='txt_monto-" + pp[i].pos + "'  id='txt_monto' />" +
+                                        "<label for='txt_monto' class='active'>Monto</label></div>";
+                                } else {
+                                    div += "<div class='col s2'><label>Monto</label><div class='switch'><label>" +
+                                        "<input onchange='cambiaMonto(this.id)' checked type='checkbox' id='" + pp[i].pos + "-t-t-ch_monto' name='" + pp[i].pos + "-t-t-ch_monto'><span class='lever'></span></label></div></div>";
+                                    div += "<div class='input-field col s4' id='" + pp[i].pos + "-t-t-montoDiv'><input type='text' value='" + pp[i].monto + "' name='txt_monto-" + pp[i].pos + "'  id='txt_monto' />" +
+                                        "<label for='txt_monto' class='active'>Monto</label></div>";
+                                }
+                            }
+                        } else if (pp[i].pos == 98) {
+                            div += "</li><li class='active'><div class='collapsible-header'>Taxeo</div><div class='collapsible-body'>";
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+                        } else if (pp[i].pos == 99){
+                            div += "</li><li class='active'><div class='collapsible-header'>Trade Spending</div><div class='collapsible-body'>";
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+                        }
+                        div += "</div>";
+                    }
+                    campos_p = pp;
+                    $("#lbl_puestos").append(div);
+                    for (var i = 0; i < pp.length; i++) {
+                        autocompleta("txt_p-" + pp[i].pos, pp[i].value, false);
+                    }
+                    div = "";
+                    var elems = document.querySelectorAll('.collapsible');
+                    var instances = M.Collapsible.init(elems, { accordion: false });
+                }
+            });
+
+            if (pais != "" & clie != "") {
+                var p = pais;
+                var v = vkor;
+                var vv = vtwe;
+                var s = spar;
+                var k = clie;
+                var u = '@Model.ID'
+                $.ajax({
+                    url: "../../Listas/Grupos",
+                    type: "GET",
+                    async: false,
+                    timeout: 30000,
+                    dataType: "json",
+                    data: { pais: p, user: u, vkorg: v, vtweg: vv, spart: s, kunnr: k },
+                    success: function (data) {
+                        var pp = ($.map(data, function (item) {
+                            return { label: item.AGROUP_ID, value: item.AGROUP_ID };
+                        }));
+                        if (pp.length > 0) {
+                            $("#lbl_puestos").empty();
+                            M.toast({ html: 'No se puede elegir!' })
+                        }
+                    }
+                });
+            }
+        } else {
+            $("#lbl_puestos").empty();
+        }
+    }
+
+    function formaInpPuestos(p) {
+         $.ajax({
+            url: "../Listas/UsuariosPuesto",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { puesto: p.value },
+            success: function (data) {
+                var uu = ($.map(data, function (item) {
+                    return { label: item.NOMBRE, value: item.ID };
+                }))
+                var ret = "<select id='txt_p-" + p.value + "' name='txt_p-" + p.value + "'>";
+                for (var i = 0; i < uu.length; i++) {
+                    ret += "<option value='" + uu[i].label + "'>" + uu[i].value+"</option>"}
+                ret += "</select>"
+                return ret
+            }
+        });
+    }
+
+    function autorizadores() {
+        //for (var i = 0; i < campos_p.length; i++) {
+        //    var value = document.getElementById("txt_p-" + campos_p[i].value).value;
+        //    if (value != "") {
+        //        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+        //    } else {
+        //        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+        //        break;
+        //    }
+        //}
+    }
+</script>
+@*<link href="~/Content/autocomplete.css" rel="stylesheet" />
+    <script src="~/Scripts/autocomplete1.10.2.js"></script>
+    <script src="~/Scripts/autocomplete1.11.4.js"></script>*@
+
+<script>
+    //var auto = $.noConflict(true);
+    function autocompleta(id, p, freeInput) {
+        auto("#" + id).autocomplete({
+            source: function (request, response) {
+                auto.ajax({
+                    url: "../../Listas/UsuariosPuesto",
+                    type: "GET",
+                    dataType: "json",
+                    data: { puesto: p, Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.NOMBRE, value: item.ID };
+                        }))
+                    },
+                    error: function (data) {
+                        alert("error");
+                    }
+                })
+            },
+            messages: {
+                noResults: '',
+                results: function (resultsCount) { }
+            },
+            change: function (e, ui) {
+                if (!(freeInput || ui.item)) {
+                    e.target.value = "";
+                }
+
+                for (var i = 0; i < campos_p.length; i++) {
+                    var value = document.getElementById("txt_p-" + campos_p[i].pos).value;
+                    if (value != "") {
+                        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
+                    } else {
+                        document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
+                        break;
+                    }
+                }
+            },
+            autoFocus: true,
+            minLength: 1
+        });
+    }
+
+</script>

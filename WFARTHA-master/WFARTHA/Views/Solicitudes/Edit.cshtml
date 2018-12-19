@@ -1,0 +1,1153 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pacc = (string)ViewBag.pacc;
+    if (pacc == "B")
+    {
+        ViewBag.pagina_r = 209;
+    }
+    else
+    {
+        ViewBag.pagina_r = 204;
+    }
+    ViewBag.carpeta_r = 200;
+    //Variables a usar en el proyecto
+    WFARTHA.Services.FormatosC formatoc = new WFARTHA.Services.FormatosC();
+    List<WFARTHA.Models.DOCUMENTOR_MOD> drets = ViewBag.ret as List<WFARTHA.Models.DOCUMENTOR_MOD>;
+    WFARTHA.Entities.PROVEEDOR dprov = ViewBag.prov as WFARTHA.Entities.PROVEEDOR;
+    WFARTHA.Models.DocumentoFlujo DF = ViewBag.docFl as WFARTHA.Models.DocumentoFlujo;
+    List<WFARTHA.Entities.DOCUMENTOA> lstDocsA = ViewBag.docAn as List<WFARTHA.Entities.DOCUMENTOA>;
+    //List<WFARTHA.Entities.DOCUMENTOA1> lstDocsA1 = ViewBag.docAn2 as List<WFARTHA.Entities.DOCUMENTOA1>;
+    List<string> colsret = ViewBag.Retenciones as List<string>;
+    var total = ViewBag.total;
+    var montomd = formatoc.toShow(total, ViewBag.dec);
+
+}
+
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="~/Content/dataTable.css" rel="stylesheet" />
+@* Para el autocomplete *@
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+
+<script>
+    var auto = $.noConflict(true);
+</script>
+
+<script src="~/Scripts/editArtha.js"></script>@*LEJGG-04-10-2018*@
+<script src="~/Scripts/ValidarCampos.js"></script>@*LEJGG-19-10-2018*@
+<script src="~/Scripts/formatos.js"></script>
+<style>
+    .leftAlignement {
+        text-align: left;
+    }
+</style>
+@if (ViewBag.error != "")
+{
+    <script>
+    $(document).ready(function () {
+
+        function errorMessage(msg) {
+            M.toast({ html: msg });
+        }
+        var message = '@ViewBag.error';
+
+        if (message != "") {
+            errorMessage(message);
+        }
+    });
+    </script>
+}
+<input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
+<input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
+<input id="_hd" name="_hd" type="hidden" value="@ViewBag.Retenciones" />
+<input id="pacc" name="pacc" type="hidden" value="@ViewBag.pacc" />
+<input type="hidden" value=" " id="conOrden" name="conOrden" />
+<div class="row" style="margin-bottom:0">
+
+    @*@{WFARTHA.Entities.USUARIO us = ViewBag.usuario;
+
+            <div class="col s12 m3 l2">
+                <div class="row" style="margin-bottom:0">
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.USUARIOC_ID, "Usuario", new { htmlAttributes = new { @disabled = "disabled", @Value = us.ID, @id = "txt_user" } })
+                        @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new { @id = "lbl_userid" })
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4 l2">
+                <div class="input-field col s6">
+                    <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
+                    <label for="txt_status" id="lbl_status">Estatus</label>
+                </div>
+            </div>
+        }*@
+
+    <style>
+        div.dataTables_wrapper {
+            margin: 0 auto;
+        }
+
+        .div_left {
+            float: left;
+        }
+
+        .div_right {
+            float: right;
+        }
+
+        .div_bottom {
+            clear: both;
+        }
+
+        .hr_bw {
+            height: 4px;
+            border: 0;
+            margin-bottom: 0px;
+            padding: 0;
+            background-color: #ccc;
+        }
+
+        .hr_color {
+            height: 6px;
+            border: 0;
+            margin: 0 0;
+            padding: 0;
+            background-color: #B90C46;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tabs_menu {
+            width: auto;
+        }
+
+        td.select_row {
+            background: url('../../images/playb.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.selected td.select_row {
+            background: url('../../images/play.png') no-repeat center center;
+        }
+
+        td.detail_row {
+            background: url('../images/expandm.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.details td.detail_row {
+            background: url('../images/expandl.png') no-repeat center center;
+        }
+
+        .errorMaterial {
+            background-color: red;
+        }
+
+        .clblur {
+            background-color: #c4f0ff;
+        }
+
+        .errorProveedor {
+            background-color: red;
+        }
+
+        .selectImpuesto {
+            font-size: 12px;
+        }
+    </style>
+
+    <div class="col s12 right-align">
+        @if (pacc == "B")
+        {
+            <a id="btn_borradorh" class="btn btn-small">Guardar Borrador</a> @*SE AGREGA BOTON PARA BORRADOR*@
+        }
+        @*//MGC 06-12-2018 Firma del usuario cancelar -------------------------------------------------->*@
+        else if (pacc == "R" | pacc == "P")
+        {
+            <a class="btn-small modal-trigger" id="btn_cancel" href="#modal2">Eliminar</a>
+
+        }
+
+        <a id="btn_cancelar" href="@Url.Action("Index", "Home" )" onclick="return confirm('Deseas salir sin guardar o enviar');" class="btn btn-small">Cancelar</a>@*FRT02122018 Para poder mostrar mensaje*@
+        <a id="btn_guardarh" class="btn btn-small">Enviar</a>
+        @if (pacc == "R" | pacc == "P")
+        {
+            using (Html.BeginForm("Cancelar", "Solicitudes", new { id = Model.NUM_DOC }, FormMethod.Post, new { id = "form_procesac" }))
+            {
+                 <div id="modal2" class="modal">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-content" style="text-align: left;">
+                        <div class="row">
+                            <h4 id="txt_can">Eliminar Solicitud</h4>
+                            <br />
+                        </div>
+                        <div class="row" style="">
+                            <div class="col s12 m12 l12">
+                                <div class="row" style="margin-bottom:0">
+                                    ¿Está seguro de eliminar esta solicitud?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div>
+                            <div class="input-field col s2 offset-s1" style="width:auto;margin-top:0px;margin-left:0px">
+                                <input type="password" name="txtfirma_usc" id="txtfirma_usc" value="" />
+                                <label for="txtfirma_usc" id="lbl_firma">Firma</label>
+                            </div>
+                             <a href="#!" class="modal-action modal-close btn-flat">No</a>
+                            <a id="cont_sendc" href="#!" class="modal-action modal-close btn-flat">Si</a>
+                            @*<a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>*@
+                            @*<input id="cont_sendc" type="button" value="Si" class="modal-action modal-close btn-flat" onclick="document.getElementById('loader').style.display = 'initial';" />*@
+                        </div>
+                    </div>
+                </div>
+                 <script>
+                    //MGC 18-10-2018 Firma del usuario -------------------------------------------------->
+                    var elem2 = document.getElementById('modal2');
+                    if (elem2 != undefined)
+                        var instance2 = M.Modal.init(elem2, []);
+                    //Validar la firma del usuario
+                    //$("#form_procesa").submit(function (e) {
+                    $("#cont_sendc").click(function (e) {
+                         //var $this = $(this);
+                        //var frmValues = JSON.stringify($this)
+                        document.getElementById('loader').style.display = 'initial';
+                         var p = $("#txtfirma_usc").val();
+                         var resc = false;
+                        res = valF(p);
+                         if (res == "true") {
+                            resc = true;
+                        }
+                         if (!resc) {
+                            //Error
+                            document.getElementById('loader').style.display = 'none';
+                            M.toast({ html: 'Error con la Firma del Usuario' });
+                            e.preventDefault();
+                         } else {
+                            //Hacer el submit
+                            $("#form_procesac").submit();
+                        }
+                        document.getElementById('loader').style.display = 'none';
+                    });
+                 </script>
+            }
+            @*//MGC 06-12-2018 Firma del usuario cancelar --------------------------------------------------<*@
+        }
+    </div>
+    <div class="col s12" style="display:inline;">
+        @*FRT 02112018 Agregar titulos*@
+        <div>
+            <h5 id="head_cabecera" style="display:inline-block">@ViewBag.pid - </h5>
+            <h5 id="head_cabecera" style="display:inline-block">@ViewBag.PrSl</h5>
+
+        </div>
+    </div>
+    <div class="div_bottom">
+        <hr class="hr_bw" />
+        <hr class="hr_color #4e342e brown darken-3" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs" id="tabs">
+            <li class="tab col s2 tabs_menu"><a id="tab_enc" href="#Encabezado_cont" class="">Encabezado</a></li>
+            <li class="tab col s3 tabs_menu"><a id="tab_con" class="tabDet" href="#Contable_cont">Detalle</a></li>
+            <li class="tab col s3 tabs_menu"><a id="tab_sop" href="#Informacion_cont">Autorización</a></li>
+            <li class="tab col s3 tabs_menu"><a id="tab_sap" class="" href="#Informacion_sap">Información SAP</a></li>
+        </ul>
+    </div>
+</div>
+
+@using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+{
+    <input type="hidden" id="archivo" name="archivo" value="" />
+    <button id="btnDownload" class="btn" type="submit" style="display:none">Descargar</button>
+}
+
+@using (Html.BeginForm("Edit", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
+{
+    @Html.AntiForgeryToken()
+    <input id="borr" name="borr" type="hidden" value=""> @*FRT03122018 PARA PODER SABER SI PRESIONAMOS BORRADOR*@
+    <input id="Uuid" name="Uuid" type="hidden" value="">
+    <div class="form-horizontal">
+        @*Encabezado*@
+        @*Estructura basica para saber que edito, si un borrador o una edicion de rechazo*@
+        <div id="Encabezado_cont" class="col s12" style="font-size:12px;">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel">
+                        <div class="row">
+                            <h5 id="head_cabecera" style="display:inline-block">Cabecera</h5>
+                        </div>
+                        @Html.HiddenFor(model => model.NUM_DOC) @*//MGC 05-10-2018 Modificación para work flow al ser editada*@
+                        <div class="row" style="margin-bottom:0">
+                            @*<h5 id="head_cabecera">Cabecera NT</h5>*@
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s6">
+                                    @Html.LabelFor(model => model.TSOL_ID, "Clase de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("TSOL_IDL", null, htmlAttributes: new { @disabled = "disabled", @class = "form-control dd1", @id = "tsol" }) @*LEJ 04.09.2018*@ @*MGC 03-10-2018 solicitud con orden de compra*@
+                                        @Html.EditorFor(model => model.TSOL_ID, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "tsol_id2" } })@*MGC 03-10-2018 solicitud con orden de compra*@
+                                    </div>
+                                </div>
+                                <div class="form-group col s6">
+                                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (pacc == "B")
+                                        {
+                                            @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control ddl ddlsc" })@*LEJ 04.09.2018*@
+                                        }
+                                        else if (pacc == "R" | pacc == "P")
+                                        {
+                                            @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control ddl ddlsc", @disabled = "disabled" })@*LEJ 06.11.2018*@
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s3">
+                                    @Html.LabelFor(model => model.FECHAD, "Fecha Documento", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control fechaVal input_fe", @disabled = "disabled" } })  @*LEJ 04.09.2018*@
+                                    </div>
+                                </div>
+                                <div class="form-group col s3">
+                                    @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @*@Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @class = "form-control valmon", @disabled = "disabled" } })*@
+                                        <input type="text" id="MONTO_DOC_MD" name="MONTO_DOC_MD" disabled class="form-control" value="@montomd" />
+                                        <input type="hidden" id="mtTot" name="mtTot" class="form-control" value="@montomd" />@* Para guardar montodocmd y enviarlo al server *@
+                                    </div>
+                                </div>
+                                <div class="form-group col s6">
+                                    @Html.LabelFor(model => model.IMPUESTO, "Impuesto", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("IMPUESTO", null, htmlAttributes: new { @class = "form-control ddl" })@*LEJ 04.09.2018*@
+                                        @*<select id="selectImp" class="form-control ddl"></select>*@
+                                    </div>
+                                </div>
+                                <script>
+                                    var elemdp = document.querySelector('#FECHAD');
+                                    var optionsdp = {
+                                        format: 'dd/mm/yyyy',
+                                        onClose: function (e) {
+                                        },
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instancedp = M.Datepicker.init(elemdp, optionsdp);
+
+                                </script>
+
+                                <div class="form-group col s3" style="display:none;">
+                                    @Html.LabelFor(model => model.FECHACON, "Fecha Contabilización", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.FECHACON, new { htmlAttributes = new { @class = "form-control fechaVal", @disabled = "disabled" } })@*LEJ 04.09.2018*@
+                                    </div>
+                                </div>
+
+                                <script>
+                                    var elemdp = document.querySelector('#FECHACON');
+                                    var optionsdp = {
+                                        format: 'dd/mm/yyyy',
+                                        onClose: function (e) {
+                                        },
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instancedp = M.Datepicker.init(elemdp, optionsdp);
+
+                                </script>
+
+                                <div class="form-group col s3" style="display:none;">
+                                    @Html.LabelFor(model => model.FECHA_BASE, "Fecha Base Line", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.FECHA_BASE, new { htmlAttributes = new { @class = "form-control fechaVal", @disabled = "disabled" } })@*LEJ 04.09.2018*@
+                                    </div>
+                                </div>
+
+                                <script>
+                                    var elemdp = document.querySelector('#FECHA_BASE');
+                                    var optionsdp = {
+                                        format: 'dd/mm/yyyy',
+                                        onClose: function (e) {
+                                        },
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instancedp = M.Datepicker.init(elemdp, optionsdp);
+
+                                </script>
+                                @*MGC 03-10-2018 solicitud con orden de compra -->*@
+                                @*<div class="form-group col s3">*@
+                                <div id="div_norden_compra" class="input-field col s3" style="display:none">
+                                    <input type="text" id="norden_compra" value="" />
+                                    <label for="norden_compra" id="lbl_norden_compra">Orden de Compra</label>
+                                </div>
+                                @*MGC 03-10-2018 solicitud con orden de compra <--*@
+                            </div>
+
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s3">
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (pacc == "B")
+                                        {
+                                            @Html.DropDownList("MONEDA_ID", null, new { htmlAttributes = new { @class = "form-control  ddl" } })@*LEJ 04.09.2018*@
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownList("MONEDA_ID", null, new { htmlAttributes = new { @class = "form-control  ddl", @disabled = "disabled" } })@*LEJ 04.09.2018*@
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-group col s3">
+                                    @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de Cambio", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (pacc == "B")
+                                        {
+                                            @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @class = "form-control valmon", @readonly = "readonly" } })@*LEJ 04.09.2018*@
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @class = "form-control valmon", @readonly = "readonly" } })@*LEJ 04.09.2018*@
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="form-group col s2">
+                                    @Html.LabelFor(model => model.CONDICIONES, "Condición de Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.CONDICIONES, new { htmlAttributes = new { @class = "form-control", @maxlength = "4", @id = "condiciones_prov" } })
+                                    </div>
+                                </div>
+                                <div class="form-group col s4">
+                                    @Html.Label("condiciones_provt", "Descripción de Condición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.Editor("condiciones_provt", new { htmlAttributes = new { @class = "form-control", @id = "condiciones_provt", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom:0">
+                                <div class="input-field col s3">
+
+
+                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @class = "form-control" } })@*LEJ 04.09.2018*@
+                                    @Html.LabelFor(model => model.PAYER_ID, "Proveedor", htmlAttributes: new { @class = "active", @for = "PAYER_ID" })
+
+                                </div>
+                                @*//LEJGG 04.10.2018 Conceptos*@
+                                <link href="~/Content/autocomplete.css" rel="stylesheet" />
+                                <script src="~/Scripts/autocomplete1.10.2.js"></script>
+                                <script src="~/Scripts/autocomplete1.11.4.js"></script>
+
+                                <script>
+                                    var auto = $.noConflict(true);
+                                </script>
+                                @*<script src="~/Scripts/createa.js"></script>*@
+                                @{string rfc = ""; string name = ""; }
+                                @if (dprov != null)
+                                {
+                                    rfc = dprov.STCD1.ToString();
+                                    name = dprov.NAME1.ToString();
+                                }
+                                <div class="form-group col s3">
+                                    <label class="control-label col-md-2" for="rfc_proveedor">RFC Proveedor</label>
+                                    <div class="col-md-10">
+                                        <input type="text" id="rfc_proveedor" disabled value="@rfc" />
+                                    </div>
+                                </div>
+                                <div class="form-group col s6">
+                                    <label class="control-label col-md-2" for="nom_proveedor">Nombre Proveedor</label>
+                                    <div class="col-md-10">
+                                        <input type="text" id="nom_proveedor" disabled value="@name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s3" style="display:none;">
+                                    @Html.LabelFor(model => model.REFERENCIA, "Referencia", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10col s2">
+                                        @Html.EditorFor(model => model.REFERENCIA, new { htmlAttributes = new { @class = "form-control", @maxlength = "16", @disabled = "disabled" } })@*LEJ 04.09.2018*@
+                                        <input type="hidden" id="ndoc" value="@ViewBag.ndoc" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col s6">
+                                    @Html.LabelFor(model => model.CONCEPTO, "Explicacion", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.CONCEPTO, "Concepto", new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })@*LEJ 04.09.2018*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group col s3" style="display:none;">
+                                    @Html.LabelFor(model => model.CLAVE_CTA, "Clave Cuenta", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.CLAVE_CTA, new { htmlAttributes = new { @class = "form-control", @maxlength = "2" } })@*LEJ 04.09.2018*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="card-panel" style="display:none">
+                            <h5 id="head_flinea">Primera Línea del Documento</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s12">
+                                    @Html.LabelFor(model => model.TEXTO_POS, "Texto Posición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.TEXTO_POS, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })@*LEJ 04.09.2018*@
+                                        @*@Html.ValidationMessageFor(model => model.TEXTO_POS, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="form-group col s4">
+                                    @Html.LabelFor(model => model.ASIGNACION_POS, "Asignación Posición", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ASIGNACION_POS, new { htmlAttributes = new { @class = "form-control", @maxlength = "18" } })@*LEJ 04.09.2018*@
+                                        @*@Html.ValidationMessageFor(model => model.ASIGNACION_POS, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col s12">*@
+                    <div class="card-panel">
+                        <div id="file_facturat" class="file-field input-field" style="display:none">
+                            <div class="btn">
+                                <span id="span_filefact">File</span> @*B20180801 MGC Textos*@
+                                <input type="file" class="file_sop" id="file_sopp">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate file_sop" type="text">
+                            </div>
+                        </div>
+                        <h5 id="head_flinea">Retenciones </h5>
+                        <div class="row" style="margin-bottom:0">
+                            <table class="table display mdl-data-table striped" id="table_ret" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="lbl_socret leftAlignement">
+                                            Sociedad Retención
+                                        </th>
+                                        <th class="lbl_provret leftAlignement">
+                                            Proveedor Retención
+                                        </th>
+                                        <th class="lbl_tret leftAlignement">
+                                            Tipo Retención
+                                        </th>
+                                        <th class="lbl_descret leftAlignement">
+                                            Descripción Retención
+                                        </th>
+                                        <th class="lbl_indret leftAlignement">
+                                            Indicador de Retención
+                                        </th>
+                                        <th class="lbl_bimponible leftAlignement">
+                                            Base Imponible
+                                        </th>
+                                        <th id="lbl_impret" class="leftAlignement">
+                                            Importe de Retención
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*Obtener los decimales*@
+                                    @{ string deci = ViewBag.dec; if (deci == null | deci == "") { deci = ""; } }
+                                    @if (drets != null)
+                                    {
+                                        for (var i = 0; i < drets.Count; i++)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="leftAlignement">
+                                                    @Html.DisplayFor(m => drets[i].WITHT)
+                                                </td>
+                                                <td class="leftAlignement">
+                                                    @Html.DisplayFor(m => drets[i].DESC)
+                                                </td>
+                                                <td class="leftAlignement">
+                                                    @Html.DisplayFor(m => drets[i].WT_WITHCD)
+                                                </td>
+                                                <td class="leftAlignement">
+                                                    @{ decimal bi = 0; try { bi = Convert.ToDecimal(drets[i].BIMPONIBLE); } catch (Exception) { }; string bim = formatoc.toShow(bi, deci);}
+                                                    @bim
+                                                </td>
+                                                <td class="leftAlignement">
+                                                    @{ decimal im = 0; try { im = Convert.ToDecimal(drets[i].IMPORTE_RET); } catch (Exception) { }; string ims = formatoc.toShow(im, deci);}
+                                                    @ims
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                            <table class="table display mdl-data-table striped" id="table_reth" style="width:100%; display:none">
+                                <thead>
+                                    <tr>
+                                        <th class="lbl_socret">
+                                            Sociedad Retención
+                                        </th>
+                                        <th class="lbl_provret">
+                                            Proveedor Retención
+                                        </th>
+                                        <th class="lbl_tret">
+                                            Tipo Retención
+                                        </th>
+                                        <th class="lbl_descret">
+                                            Descripción Retención
+                                        </th>
+                                        <th class="lbl_indret">
+                                            Indicador de Retención
+                                        </th>
+                                        <th class="lbl_bimponible">
+                                            Base Imponible
+                                        </th>
+                                        <th id="lbl_impret">
+                                            Importe de Retención
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+
+        @*Información Contable*@
+        <div id="Contable_cont" class="col s12" style="font-size:12px;">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5 id="head_cabecera">Detalle</h5>
+                        <div class="row" style="margin-bottom:0">
+
+                            @*//MGC 04092018 Conceptos*@
+                            @{string jval = ViewBag.TSOL_VALUES;
+                                @Html.Hidden("impuestosval", jval)
+                            }
+                            <!--ADD RSG 18.10.2018-->
+
+                            <div id="div_btns_row_info">
+
+                                @*<a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">Registros Add</span></a>*@
+                                <a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">AGREGAR FILA</span></a>
+                                <a class="btn"><i class="material-icons left">clear</i><span id="delRowInfo">ELIMINAR FILA</span></a>
+                            </div>
+                            <div style="overflow:auto;">
+                                <table class="table display mdl-data-table striped" id="table_info" style="width:100%;"></table>
+                            </div>
+                            <table class="table display mdl-data-table striped" id="table_infoh" style="width:100%; display:none">
+                                <thead>
+                                    <tr>
+                                        <th class="lbl_pos">
+                                            Fila
+                                        </th>
+                                        <th class="lbl_NmAnexo">
+                                            Numero Anexo1
+                                        </th>
+                                        <th class="lbl_NmAnexo">
+                                            Numero Anexo2
+                                        </th>
+                                        <th class="lbl_NmAnexo">
+                                            Numero Anexo3
+                                        </th>
+                                        <th class="lbl_NmAnexo">
+                                            Numero Anexo4
+                                        </th>
+                                        <th class="lbl_NmAnexo">
+                                            Numero Anexo5
+                                        </th>
+                                        <th class="lbl_cargoAbono">
+                                            Cargo/Abono
+                                        </th>
+                                        <th class="lbl_factura">
+                                            Factura
+                                        </th>
+                                        <th id="lbl_tconcepto">
+                                            Tipo Concepto
+                                        </th>
+                                        <th id="lbl_grupo">
+                                            Concepto
+                                        </th>
+                                        <th id="lbl_cuenta">
+                                            Cuenta
+                                        </th>
+                                        <th id="lbl_cuentaNom">
+                                            Nombre de Cuenta
+                                        </th>
+                                        <th id="lbl_tipoimp">
+                                            Tipo Imp.
+                                        </th>
+                                        <th id="lbl_imputacion">
+                                            Imputación
+                                        </th>
+                                        <th id="lbl_ccosto">
+                                            Centro de Costo
+                                        </th>
+                                        <th id="lbl_monto">
+                                            Monto
+                                        </th>
+                                        <th id="lbl_impuesto">
+                                            Impuesto
+                                        </th>
+                                        <th id="lbl_iva">
+                                            IVA
+                                        </th>
+                                        <th id="lbl_texto">
+                                            Texto
+                                        </th>
+                                        <th id="lbl_total">
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            @*Para las retenciones dinamicas*@
+                            <table class="table display mdl-data-table striped" id="table_inforeth" style="width:100%; display:none;"></table>
+                            @*Para las columnas de anexos*@
+                            <table class="table display mdl-data-table striped" id="table_infoAnex" style="width:100%; display:none;">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div style="text-align:right">
+                            <label id="lbl_status" style="font-size: 1.1rem; font-weight: bold;">Total:</label>
+                            <label id="total_info1" style="font-size: 1.1rem;font-weight: bold;"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5 id="head_cabecera">Anexos</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <div>
+                                <a class="btn"><i class="material-icons left">clear</i><span id="delRowAnex">Eliminar Anexo</span></a>
+                            </div>
+                            <div class="file-field input-field" id="cargar_archivo">
+                                <div class="btn" style="margin-left: 2px;">
+                                    <span id="span_fileloadAnexar">Anexar</span>
+                                    <input name="file_sopAnexar" id="file_sopAnexar" type="file" multiple="multiple" />
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate file_sopAnexar" type="text">
+                                </div>
+                            </div>
+                            <table class="table display mdl-data-table striped" id="table_anexa" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="">
+                                        </th>
+                                        <th class="">
+                                            No. de Anexo
+                                        </th>
+                                        <th class="">
+                                            Status
+                                        </th>
+                                        <th class="">
+                                            Nombre del Archivo
+                                        </th>
+                                        <th class="">
+                                            Tipo de Archivo
+                                        </th>
+                                        <th class="">
+                                            Descripcion
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (@lstDocsA != null)
+                                    {
+                                        for (int i = 0; i < @lstDocsA.Count; i++)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    @(i + 1)
+                                                </td>
+                                                <td>OK</td>
+                                                @{var _xtr = lstDocsA[i].PATH.Split('\\'); var nombre = _xtr[_xtr.Length - 1]; }
+                                                <td>@nombre</td>
+                                                <td> @lstDocsA[i].TIPO</td>
+                                                <td> @lstDocsA[i].DESC</td>
+                                                <td>
+                                                    <button class="btn btnD" type="button" value="@lstDocsA[i].PATH">DESCARGAR</button>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            <table class="table display mdl-data-table striped" id="table_anexah" style="width:100%;display:none">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Soporte Contable*@
+        <div id="Informacion_cont" class="col s12" style="font-size:12px;">
+            <div class="row">
+
+                @*MGC 02-10-2018 Cadena de autorización -->*@
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5 id="head_cabecera">Cadena de Autorización</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <div class="form-group col s6">
+                                @*@Html.LabelFor(model => model.TSOL_ID, "Cadena de autorización ", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <div class="col-md-10">
+                                    @if (pacc == "B")
+                                    {
+                                        @Html.DropDownList("DETAA", null, htmlAttributes: new { @class = "form-control", @id = "list_detaa" })
+                                    }
+                                    else if (pacc == "R" | pacc == "P")
+                                    {
+                                        @Html.DropDownList("DETAA", null, htmlAttributes: new { @class = "form-control", @id = "list_detaa", @disabled = "disabled" })
+                                    }
+                                </div>
+                                <input id="DETTA_VERSION" name="DETTA_VERSION" value="" hidden />
+                                <input id="DETTA_USUARIOC_ID" name="DETTA_USUARIOC_ID" value="" hidden />
+                                <input id="DETTA_ID_RUTA_AGENTE" name="DETTA_ID_RUTA_AGENTE" value="" hidden />
+                                <input id="DETTA_USUARIOA_ID" name="DETTA_USUARIOA_ID" value="" hidden />
+
+                                @*//MGC 11-12-2018 Agregar Contabilizador 0--------------->*@
+                                <input id="VERSIONC1" name="VERSIONC1" value="" hidden />
+                                <input id="VERSIONC2" name="VERSIONC2" value="" hidden />
+                                @*//MGC 11-12-2018 Agregar Contabilizador 0---------------<*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*MGC 02-10-2018 Cadena de autorización <--*@
+
+                <div class="col s12" style="display:none">
+                    <div class="card-panel">
+                        <h5 id="head_cabecera">Detalle</h5>
+                        <div class="row" style="margin-bottom:0">
+
+                            <div class="file-field input-field" id="cargar_archivo" style="display:none">
+                                <div class="btn">
+                                    <span id="span_fileload">Examinar</span>
+                                    <input id="file_sop" type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+
+                            <div id="div_btns_row_sop">
+                                <a class="btn"><i class="material-icons left">add</i><span id="addRowSop">Registros Add</span></a>
+                                <a class="btn"><i class="material-icons left">clear</i><span id="delRowSop">Registro Del</span></a>
+                            </div>
+
+                            <table class="table display mdl-data-table striped" id="table_sop" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th class="lbl_opc">
+                                            OPC
+                                        </th>
+                                        <th class="lbl_pos">
+                                            Pos
+                                        </th>
+                                        <th class="lbl_rfc">
+                                            RFC
+                                        </th>
+                                        <th class="lbl_factura">
+                                            Factura
+                                        </th>
+                                        <th id="lbl_fecha">
+                                            Fecha
+                                        </th>
+                                        <th id="lbl_monto">
+                                            Monto
+                                        </th>
+                                        <th id="lbl_iva">
+                                            IVA
+                                        </th>
+                                        <th id="lbl_total">
+                                            Total
+                                        </th>
+                                        <th id="lbl_archivo">
+                                            Archivo
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" id="btn_guardar" style="display:none" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*MGC 14-11-2018 Cadena de autorización----------------------------------------------------------------------------->*@
+            <div class="row" style="font-size:12px;">
+                <div class="col s12">
+                    <div class="card-panel">
+                        <div class="row" style="margin-bottom:0">
+                            <h5>Información Cadena de Autorización</h5>
+                            <table class="table highlight responsive-table" id="tableAutorizadores">
+                                <thead>
+                                    <tr>
+                                        <th width="" style="width: 300px;">
+                                            Tipo de Agente
+                                        </th>
+                                        <th width="">
+                                            Nombre
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*MGC 14-11-2018 Cadena de autorización-----------------------------------------------------------------------------<*@
+
+            <div class="row" style="display:none;">
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5 id="head_cabecera">WORKFLOW</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <table class="table  mdl-data-table striped" id="table_wf" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="lbl_pos">
+                                            Pos
+                                        </th>
+                                        <th class="lbl_cargoAbono">
+                                            Cargo/Abono
+                                        </th>
+                                        <th class="lbl_factura">
+                                            Factura
+                                        </th>
+                                        <th id="lbl_tconcepto">
+                                            Tipo Concepto
+                                        </th>
+                                        <th id="lbl_grupo">
+                                            Grupo
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @*@arrwf[0]*@
+                                        </td>
+                                        <td>
+                                            @*@arrwf[1]*@
+                                        </td>
+                                        <td>
+                                            @*@arrwf[2]*@
+                                        </td>
+                                        <td>
+                                            @*@arrwf[3]*@
+                                        </td>
+                                        <td>
+                                            @*@arrwf[4]*@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @*Soporte SAP*@
+        <div id="Informacion_sap" class="col s12" style="font-size:12px;">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card-panel">
+                        @* FRT 02112018 agregar vista de Log de SAP *@
+                        @if (ViewBag.LogSap.Count != 0)
+                        {
+                            <div class="row" style="font-size:12px;">
+                                <div class="col s12" style="padding:0px">
+                                    <div class="card-panel">
+                                        <div class="row" style="margin-bottom:0">
+                                            <h5>Mensajes</h5>
+                                            <table class="table highlight responsive-table" id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="">
+                                                            Documento
+                                                        </th>
+                                                        <th width="">
+                                                            Tipo
+                                                        </th>
+                                                        <th width="">
+                                                            Numero
+                                                        </th>
+                                                        <th width="">
+                                                            Mensaje
+                                                        </th>
+                                                        <th width="">
+                                                            Fecha
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (ViewBag.LogSap.Count != 0)
+                                                    {
+                                                        for (int i = 0; i < ViewBag.LogSap.Count; i++)
+                                                        {
+                                                            <tr>
+                                                                <td width="">@ViewBag.LogSap[i].NUM_DOC</td>
+                                                                <td width="">@ViewBag.LogSap[i].TYPE</td>
+                                                                <td width="">@ViewBag.LogSap[i].NUMBER</td>
+                                                                <td width="">@ViewBag.LogSap[i].MESSAGE</td>
+                                                                <td width="">@ViewBag.LogSap[i].FECHA</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@* -----------------------------WORKFLOW----------------------------- *@
+@if (ViewBag.workflow.Count != 0)
+{
+    <div class="row" style="font-size:12px;">
+        <div class="col s12" style="padding:0px">
+            <div class="card-panel">
+                <div class="row" style="margin-bottom:0">
+                    <h5>Workflow</h5>
+                    <table class="table highlight responsive-table" id="table">
+                        <thead>
+                            <tr>
+                                <th width="">
+                                    Usuario
+                                </th>
+                                <th width="">
+                                    Evento
+                                </th>
+                                <th width="">
+                                    Fecha Inicio
+                                </th>
+                                <th width="">
+                                    Hora Inicio
+                                </th>
+                                <th width="">
+                                    Fecha Término
+                                </th>
+                                <th width="">
+                                    Hora Término
+                                </th>
+                                <th width="">
+                                    Estatus
+                                </th>
+                                <th width="30%">
+                                    Comentario
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (WFARTHA.Entities.FLUJO f in ViewBag.workflow)
+                            {
+                                <tr>
+                                    <td width=""> @Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M) </td>
+                                    <td width=""> @Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION) </td>
+                                    <td width=""> @f.FECHAC.Value.ToShortDateString() </td>
+                                    <td width=""> @f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0] </td>
+                                    <td width=""> @f.FECHAM.Value.ToShortDateString() </td>
+                                    <td width=""> @f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0] </td>
+                                    <td width=""> @Html.DisplayFor(modelItem => f.ESTATUS) </td>
+                                    <td width="30%"> @Html.DisplayFor(modelItem => f.COMENTARIO) </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@* -----------------------------WORKFLOW----------------------------- *@
+
+<div>
+    @*@Html.ActionLink("Back to List", "Index")*@
+</div>

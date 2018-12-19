@@ -1,0 +1,110 @@
+﻿@model TAT001.Entities.DELEGAR
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 606;
+    ViewBag.carpeta_r = 500;
+}
+
+<link href="~/Content/materialize.clockpicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/materialize.clockpicker.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+@using (Html.BeginForm("AddBackup", "Usuarios", FormMethod.Post, new { @id = "addbackup" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            <button type="submit" id="btn_guardar" class="btn" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    @if(TempData["MessageBackupRepetido"]!=null)
+                    {
+                        <label class="alert-danger" id="MessageBackupRepetido"></label>
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.USUARIO_ID)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.USUARIOD_ID, htmlAttributes: new { id = "lbl_usrbackup" })
+
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.USUARIOD_ID, null, "", new { required = true })
+                            @Html.ValidationMessageFor(model => model.USUARIOD_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FECHAI, htmlAttributes: new { @class = "", id = "lbl_fechai" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FECHAI, new { htmlAttributes = new { @class = "datepicker", required = true } })
+                            @Html.ValidationMessageFor(model => model.FECHAI, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FECHAF, htmlAttributes: new { @class = "", id = "lbl_fechaf" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FECHAF, new { htmlAttributes = new { @class = "datepicker", required = true } })
+                            @Html.ValidationMessageFor(model => model.FECHAF, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            @Html.CheckBoxFor(model=>model.ACTIVO)
+                            <span id="lbl_activo"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a id="lbl_regresar" href="@Url.Action("Details",new { id=Model.USUARIO_ID})"></a>
+</div>
+<script type="text/javascript" src="~/Scripts/fnCommon.js"></script>
+<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+<script>
+    $("input[type='hidden']").each(function (index, element) {
+        $(this).appendTo($(element).parent());
+    });
+            var spras_id ="@ViewBag.spras_id";
+        //---- Inicializador de componentes Materialize----
+        fnCommon.materializeInit('datepicker', spras_id);
+        fnCommon.materializeInit( 'timepicker');
+        fnCommon.materializeInit( 'select');
+
+        // Remover Fecha y Hora
+        var sinFecha = "01/01/0001";
+        document.querySelectorAll('.datepicker').forEach(function (datePicker) {
+            if (datePicker.value.indexOf(sinFecha)>-1) { datePicker.value = ''; }
+    });
+    //alert('@ViewBag.ultimoback');
+    var date = moment('@ViewBag.ultimoback', 'DD/MM/YYYY');
+    var fechaI = $('#FECHAI'),
+        fechaIM = M.Datepicker.getInstance(fechaI);
+    fechaIM.options.minDate = date;
+    fechaIM.options.defaultDate = date;
+    fechaIM.options.setDefaultDate = true;
+
+    var fechaF = $('#FECHAF'),
+        fechaFM = M.Datepicker.getInstance(fechaF);
+    fechaFM.options.minDate = date;
+        //----  Se agrega validaciones al formulario----
+        fnCommon.selectRequired();
+    fnCommon.formValidation('addbackup');
+    fnCommon.dateRangeValidation('FECHAI', 'FECHAF');
+
+        // Valida si ocurrio un error al intentar crear el periodo y otro.
+        var mnjError = '@ViewBag.mnjError';
+        if (mnjError) {
+            M.toast({ html: mnjError });
+        }
+</script>
+

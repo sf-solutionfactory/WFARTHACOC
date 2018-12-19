@@ -1,0 +1,42 @@
+﻿@model WFARTHA.Entities.APPSETTING
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 922;
+    ViewBag.carpeta_r = 900;
+}
+
+
+<div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VALUE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VALUE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ACTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ACTIVO)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { ID = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,48 @@
+﻿@model WFARTHA.Models.ProyectoSociedad
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 723;
+    ViewBag.carpeta_r = 500;
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>ProyectoSociedad</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-group">
+        <div class=" dropdown col s12">
+            @Html.LabelFor(model => model.ID_PSPNR, htmlAttributes: new { @id = "lbl_proyecto" })
+            @Html.DropDownListFor(model => model.ID_PSPNR, Model.proyectoLista, "Seleccione un Proyecto", new { @class = "browser-default" })
+            @Html.ValidationMessageFor(model => model.ID_PSPNR, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class=" dropdown col s12">
+            @Html.LabelFor(model => model.ID_BUKRS, htmlAttributes: new { @id = "lbl_sociedad" })
+            @Html.DropDownListFor(model => model.ID_BUKRS, Model.sociedadLista, "Seleccione Sociedad", new { @class = "browser-default" })
+            @Html.ValidationMessageFor(model => model.ID_BUKRS, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

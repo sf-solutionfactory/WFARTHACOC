@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <meta name="theme-color" content="#d81b60" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <title>@ViewBag.Title - ARTHA</title>
+    <link href="~/Content/materialize.css" rel="stylesheet" />
+    <script src="~/Scripts/materialize.js"></script>
+</head>
+<body>
+    <div class="navbar-fixed" style="z-index: 998;">
+        <nav class="nav-extended">
+            <div class="nav-wrapper #4e342e brown darken-3" @*style="background-repeat: repeat-x;background-image: url(/images/header-transient.png);"*@>
+                <a href="@Url.Action("Index", "Home")" class="brand-logo">
+                    <img src="http://www.artha.com.mx/home/wp-content/themes/temaArtha/images/logo.svg" style="padding-top: 8px; padding-left: 8px;" />
+                </a>
+                @*@Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "brand-logo" })*@
+                @*<ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                </ul>*@
+            </div>
+        </nav>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ARTHA</p>
+        </footer>
+    </div>
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+</body>
+</html>

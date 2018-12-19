@@ -1,0 +1,58 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+
+@if (Model.DOCUMENTOP != null)
+{
+    for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+            </td>
+            <td>
+                @* Numero Anexo *@
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].ACCION)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].FACTURA)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].TCONCEPTO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].GRUPO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].CUENTA)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].NOMCUENTA)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].TIPOIMP)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].IMPUTACION)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].CCOSTO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].MWSKZ)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].IVA)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].TEXTO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOP[i].TOTAL)
+            </td>
+        </tr>
+    }
+}

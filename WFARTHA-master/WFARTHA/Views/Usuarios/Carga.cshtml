@@ -1,0 +1,110 @@
+﻿@model TAT001.Models.Usuarios
+
+@{
+    ViewBag.Title = "Carga de usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jeditable.js/2.0.6/jquery.jeditable.js"></script>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+<link href="~/Content/dataTable.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+
+<div class="row right-align">
+    <div class="col s12">
+        <input type="button" value="Agregar" class="btn btn-small" onclick="Carga();" />
+        <input type="button" value="Borrar" class="btn btn-small" onclick="Borrar()" />
+        <input type="button" value="Actualizar" class="btn btn-small" onclick="Actualizar()" />
+    </div>
+</div>
+@Html.AntiForgeryToken()
+<div class="card-panel">
+    <div class="row">
+        <div class="file-field input-field col s12 m12 l6">
+            <div class="btn-small" style="float:left;">
+                <span>File</span>
+                <input type="file" id="files" name="files" onchange="subeExcel();">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @using (Html.BeginForm("Carga", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data", id = "tabla" }))
+        {
+            <div class="col s12 ">
+                <form id="tabla" action="" method="post">
+                    <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th><label><input class='input_bor' type='checkbox' id='borrar' name='borrar' onclick="check();" /><span></span></label></th>
+                                <th id="thead_kunnr">Cliente</th>
+                                <th id="thead_bunnyt">Company Code</th>
+                                <th id="thead_puesto_id">Nivel</th>
+                                <th id="thead_id">Usuario ID</th>
+                                <th id="thead_nombre">Nombre</th>
+                                <th id="thead_apellido_p">Apellido Paterno</th>
+                                <th id="thead_apellido_m">Apellido Materno</th>
+                                <th id="thead_email">Correo</th>
+                                <th id="thead_spras_id">Idioma</th>
+                                <th id="thead_pass">Password</th>
+                                <th id="thead_mess">Mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td><input class='input_cli' style='font-size:12px;' type='text' id='' name='cli' value='' onkeyup='if(event.keyCode == 13) Agregar()' /></td>
+                                <td></td>
+                                <td></td>
+                                <td><input class='input_usc' style='font-size:12px;' type='text' id='' name='usc' value='' onkeyup='if(event.keyCode == 13) Agregar()' /></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+<script src="~/Scripts/CargaUsuarios.js"></script>
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+
+<script>
+    var auto = $.noConflict();
+    var root = "@Url.Content("~")";
+</script>
+
+<style>
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_scrollHeadInner, .mdl-data-table {
+        width: 100%;
+    }
+</style>

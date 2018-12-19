@@ -1,0 +1,160 @@
+﻿@model TAT001.Entities.USUARIO
+
+@{
+    //ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+
+
+@using (Html.BeginForm("AgregarRol", "Usuarios"))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Modal Structure -->
+    <div class="row">
+        <div class="row">
+            <h4>Agregar Rol</h4>
+            <div class="row">
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.PUESTO_ID, new { @id="txt_puestoid"})
+                <div class="input-field col s6">
+                    <select id="txt_rol" name="txt_rol" required="required" onchange="cambioRol(this);">
+                        @foreach (var item in ViewBag.ROLES)
+            {
+                <option value="@item.ROL_ID">@item.TXT50</option>
+}
+                    </select>
+                    <label for="txt_rol">Rol</label>
+                </div>
+            </div>
+            <div class="row" id="div_crea">
+                <div class="input-field col s6">
+                    <select id="txt_soc" name="txt_soc" required="required" onchange="selSoci(this)">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.SOCIEDADES)
+                        {
+                            <option value="@item.BUKRS">@item.BUKRS</option>
+                        }
+                    </select>
+                    <label for="txt_soc">Sociedad</label>
+                </div>
+                <div class="input-field col s6">
+                    <select id="txt_pai" name="txt_pai" required="required" onchange="selPais(this)">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.PAISES)
+                        {
+                            <option value="@item.LAND">@item.LANDX</option>
+                        }
+                    </select>
+                    <label for="txt_pai">País</label>
+                </div>
+                <div id="lbl_puestos"></div>
+                @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
+                    {
+                        <div class="input-field col s6">
+                            <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
+                            <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
+                        </div>
+                    }*@
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" class="btn" value="Agregar" />
+        </div>
+    </div>
+}
+<script>
+    var elem2 = document.getElementById('txt_rol');
+    var instance2 = M.FormSelect.init(elem2, []);
+    var elem2 = document.getElementById('txt_soc');
+    var instance2 = M.FormSelect.init(elem2, []);
+    var elem2 = document.getElementById('txt_pai');
+    var instance2 = M.FormSelect.init(elem2, []);
+
+    function cambioRol(campo) {
+        if (campo.value == "1") {
+            document.getElementById("div_crea").style.display = "initial";
+        } else {
+            document.getElementById("div_crea").style.display = "none";
+        }
+    }
+
+    function selSoci(campo) {
+        $("#lbl_puestos").empty();
+        var soc = campo.value;
+        var pu = document.getElementById("txt_puestoid").value;
+            $.ajax({
+            url: "../../Listas/Det_Aprob",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { bukrs: campo.value, puesto: pu, spras: '@Session["spras"].ToString()' },
+            success: function (data) {
+                var pp = ($.map(data, function (item) {
+                    return { label: item.TXT50, value: item.PUESTOA_ID };
+                }))
+                for (var i = 0; i < pp.length; i++) {
+                    //var div = "<div class='input-field col s6'>" + formaInpPuestos(pp[i]) + "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"
+                    var div = "<div class='input-field col s6'>" +
+                        "<input id='txt_p-" + pp[i].value + "' name='txt_p-" + pp[i].value + "' type='text' class='seleccUser'/>" +
+                        "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"
+                    $("#lbl_puestos").append(div);
+                    autocompleta("txt_p-" + pp[i].value, pp[i].value);
+                }
+            }
+        });
+    }
+
+    function formaInpPuestos(p) {
+         $.ajax({
+            url: "../Listas/UsuariosPuesto",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { puesto: p.value },
+            success: function (data) {
+                var uu = ($.map(data, function (item) {
+                    return { label: item.ID, value: item.ID };
+                }))
+                var ret = "<select id='txt_p-" + p.value + "' name='txt_p-" + p.value + "'>";
+                for (var i = 0; i < uu.length; i++) {
+                    ret += "<option value='" + uu[i].label + "'>" + uu[i].value+"</option>"}
+                ret += "</select>"
+                return ret
+            }
+        });
+    }
+</script>
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+<script>
+    var auto = $.noConflict(true);
+    function autocompleta(id, p) {
+        auto("#" + id).autocomplete({
+            source: function (request, response) {
+                auto.ajax({
+                    url: "../../Listas/UsuariosPuesto",
+                    type: "GET",
+                    dataType: "json",
+                    data: { puesto: p, Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.ID, value: item.ID };
+                        }))
+                    },
+                    error: function (data) {
+                        alert("error");
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    }
+</script>

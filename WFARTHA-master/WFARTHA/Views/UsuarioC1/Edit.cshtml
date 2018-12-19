@@ -1,0 +1,70 @@
+﻿@model WFARTHA.Models.UsuarioC1
+
+
+@{
+    /**/
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 674;
+    ViewBag.carpeta_r = 500;
+}
+
+
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 right-align">
+            <button type="submit" id="btn_guardar" class="btn btn-default">Guardar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 left-align">
+            @if (@ViewBag.mensaje != null)
+            {
+                @ViewBag.mensaje
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.EditorFor(model => model.ID_SOCIEDAD, new { htmlAttributes = new { @style = "display: none",  @class = "form-control", @Value = ViewBag.idsociedad } })
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Sociedad", htmlAttributes: new { @id = "lbl_usuario" })
+                            @Html.EditorFor(model => model.SOCIEDAD, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @Value = ViewBag.sociedad } })
+                            @Html.ValidationMessageFor(model => model.ID_USUARIO, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Seleccione Usuario", htmlAttributes: new { @id = "lbl_usuario" })
+                            @Html.DropDownListFor(model => model.ID_USUARIO, Model.usersLista, "Seleccione un Usuario", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.ID_USUARIO, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@*<div>
+        @Html.ActionLink("Back to List", "Index", null, new { id = "lbl_regresar" })
+    </div>*@
+@if (ViewBag.Error != null)
+{
+    <script>
+            M.toast({ html: '@ViewBag.Error', classes: 'red' });
+    </script>
+}

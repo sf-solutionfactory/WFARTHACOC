@@ -1,0 +1,88 @@
+﻿@model WFARTHA.Models.SociedadesUsuario
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 883;
+    ViewBag.carpeta_r = 500;
+}
+
+
+
+
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 right-align">
+            <button type="submit" id="btn_guardar" class="btn btn-default">Guardar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 left-align">
+            @if (@TempData["MensajeUsuario"] != null)
+            {
+                <label id="lbl_mensajeusuario"></label>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.LabelFor(model => model.BUKRS, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.BUKRS, Model.sociedadLista, "Seleccione Sociedad", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.BUKRS, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.LabelFor(model => model.ID_USER, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.ID_USER, Model.usersLista, "Seleccione Usuario", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.ID_USER, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+
+                            @Html.LabelFor(model => model.TIPOPRE, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.TIPOPRE, Model.presupuestoLista, "Seleccione Presupuesto", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.TIPOPRE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index", null, new { id = "lbl_regresar" })
+</div>
+@if (ViewBag.Error != null)
+{
+    <script>
+            M.toast({ html: '@ViewBag.Error', classes: 'red' });
+    </script>
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

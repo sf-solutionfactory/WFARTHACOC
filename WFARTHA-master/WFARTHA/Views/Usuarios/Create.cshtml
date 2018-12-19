@@ -1,0 +1,121 @@
+﻿@model WFARTHA.Entities.USUARIO
+
+
+@{
+    /**/
+
+    //ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 602;
+    ViewBag.carpeta_r = 500;
+}
+
+<script src="~/Scripts/Catalogos.js"></script>
+
+
+<div class="row" style="margin-bottom:0">
+    <div class="col s12 right-align">
+        <a id="btn_guardarh" class="btn btn-small">Enviar</a>
+    </div>
+
+</div>
+@using (Html.BeginForm("Create", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            @*<a class="btn" style="display:none" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>*@
+            <input type="submit" id="btn_guardar" value="Guardar" style="display:none" class="btn" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label("Ingrese ID", htmlAttributes: new { @id = "lbl_nombre" })
+                        @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label("Ingrese nombre ", htmlAttributes: new { @id = "lbl_nombre" })
+                        @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label("Ingrese apellido paterno", htmlAttributes: new { @id = "lbl_appPat" })
+                        @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label("Ingrese apellido materno", htmlAttributes: new { @id = "lbl_appMat" })
+                        @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @type = "email" } })
+                        @*@Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.Label("Ingrese EMAIL", htmlAttributes: new { @id = "lbl_email" })
+                        @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                    </div>
+                    @*<div class="input-field col s6">
+                        @Html.DropDownList("SPRAS_ID", null, htmlAttributes: new { @class = "select", required = true })
+                        <label id="lbl_spras">SPRAS</label>
+                        @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="col l6 s6">
+            <div class="card-panel">
+                <div class="row">
+                    @*<div class="input-field col s12">
+                        @Html.DropDownList("PUESTO_ID", null, htmlAttributes: new { @class = "select", @id = "txt_puestoid" })
+                        @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
+                        @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
+                    </div>*@
+
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Tipo de usuario", htmlAttributes: new { @id = "lbl_sociedad" })
+                            @Html.DropDownListFor(model => model.PUESTO_ID, Model.UsersLista, "Seleccione tipo de usuario", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Sociedad", htmlAttributes: new { @id = "lbl_sociedad" })
+                            @Html.DropDownListFor(model => model.BUNIT, Model.SociedadLista, "Seleccione Sociedad", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                    @*<div class="input-field col s4">
+                        @Html.EditorFor(model => model.MANAGER, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.LabelFor(model => model.MANAGER, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.ValidationMessageFor(model => model.MANAGER, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="input-field col s4">
+                        @Html.EditorFor(model => model.BACKUP_ID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.LabelFor(model => model.BACKUP_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.ValidationMessageFor(model => model.BACKUP_ID, "", new { @class = "text-danger" })
+                    </div>*@
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+        }
+
+
+        @if (ViewBag.Error != null)
+        {
+            <script>
+            M.toast({ html: '@ViewBag.Error'});
+            </script>
+        }

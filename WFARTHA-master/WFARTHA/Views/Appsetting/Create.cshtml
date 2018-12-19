@@ -1,0 +1,63 @@
+﻿@model WFARTHA.Models.Appsetting
+
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 923;
+    ViewBag.carpeta_r = 900;
+}
+
+
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 right-align">
+            <button type="submit" id="btn_guardar" class="btn btn-default">Guardar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 left-align">
+            @if (@TempData["MensajeUsuario"] != null)
+            {
+                <label id="lbl_mensajeusuario"></label>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="input-field col s12">
+                            @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
+                            @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-field col s12">
+                            @Html.EditorFor(model => model.VALUE, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.VALUE, htmlAttributes: new { @id = "lbl_value" })
+                            @Html.ValidationMessageFor(model => model.VALUE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index", null, new { id = "lbl_regresar" })
+</div>
+@if (ViewBag.Error != null)
+{
+    <script>
+            M.toast({ html: '@ViewBag.Error', classes: 'red' });
+    </script>
+}

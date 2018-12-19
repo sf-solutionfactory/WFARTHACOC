@@ -1,0 +1,457 @@
+﻿@model WFARTHA.Entities.DOCUMENTO
+
+@{
+    Layout = null;
+    ViewBag.Title = "Solicitud ";
+}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        .divs {
+            width: 800px;
+            height: 100px;
+            margin-right: 10px;
+            margin-bottom: 30px;
+            float: left;
+        }
+
+        .child_div_1 {
+            float: left;
+            margin-top: 30px;
+            margin-right: 5px;
+            height: 100px;
+        }
+    </style>
+    <script type="text/javascript">
+        function f1() {
+            document.getElementById("btn_comm").href = "";
+        }
+    </script>
+</head>
+<body>
+    @*//B20180803 MGC Correos......................................*@
+    @* ------------------------------------------------------------------------LEJ 09-07-18 *@
+    <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
+    <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
+    @* ------------------------------------------------------------------------LEJ 09-07-18 *@
+    @*//B20180803 MGC Correos......................................*@
+
+    <div id="line" style="height:50px; background-color:#4e342e; width:100%; z-index:1000;top:0px;left:0px; position:fixed;">
+        @*//B20180803 MGC Correos......................................*@
+        @{ string mail = ViewBag.mail;}
+        @if (mail == "X")
+        {
+            <img src="miimg_id" />
+        }
+        else
+        {
+            <img src="~/images/artha_logo.jpg" />
+        }
+        @*//B20180803 MGC Correos......................................*@
+        @if (Model.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO == "A")
+        {
+            <div style="display:inline-block;width:200px;"></div>
+            <h5 style="display:inline; text-align:center;color:white;font-size:30px;">MAIL APROBACIÓN</h5>
+        }
+    </div>
+    <div class="container" style="width:1300px">
+        <br />
+        @if (Model.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO == "A")
+        {
+            <div class="divs">
+                <p style="margin-top:30px;">
+                    <h4 style="margin-bottom:0px;">Favor de revisar la siguiente solicitud.</h4>
+
+                    @*En caso de no autorizar la solicitud:<br />
+                        1-Dar click en el boton de rechazar.<br />
+                2-En el mail alterno que se genera, debera indicar sus comentarios.<br />
+                3-Debera dar click en enviar el mensaje.<br />
+            </p>
+        </div>*@
+                    
+                </p>
+            </div>
+            @*<div class="child_div_1">
+            <a type="button" class="btn-small" id="btn_cancel"
+               style="height: 32.4px;line-height: 32.4px;
+                    font-size: 13px;
+                    text-decoration: none;
+                    color: #fff;
+                    background-color: #26a69a;
+                    text-align: center;
+                    letter-spacing: .5px;
+                    -webkit-transition: background-color .2s ease-out;
+                    transition: background-color .2s ease-out;
+                    cursor: pointer;
+                    border: none;
+                    border-radius: 2px;
+                    display: inline-block;
+                    height: 36px;
+                    line-height: 36px;
+                    padding: 0 2rem;
+                    text-transform: uppercase;
+                    vertical-align: middle;
+                    -webkit-tap-highlight-color: transparent;"
+               href="mailto:LA_TAT@kellogg.com?Subject=TAT:Approved-@Model.NUM_DOC-@ViewBag.Pos" target="_top"
+            href = "" target = "_top" >
+               Aprobar
+           </ a >
+
+       </ div >
+
+       < div class="child_div_1">
+            <a type = "button" class="btn-small" id="btn_cancel"
+               style="height: 32.4px;line-height: 32.4px;
+                    font-size: 13px;
+                    text-decoration: none;
+                    color: #fff;
+                    background-color: #f29414;
+                    text-align: center;
+                    letter-spacing: .5px;
+                    -webkit-transition: background-color .2s ease-out;
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+                    border: none;
+                    border-radius: 2px;
+                    display: inline-block;
+                    height: 36px;
+                    line-height: 36px;
+                    padding: 0 2rem;
+                    text-transform: uppercase;
+                    vertical-align: middle;
+                    -webkit-tap-highlight-color: transparent;"
+    href="mailto:LA_TAT@kellogg.com?Subject=TAT:Rejected-@Model.NUM_DOC-@ViewBag.Pos" onclick="f1();" target="_top"
+                       href="" onclick="f1();" target="_top">
+                        Rechazar
+                    </a>
+                </div>*@
+        }
+        @*<div class="child_div_1">
+            <a type="button" class="btn-small" id="btn_comm" name="btn_comm"
+               style="height: 32.4px;line-height: 32.4px;
+                        font-size: 13px;
+                        text-decoration: none;
+                        color: #000;
+                        background-color: #fff;
+                        text-align: center;
+                        letter-spacing: .5px;
+                        -webkit-transition: background-color .2s ease-out;
+                        transition: background-color .2s ease-out;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 2px;
+                        display: inline-block;
+                        height: 36px;
+                        line-height: 36px;
+                        padding: 0 2rem;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        -webkit-tap-highlight-color: transparent;"
+               href="#" target="_top">
+                Comentarios
+            </a>*@
+    </div>
+    <div>
+        <div class="container" style="width:1000px">
+            <h4 style="font-family: -apple-system, BlinkMacSystemFont,Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+               font-size:25px;">
+                @ViewBag.Title @Model.NUM_DOC
+            </h4>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.USUARIOC_ID, "Usuario Creador", new
+                        {
+                            @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                            @id = "lbl_userid"
+                        })
+                    </td>
+                    <td>
+                        @Html.LabelFor(model => model.USUARIO.NOMBRE, "Nombre Creador", new
+                        {
+                            @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                            @id = "lbl_manager"
+                        })
+                    </td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;">
+                        <div class="input-field col s4">
+                            @Html.EditorFor(model => model.USUARIOC_ID, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @disabled = "disabled",
+                                    @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 120px;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                }
+                            })
+                        </div>
+                    </td>
+                    <td style="padding:5px;">
+                        <div class="input-field col s4">
+                            @*@Html.EditorFor(model => model.USUARIO.NOMBRE, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @disabled = "disabled",
+                                        @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 120px;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                    }
+                                })*@
+                            <input type="text" disabled="disabled" style="color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 320px;font-size: 12px;margin: 0 0 8px 0;padding: 0;"
+                                   value="@Model.USUARIO.NOMBRE @Model.USUARIO.APELLIDO_P @Model.USUARIO.APELLIDO_M " />
+                        </div>
+                    </td>
+                    <td style="width:30px"></td>
+                    <td style="width:30px"></td>
+                    <td style="width:30px"></td>
+                </tr>
+            </table>
+            <table style="width:80%;">
+                <tr>
+                    <!------------------------------------11111111111111111111111111111111111----------------------------->
+                    <td style="width:50%;padding:5px;vertical-align:baseline;">
+                        <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
+                                background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
+                            <div class="row">
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.TSOL_ID, "Tipo solicitud", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
+                                    @Html.EditorFor(model => model.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                                <div class="input-field col s4" style="width:48%;  float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.PAYER_ID, "Cliente", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.PAYER_ID, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                                <div class="input-field col s4" style="width:48%; float:left; margin-right: 8px;">
+                                    @Html.LabelFor(model => model.FECHAC, "Fecha Creación", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.FECHAC, new
+                               //MGC 08-10-2018.2 Obtener los datos para el correo
+                               {
+                                   htmlAttributes = new
+                                   {
+                                       @disabled = "disabled",
+                                       @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                   }
+                               })
+                                </div>
+                                <div class="input-field col s4" style="width:48%; float:left; margin-right: 8px;">
+                                    @Html.LabelFor(model => model.PAYER_ID, "Nombre", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.Editor("prov", new //MGC 08-10-2018 Obtener el nombre del cliente
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            @*<div class="row">
+                                <h5 style="font-size:20px;margin:5px;">Vigencia</h5>
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.FECHAI_VIG, "Vigencia de", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
+                                    @Html.EditorFor(model => model.FECHAI_VIG, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                                @value = Model.FECHAI_VIG.Value.ToShortDateString()
+                                            }
+                                        })
+                                    <input type="text"
+                                           disabled="disabled" ,
+                                           style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
+                                           value="@Model.FECHAI_VIG.Value.ToShortDateString()" />
+                                </div>
+                                <div class="input-field col s4" style="width:48%;  float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.FECHAF_VIG, "Vigencia a", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.FECHAF_VIG, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                                @value = Model.FECHAF_VIG.Value.ToShortDateString()
+                                            }
+                                        })
+                                    <input type="text"
+                                           disabled="disabled" ,
+                                           style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
+                                           value="@Model.FECHAF_VIG.Value.ToShortDateString()" />
+                                </div>
+                            </div>*@
+                            <div class="row">
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.CONCEPTO, "Concepto", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
+                                    @Html.EditorFor(model => model.CONCEPTO, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+
+                                @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", new
+                                {
+                                    @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                    @id = "lbl_userid"
+                                })
+                                @*@Html.EditorFor(model => model.MONTO_DOC_MD, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                            @class = "precio"
+                                        }
+                                    })*@
+                                <input type="text" id="MONTO_DOC_MD" name="MONTO_DOC_MD" disabled="disabled" value="@ViewBag.monto" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " />
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+
+
+                @*<tr>
+                    <td style="width:50%;padding:5px;vertical-align:baseline;">
+                        <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
+                                background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
+                            <h5 style="font-size:20px;margin:5px;">Análisis Presupuesto</h5>
+                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
+
+                            <input type="text" id="payer_id" hidden value="@Model.PAYER_ID" style="display:none" />
+
+                            <div class="row" style="margin-bottom:0">
+                                <table class="tg" style="width: 100%;border-collapse: collapse;">
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <label>Presupuesto canal</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_vtweg">@ViewBag.vtweg</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_canal" style="color: #9e9e9e;">@ViewBag.pcan</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <label>Presupuesto cliente</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_kunnr">@ViewBag.kunnr</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_banner" style="color: #9e9e9e;">@ViewBag.pban</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
+                                background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
+
+                                <div class="row" style="margin-bottom:0">
+                                    <table class="tg" style="width: 100%; border-collapse: collapse;">
+                                        <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Registrado en SAP</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_c" style="color: #9e9e9e;">@ViewBag.pcc</label>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Por registrar en SAP</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_a" style="color: #9e9e9e;">@ViewBag.pca</label>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>En proceso TAT</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_p" style="color: #9e9e9e;">@ViewBag.pcp</label>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Consumido</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_t" style="color: #9e9e9e;">@ViewBag.pct</label>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Presupuesto disponible</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="consu" style="color: #9e9e9e;">@ViewBag.consu</label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>*@
+
+            </table>
+        </div>
+
+        <div class="child_div_1">
+            Si quieres ingresar a la solicitud, da clic
+            <a href="@ViewBag.url@Url.Action("Details","Solicitudes", new { id = Model.NUM_DOC })">
+                aquí
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

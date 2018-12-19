@@ -1,0 +1,60 @@
+﻿@model TAT001.Models.Pass
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+
+
+@using (Html.BeginForm("Pass", "Usuarios", null, FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            <a class="btn" id="btn_cancelar" href="@Url.Action("Edit", new { id = Model.ID })">Cancelar</a>
+            <button type="submit" id="btn_guardar" class="btn" />
+        </div>
+    </div>
+    <div>
+        @if (TempData["MensajePass"] != null)
+        {
+       <label class="alert-dismissable" id="lbl_confirpass"></label>
+        }
+    </div>
+    @Html.HiddenFor(model => model.ID, new { @id = "ID" })
+    <div class="row">
+        <div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="input-field col s12">
+                            @Html.PasswordFor(model => model.pass, new { @id = "pass", required = true })
+                            @Html.LabelFor(model => model.pass, htmlAttributes: new { @class = "control-label col-md-2", id = "lbl_pass" })
+                            @Html.ValidationMessageFor(model => model.pass, "", new { @class = "text-danger" })
+                        </div>
+                    <div class="input-field col s12">
+                        @Html.PasswordFor(model => model.npass1, new { @id = "npass1", required = true, @minlength=5,@maxlength=16 })
+                        @Html.LabelFor(model => model.npass1, htmlAttributes: new { @class = "control-label col-md-2", id = "lbl_pass1" })
+                        @Html.ValidationMessageFor(model => model.npass1, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-field col s12">
+                        @Html.PasswordFor(model => model.npass2, new { @id = "npass2", required = true, @minlength = 5, @maxlength = 16 })
+                        @Html.LabelFor(model => model.npass2, htmlAttributes: new { @class = "control-label col-md-2", id = "lbl_pass2" })
+                        @Html.ValidationMessageFor(model => model.npass2, "", new { @class = "text-danger"})
+                    </div>
+            </div>
+        </div>
+            </div>
+        </div>
+        }
+        <div>
+            @Html.ActionLink("Back to List", "Index", null, new { id = "lbl_regresar" })
+        </div>
+        @if (ViewBag.message != null)
+        {
+            <script>
+            M.toast({ html: '@ViewBag.message', classes: 'red' });
+            </script>
+        }
+

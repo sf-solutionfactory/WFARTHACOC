@@ -1,0 +1,15 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+
+@if (Model.DOCUMENTOA_TAB != null)
+{
+    for (var i = 0; i < Model.DOCUMENTOA_TAB.Count; i++)
+    {
+        <tr>
+            <td>@Html.EditorFor(m => m.DOCUMENTOA_TAB[i].NAME)</td>
+            <td>@Html.EditorFor(m => m.DOCUMENTOA_TAB[i].TIPO)</td>
+            <td>@Html.EditorFor(m => m.DOCUMENTOA_TAB[i].DESC)</td>
+            <td>@Html.EditorFor(m => m.DOCUMENTOA_TAB[i].PATH)</td>
+        </tr>
+    }
+}
+

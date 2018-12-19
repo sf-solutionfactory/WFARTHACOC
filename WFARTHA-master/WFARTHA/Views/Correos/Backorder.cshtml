@@ -1,0 +1,319 @@
+﻿@model TAT001.Entities.DOCUMENTO
+
+@{
+    Layout = null;
+    ViewBag.Title = "Agregar backorder a solicitud";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        .divs {
+            width: 500px;
+            height: 100px;
+            margin-right: 10px;
+            margin-bottom: 30px;
+            float: left;
+        }
+
+        .child_div_1 {
+            float: left;
+            margin-top: 30px;
+            margin-right: 5px;
+            height: 100px;
+        }
+    </style>
+    <script type="text/javascript">
+        function f1() {
+            document.getElementById("btn_comm").href = "";
+        }
+    </script>
+</head>
+<body>
+    <div style="height:50px; background-color:#d11d53; width:100%; z-index:1000;top:0px;left:0px; position:fixed;">
+        @*//B20180803 MGC Correos......................................*@
+        @{ string mail = ViewBag.mail;}
+        @if (mail == "X")
+        {
+            <img src="miimg_id" />
+        }
+        else
+        {
+            <img src="~/images/logo_kellogg.png" />
+        }
+        @*//B20180803 MGC Correos......................................*@
+        <div style="display:inline-block;width:200px;"></div>
+        <h5 style="display:inline; text-align:center;color:white;font-size:30px;">AGREGAR BACKORDER</h5>
+    </div>
+    <div class="container" style="width:1300px">
+        <br />
+        @*@if (Model.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO == "A")
+            {*@
+        <div class="divs">
+            <p style="margin-top:30px;">
+                <h4 style="margin-bottom:0px;">Favor de revisar y aprobar la siguiente solicitud.</h4>
+                En caso de no autorizar la solicitud:<br />
+                1-Dar click en el boton de rechazar.<br />
+                2-En el mail alterno que se genera, debera indicar sus comentarios.<br />
+                3-Debera dar click en enviar el mensaje.<br />
+            </p>
+        </div>
+        <div class="child_div_1">
+            @if (ViewBag.nota | Model.PAI.BACKORDER)//Se genera reversa en TATLeerCorreo
+            {
+                <a type="button" class="btn-small" id="btn_cancel"
+                   style="height: 32.4px;line-height: 32.4px;
+                        font-size: 13px;
+                        text-decoration: none;
+                        color: #fff;
+                        background-color: #26a69a;
+                        text-align: center;
+                        letter-spacing: .5px;
+                        -webkit-transition: background-color .2s ease-out;
+                        transition: background-color .2s ease-out;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 2px;
+                        display: inline-block;
+                        height: 36px;
+                        line-height: 36px;
+                        padding: 0 2rem;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        -webkit-tap-highlight-color: transparent;"
+                   href="@ViewBag.url@Url.Action("Backorder", "Recurrencias", new {id_d= Model.NUM_DOC })" target="_top">
+                    Agregar backorder
+                </a>
+            }
+        </div>
+        @*<div class="child_div_1">
+                <a type="button" class="btn-small" id="btn_cancel"
+                   style="height: 32.4px;line-height: 32.4px;
+                            font-size: 13px;
+                            text-decoration: none;
+                            color: #fff;
+                            background-color: #f29414;
+                            text-align: center;
+                            letter-spacing: .5px;
+                            -webkit-transition: background-color .2s ease-out;
+                            transition: background-color .2s ease-out;
+                            cursor: pointer;
+                            border: none;
+                            border-radius: 2px;
+                            display: inline-block;
+                            height: 36px;
+                            line-height: 36px;
+                            padding: 0 2rem;
+                            text-transform: uppercase;
+                            vertical-align: middle;
+                            -webkit-tap-highlight-color: transparent;"
+                   href="@ViewBag.url@Url.Action("Cancelar", "Recurrencias", new { id = Model.NUM_DOC })" target="_top">
+                    Cancelar recurrencia
+                </a>
+            </div>*@
+    </div>
+    <div style="display:inline-block;">
+        <div class="container" style="width:1000px">
+            <h4 style="font-family: -apple-system, BlinkMacSystemFont,Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+               font-size:25px;">
+                @ViewBag.Title @Model.NUM_DOC
+            </h4>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new
+                        {
+                            @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                            @id = "lbl_userid"
+                        })
+                    </td>
+                    <td>
+                        @Html.LabelFor(model => model.USUARIO.NOMBRE, "Nombre", new
+                        {
+                            @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                            @id = "lbl_manager"
+                        })
+                    </td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;">
+                        <div class="input-field col s4">
+                            @Html.EditorFor(model => model.USUARIOC_ID, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @disabled = "disabled",
+                                    @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 120px;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                }
+                            })
+                        </div>
+                    </td>
+                    <td style="padding:5px;">
+                        <div class="input-field col s4">
+                            @*@Html.EditorFor(model => model.USUARIO.NOMBRE, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @disabled = "disabled",
+                                        @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 120px;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                    }
+                                })*@
+                            <input type="text" disabled="disabled" style="color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 320px;font-size: 12px;margin: 0 0 8px 0;padding: 0;"
+                                   value="@Model.USUARIO.NOMBRE @Model.USUARIO.APELLIDO_P @Model.USUARIO.APELLIDO_M " />
+                        </div>
+                    </td>
+                    <td style="width:30px"></td>
+                    <td style="width:30px"></td>
+                    <td style="width:30px"></td>
+                </tr>
+            </table>
+            <table style="width:80%;">
+                <tr>
+                    <!------------------------------------11111111111111111111111111111111111----------------------------->
+                    <td style="width:50%;padding:5px;vertical-align:baseline;">
+                        <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
+                                background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
+                            <div class="row">
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.TSOL_ID, "Tipo solicitud", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
+                                    @Html.EditorFor(model => model.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.USUARIO.SPRAS_ID)).FirstOrDefault().TXT020, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                                <div class="input-field col s4" style="width:48%;  float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.PAYER_ID, "Cliente", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.PAYER_ID, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                                <div class="input-field col s4" style="width:48%; float:left; margin-right: 8px;">
+                                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(model.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                                <div class="input-field col s4" style="width:48%; float:left; margin-right: 8px;">
+                                    @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @Html.EditorFor(model => model.CLIENTE.NAME1, new
+                                    {
+                                        htmlAttributes = new
+                                        {
+                                            @disabled = "disabled",
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; "
+                                        }
+                                    })
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <h5 style="font-size:20px;margin:5px;">Vigencia</h5>
+                            <div class="row">
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.FECHAI_VIG, "Vigencia de", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
+                                    @*@Html.EditorFor(model => model.FECHAI_VIG, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                                @value = Model.FECHAI_VIG.Value.ToShortDateString()
+                                            }
+                                        })*@
+                                    <input type="text"
+                                           disabled="disabled" ,
+                                           style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
+                                           value="@Model.FECHAI_VIG.Value.ToShortDateString()" />
+                                </div>
+                                <div class="input-field col s4" style="width:48%;  float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.FECHAF_VIG, "Vigencia a", new
+                                    {
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @*@Html.EditorFor(model => model.FECHAF_VIG, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                                @value = Model.FECHAF_VIG.Value.ToShortDateString()
+                                            }
+                                        })*@
+                                    <input type="text"
+                                           disabled="disabled" ,
+                                           style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
+                                           value="@Model.FECHAF_VIG.Value.ToShortDateString()" />
+                                </div>
+                            </div>
+                            <div class="row" style="height:40px;"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="container" style="width:1000px">
+            <table class="table highlight" id="table" style="border-collapse:collapse;width:100%;display:table;border-spacing:0">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Mes</th>
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Venta</th>
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Objetivo</th>
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">%</th>
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Monto base</th>
+                        <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Tipo solicitud</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.mes</td>
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.venta</td>
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.objetivo</td>
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.porc</td>
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.monto</td>
+                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@ViewBag.tsol</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="child_div_1">
+            Si quieres ingresar a la solicitud, da clic
+            <a href="@ViewBag.url@Url.Action("Details","Solicitudes", new { id = Model.NUM_DOC })">
+                aquí
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

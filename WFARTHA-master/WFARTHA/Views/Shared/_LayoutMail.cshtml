@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title - TAT 2.0</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+    <meta name="robots" content="noodp,noydir">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="http://www.terza.com/img/Favicon_32x32-01.ico" type="image/x-icon">
+    <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <form>
+        <div class="navbar-fixed" style="z-index: 998;position: relative;">
+            <div class="nav-wrapper pink darken-1" style="background-color:#B90C46 !important;" @*style="background-repeat: repeat-x;background-image: url(/images/header-transient.png);"*@>
+                <a href="@Url.Action("Index", "Home")" class="brand-logo">
+                    <img src="cid:{0}" style="padding-top: 8px; padding-left: 8px;" />
+                </a>
+                @*@Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "brand-logo" })*@
+                @*<ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
+                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                    </ul>*@
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - ARTHA</p>
+            </footer>
+        </div>
+        @*@Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)*@
+    </form>
+</body>
+</html>

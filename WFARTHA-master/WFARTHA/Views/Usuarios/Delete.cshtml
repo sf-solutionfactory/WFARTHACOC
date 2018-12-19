@@ -1,0 +1,115 @@
+﻿@model TAT001.Entities.USUARIO
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>USUARIO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PASS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PASS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.APELLIDO_P)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APELLIDO_P)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.APELLIDO_M)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APELLIDO_M)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EMAIL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EMAIL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ACTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ACTIVO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MANAGER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MANAGER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BACKUP_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BACKUP_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUNIT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUNIT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PUESTO.ACTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PUESTO.ACTIVO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SPRA.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SPRA.DESCRIPCION)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

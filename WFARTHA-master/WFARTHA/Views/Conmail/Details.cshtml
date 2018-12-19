@@ -1,0 +1,106 @@
+﻿@model WFARTHA.Entities.CONMAIL
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 932;
+    ViewBag.carpeta_r = 900;
+}
+
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HOST)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HOST)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PORT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PORT)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SSL)
+        </dt>
+        <dd>
+            @if (Model.SSL == true)
+            {
+                <p>
+                    <label>
+                        <input name="ckb_ssl" type="checkbox" checked="checked" disabled="disabled" />
+                        <span>SSL</span>
+                    </label>
+                </p>
+            }
+            else
+            {
+                <p>
+                    <label>
+                        <input name="ckb_ssl" type="checkbox" disabled="disabled" />
+                        <span>SSL</span>
+                    </label>
+                </p>
+            }
+        </dd>
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MAIL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MAIL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PASS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PASS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ACTIVO)
+        </dt>
+
+        <dd>
+            @if (Model.ACTIVO == true)
+            {
+                <p>
+                    <label>
+                        <input name="ckb_activo" type="checkbox" checked="checked" disabled="disabled" />
+                        <span>ACTIVO</span>
+                    </label>
+                </p>
+            }
+            else
+            {
+                <p>
+                    <label>
+                        <input name="ckb_activo" type="checkbox" disabled="disabled" />
+                        <span>ACTIVO</span>
+                    </label>
+                </p>
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit",new { ID = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

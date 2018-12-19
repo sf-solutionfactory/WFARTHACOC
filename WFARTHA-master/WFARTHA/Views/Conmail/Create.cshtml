@@ -1,0 +1,96 @@
+﻿@model WFARTHA.Models.Conmail
+
+@{
+                /**/
+
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.pagina_r = 933;
+                ViewBag.carpeta_r = 500;
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.HOST, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.HOST, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HOST, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.PORT, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.PORT, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PORT, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.SSL, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.SSL, Model.sslLista, "Auntentificacion SSL", new { @class = "browser-default" })
+                @Html.ValidationMessageFor(model => model.SSL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.MAIL, htmlAttributes: new { @id = "lbl_mail" })
+                @Html.EditorFor(model => model.MAIL, new { htmlAttributes = new { @type = "email", required = true } })
+                @Html.ValidationMessageFor(model => model.MAIL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class=" dropdown col s12">
+                @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    <script>$('#MAIL').on("focusout", function () {
+            var email = $('#MAIL').val();
+            $('#MAIL').removeClass("valid");
+            $('#MAIL').removeClass("invalid");
+            if (validateEmail(email) == true) {
+                $('#MAIL').addClass("valid");
+            }
+            else {
+                $('#MAIL').addClass("invalid");
+            }
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@@"]+(\.[^<>()\[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }</script>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,16 @@
+﻿@model WFARTHA.Models.DOCUMENTO_MOD
+
+@if (Model.Anexo != null)
+{
+    for (var i = 0; i < Model.Anexo.Count; i++)
+    {
+        <tr>
+            <td>@Html.EditorFor(m => m.Anexo[i].a1)</td>
+            <td>@Html.EditorFor(m => m.Anexo[i].a2)</td>
+            <td>@Html.EditorFor(m => m.Anexo[i].a3)</td>
+            <td>@Html.EditorFor(m => m.Anexo[i].a4)</td>
+            <td>@Html.EditorFor(m => m.Anexo[i].a5)</td>
+        </tr>
+    }
+}
+

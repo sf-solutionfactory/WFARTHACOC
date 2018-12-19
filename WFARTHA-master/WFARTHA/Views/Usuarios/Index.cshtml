@@ -1,0 +1,248 @@
+﻿@*@model IEnumerable<TAT001.Entities.USUARIO>*@
+@model WFARTHA.Models.UsuarioNuevo
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 601;
+    ViewBag.carpeta_r = 500;
+}
+
+
+<div class="row">
+    <div class="col s12 right-align">
+        <a class="btn-small" id="btn_nuevo" href="@Url.Action("Create")">Nuevo</a>
+        @*<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nuevo</a>*@
+        @*<a class="btn-small" id="btn_cargarusuarios" href="@Url.Action("Carga")">Cargar Usuarios</a>*@ @*FRT06122018 eliminar el boton de la vista*@
+        @*<a class="btn-small" href="@Url.Action("Carga", "Flujos")">Cargar flujo</a>*@
+    </div>
+</div>
+<div class="card-panel">
+    @*<div class="row">*@
+    <div class="row" style="margin-bottom:0;">
+        <div class="input-field col s3 m3 l3">
+            <select id="selecc">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label id="btn_length">Ver por página</label>
+        </div>
+        <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
+            <input type="text" class="global_filter" id="global_filter">
+            <label for="global_filter" id="lbl_search">Buscar</label>
+        </div>
+    </div>
+    <script>
+        var elem = document.querySelector('select');
+        var options = [];
+        var instance = M.FormSelect.init(elem, options);
+    </script>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+    <link href="~/Content/dataTable.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+    <div style="width:100%;">
+        <table class="table mdl-data-table striped" id="table" style="width:100%;">
+            <thead>
+                <tr>
+                    <th class="lblID">
+                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().ID)
+                    </th>
+                    <th class="lblNombre">
+                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)
+                    </th>
+                    <th class="lblEmail">
+                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().EMAIL)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.L.FirstOrDefault().MANAGER)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.L.FirstOrDefault().BACKUP_ID)
+                        </th>*@
+                    <th class="lblPuesto">
+                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().PUESTO_ID)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.L.PUESTO.ACTIVO)
+                        </th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.L)
+                {
+                    <tr onclick="document.location = '@Url.Action("Details", new { id = item.ID })'" style="cursor:pointer">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NOMBRE)
+                            @Html.DisplayFor(modelItem => item.APELLIDO_P)
+                            @Html.DisplayFor(modelItem => item.APELLIDO_M)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EMAIL)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.MANAGER)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BACKUP_ID)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.FirstOrDefault().)
+                            </td>*@
+                        <td>
+                            <a href="@Url.Action("Edit", "Usuarios", new { id = item.ID })">
+                                <i class='material-icons green-text'>edit</i>
+                            </a>&nbsp;
+                            <a href="@Url.Action("Details", new { id = item.ID })">
+                                <i class='material-icons blue-text'>search</i>
+                            </a>&nbsp;
+                            <a href="" onclick="DELETE('@item.ID')">
+                                <span id="borrar" hidden>
+                                    @item.ID
+                                </span>
+                                <i class='material-icons red-text'>delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @*</div>*@
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <script>
+            M.toast({ html: '@ViewBag.Error'});
+    </script>
+}
+
+<script type="text/javascript">
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("action", action);
+            form.submit();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        //var i = 0;
+        //$('#table tfoot th').each(function () {
+        //    i++;
+        //    var title = $(this).text();
+        //    $(this).html('<input type="text" id="lbl_search' + i + '" />');
+        //});
+        var table = $('#table').DataTable({
+            //paging: false,
+            //searching: false
+            //stateSave: true,
+            scrollY: "35vh",
+            //scrollCollapse: true,
+            //language: {
+            //    lengthMenu: "Display _MENU_ records per page",
+            //    zeroRecords: "No se encontraron datos",
+            //    info: "Página _PAGE_ de _PAGES_",
+            //    infoEmpty: "No hay datos",
+            //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
+            //    search: "Buscar"
+            //},
+            language: {
+                //"url": "../Scripts/lang/Session["spras"].ToString()" + ".json"
+                "url": "../Scripts/lang/ES.json"
+            },
+            columnDefs: [
+                {
+                    targets: [0, 1, 2],
+                    className: 'mdl-data-table__cell--non-numeric'
+                }
+            ]
+        });
+        //table.columns().every(function () {
+        //    var that = this;
+        //    $('input', this.footer()).on('keyup change', function () {
+        //        if (that.search() !== this.value) {
+        //            that
+        //                .search(this.value)
+        //                .draw();
+        //        }
+        //    });
+        //})
+        //var a = $('#selecc').val();
+        //table.page.len(a).draw();
+        //$('#selecc').on('change', function () {
+        //    table.page.len(this.value).draw();
+        //});
+
+        var a = $('#selecc').val();
+        table.page.len(a).draw();
+        $('#selecc').on('change', function () {
+            table.page.len(this.value).draw();
+        });
+
+        $('input.global_filter').on('keyup click', function () {
+            filterGlobal();
+        });
+    });
+
+    function filterGlobal() {
+        $('#table').DataTable().search(
+            $('#global_filter').val()).draw();
+    }
+
+</script>
+<script type="text/javascript">
+
+    function DELETE(id) {
+        //var id = $('#borrar').text();
+        var mensaje = confirm("Confirma borrar el usuario " + id);
+        console.log(id);
+        if (mensaje) {
+            $.ajax({
+                type: "POST",
+                url: 'DeleteConfirmed',
+                data: { id: id },
+                dataType: "json",
+                success: function () {
+
+                },
+                error: function (request, status, error) {
+                    //alert(request.responseText);
+                }
+            });
+            M.toast({ html: 'Se elimino el usuario' });
+        }
+    }
+
+</script>
+
+
+
+<style>
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_scrollHeadInner, .mdl-data-table {
+        width: 100%;
+    }
+</style>

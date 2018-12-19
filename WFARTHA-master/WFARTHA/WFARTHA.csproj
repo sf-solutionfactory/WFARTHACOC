@@ -524,6 +524,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AMORANT_MOD.cs" />
     <Compile Include="Models\Appsetting.cs" />
     <Compile Include="Models\AppsettingNuevo.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
@@ -535,6 +536,7 @@
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DOCUMENTOA_TAB.cs" />
     <Compile Include="Models\DOCUMENTOA_MOD.cs" />
+    <Compile Include="Models\DOCUMENTOCOC_MOD.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\DOCUMENTOP_MODSTR.cs" />
@@ -842,6 +844,8 @@
     <Content Include="Views\UsuarioC1\Edit.cshtml" />
     <Content Include="Views\Usuarios\CambioPass.cshtml" />
     <Content Include="Views\Report\ReportTemplate2.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialConOC.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialConTr5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

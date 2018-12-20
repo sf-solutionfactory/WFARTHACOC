@@ -348,13 +348,6 @@ namespace WFARTHA.Controllers
                     result1.Add(lst[i]);
                 }
             }
-
-
-
-
-
-
-
             for (int x = 0; x < lst.Count; x++)
             {
                 var _xtr = lst[x].PATH.Split('\\');
@@ -370,13 +363,11 @@ namespace WFARTHA.Controllers
                 }
                 lst[x].PATH = _path;
             }
-
-
+            
             ViewBag.docAn = result1; //frt06122018
             //ViewBag.docAn = lst;
 
             //FRT END 
-
             var monedal = db.MONEDAs.Where(m => m.ACTIVO == true).Select(m => new { m.WAERS, TEXT = m.WAERS + " - " + m.LTEXT }).ToList();
 
             var impuestol = db.IMPUESTOes.Where(i => i.ACTIVO == true).Select(i => new { i.MWSKZ });

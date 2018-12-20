@@ -711,6 +711,7 @@
     <Content Include="Scripts\create_orden.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\details.js" />
+    <Content Include="Scripts\details_coc.js" />
     <Content Include="Scripts\disenarVistas.js" />
     <Content Include="Scripts\edit - antes.js" />
     <Content Include="Scripts\edit.js" />
@@ -856,6 +857,8 @@
     <Content Include="Views\UsuarioC1\Edit.cshtml" />
     <Content Include="Views\Usuarios\CambioPass.cshtml" />
     <Content Include="Views\Report\ReportTemplate2.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialConTr5.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialConOC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

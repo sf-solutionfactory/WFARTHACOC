@@ -182,8 +182,8 @@
 <div class="row">
     <div class="col s12">
         <ul class="tabs" id="tabs">
-            <li class="tab col s2 tabs_menu" ><a id="tab_enc" href="#Encabezado_cont" class="">Encabezado</a></li>
-            <li class="tab col s3 tabs_menu" ><a id="tab_con" href="#Contable_cont" >Detalle</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_enc" href="#Encabezado_cont" class="">Encabezado</a></li>
+            <li class="tab col s3 tabs_menu"><a id="tab_con" href="#Contable_cont">Detalle</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_sop" href="#Informacion_cont">Autorización</a></li>
         </ul>
     </div>
@@ -192,6 +192,20 @@
 @using (Html.BeginForm("Create", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
 {
     @Html.AntiForgeryToken()
+    //LEJGG 12-12-2018
+    @*<input id="EBELN" name="EBELN" type="hidden" value="">*@
+    @Html.Hidden("EBELN", "")
+    @*<input id="AMOR_ANT" name="AMOR_ANT" type="hidden" value="">*@
+    @Html.Hidden("AMOR_ANT", "")
+    @*<input id="RETPC" name="RETPC" type="hidden" value="">*@
+    @Html.Hidden("RETPC", "")
+    @*<input id="DPPCT" name="DPPCT" type="hidden" value="">*@
+    @Html.Hidden("DPPCT", "")
+    @*<input id="TOAD" name="TOAD" type="hidden" value="">*@
+    @Html.Hidden("TOAD", "")
+    @*<input id="ANTR" name="ANTR" type="hidden" value="">*@
+    @Html.Hidden("ANTR", "")
+    //LEJGG 12-12-2018
     <input id="borr" name="borr" type="hidden" value="">
     <input id="Uuid" name="Uuid" type="hidden" value="">
     <div class="form-horizontal">
@@ -708,11 +722,11 @@
                                         </thead>
                                         <tbody></tbody>
                                         @*<tfoot id="tfoot_info" style="overflow:auto;">
-                        <tr>
-                            <th colspan="17" style="text-align:right"></th>
-                            <th id="total_info"></th>
-                        </tr>
-                    </tfoot>*@
+                                                <tr>
+                                                    <th colspan="17" style="text-align:right"></th>
+                                                    <th id="total_info"></th>
+                                                </tr>
+                                            </tfoot>*@
                                     </table>
                                 </div>
                                 <table class="table display mdl-data-table striped" id="table_infoh" style="width:100%; display:none">

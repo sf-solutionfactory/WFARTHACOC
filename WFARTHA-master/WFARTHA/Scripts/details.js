@@ -786,6 +786,19 @@ function showHide(tsol) {
 
 }
 
+function tsolVal(tsol) {
+    var val3 = tsol;
+    val3 = "[" + val3 + "]";
+    val3 = val3.replace("{", "{ \"");
+    val3 = val3.replace("}", "\" }");
+    val3 = val3.replace(/\,/g, "\" , \"");
+    val3 = val3.replace(/\=/g, "\" : \"");
+    val3 = val3.replace(/\ /g, "");
+    var jsval = $.parseJSON(val3);
+
+    return jsval;
+}
+
 function formatoMon() {
     var table = $('#table_info').DataTable();
     // $("#table_info > tbody > tr[role = 'row']").each(function (index) {

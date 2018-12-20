@@ -3,20 +3,22 @@
 });
 
 $(window).on('load', function () {
-    var e = $('#norden_compra').val();
-    $.ajax({
-        type: "POST",
-        url: '../getEKKOInfo',
-        dataType: "json",
-        data: { "ebeln": e },
-        success: function (data) {
-            var ekko = data.ekmo;
-            var cuentas = data.res;
-            var mtr = data.mtr;
-            var brtwr = data.brtwr;
-            llenarTablaOc(ekko, cuentas, mtr, brtwr);
-        }
-    });
+    if ($("#TSOL_ID").val() === "SCO") {
+        var e = $('#norden_compra').val();
+        $.ajax({
+            type: "POST",
+            url: '../getEKKOInfo',
+            dataType: "json",
+            data: { "ebeln": e },
+            success: function (data) {
+                var ekko = data.ekmo;
+                var cuentas = data.res;
+                var mtr = data.mtr;
+                var brtwr = data.brtwr;
+                llenarTablaOc(ekko, cuentas, mtr, brtwr);
+            }
+        });
+    }
 });
 
 function llenarTablaOc(a, b, mtr, brtwr) {

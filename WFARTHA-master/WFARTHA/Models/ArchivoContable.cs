@@ -254,12 +254,39 @@ namespace WFARTHA.Models
 
                                     string cuenta = lh[i].CUENTA + "";
 
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------>
+                                    int cuentai = 0;
+
+                                    try
+                                    {
+                                        cuentai = Convert.ToInt32(lh[i].CUENTA);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+
+                                    try
+                                    {
+                                        if (!cuenta.Equals("") && cuentai > 0)
+                                        {
+                                            cuenta = "";
+                                            string cuentaformat = cuentai.ToString("0000000000");
+                                            cuenta = cuentaformat;
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        cuenta = "";
+                                    }
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------<
+
                                     sw.WriteLine(
                                         "6" + "|" +
                                         post + "|" +
                                         doc.SOCIEDAD_ID.Trim() + "|" +
                                         cuenta.Trim() + "|" +
-                                        lh[i].MONTO + "|" + "|"
+                                        lh[i].TOTAL + "|" + "|"
                                         //retcps.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
                                         //antamor.Trim()//MGC 18-12-2018 Archivo de contabilización
                                         );
@@ -304,21 +331,27 @@ namespace WFARTHA.Models
                                     string ccosto = ld[i].CCOSTO + "";
                                     string imputacion = ld[i].IMPUTACION + "";
 
-                                    sw.WriteLine(
-                                        "7" + "|" +
-                                        post + "|" +
-                                        doc.SOCIEDAD_ID.Trim() + "|" +
-                                        //cuenta.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                        doc.EBELN + "|" +
-                                        ebelp + "|" +
-                                        //ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                        menge + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                        meins + "|" +
-                                        //ld[i].TOTAL + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                        ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                        ld[i].TEXTO + "|" +
-                                        ld[i].MWSKZ + "|"
-                                        );
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------>
+                                    if (menge > 0 && ld[i].MONTO > 0)
+                                    {
+                                        sw.WriteLine(
+                                            "7" + "|" +
+                                            post + "|" +
+                                            doc.SOCIEDAD_ID.Trim() + "|" +
+                                            //cuenta.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            doc.EBELN + "|" +
+                                            ebelp + "|" +
+                                            //ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            menge + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            meins + "|" +
+                                            //ld[i].TOTAL + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            ld[i].TEXTO + "|" +
+                                            ld[i].MWSKZ + "|"
+                                            );
+                                    }
+
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------<
                                 }
 
                                 //Agregar las amortizaciones amoral

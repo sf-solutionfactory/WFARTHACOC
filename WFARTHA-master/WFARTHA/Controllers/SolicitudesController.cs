@@ -941,6 +941,9 @@ namespace WFARTHA.Controllers
 
             Session["SOC"] = sociedades[0].BUKRS;  //FRT 02112018
 
+            string sociedadDefault = "";//MGC 20-12-2018 Archivo contable
+            sociedadDefault = sociedades[0].BUKRS;//MGC 20-12-2018 Archivo contable
+
             //var sociedades = db.SOCIEDADs.Select(s => new { s.BUKRS, TEXT = s.BUKRS + " - " + s.BUTXT }).ToList();//MGC 16-10-2018 Obtener las sociedades asignadas al usuario
             //MGC 16-10-2018 Obtener las sociedades asignadas al usuario <--
             //MGC 03-10-2018 solicitud con orden de compra -->
@@ -1119,7 +1122,8 @@ namespace WFARTHA.Controllers
                 //_sc = d.SOCIEDAD_ID;
                 _sc = Session["id_pr"].ToString();
                 //var lst = getCad2(int.Parse(_v), _usc, _id_ruta, _usa, decimal.Parse(_mt), _sc, out vc1, out vc2); //MGC 11-12-2018 Agregar Contabilizador 0
-                CadenaAutorizadores lst = getCad2(int.Parse(_v), _usc, _id_ruta, _usa, decimal.Parse(_mt), _sc, vc1, vc2); //MGC 11-12-2018 Agregar Contabilizador 0
+                //CadenaAutorizadores lst = getCad2(int.Parse(_v), _usc, _id_ruta, _usa, decimal.Parse(_mt), _sc, vc1, vc2); //MGC 11-12-2018 Agregar Contabilizador 0
+                CadenaAutorizadores lst = getCad2(int.Parse(_v), _usc, _id_ruta, _usa, decimal.Parse(_mt), sociedadDefault, vc1, vc2); //MGC 11-12-2018 Agregar Contabilizador 0
                 List<CadenaAutorizadoresItem> cadi = new List<CadenaAutorizadoresItem>();//MGC 11-12-2018 Agregar Contabilizador 0
                 cadi = lst.cadenal;//MGC 11-12-2018 Agregar Contabilizador 0
 

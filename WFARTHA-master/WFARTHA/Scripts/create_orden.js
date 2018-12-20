@@ -472,6 +472,7 @@ $('body').on('change', '#norden_compra', function (event, param1) {
         type: "POST",
         url: 'getEKBEInfo',
         dataType: "json",
+        async: false,
         data: { "ebeln": $(this).val() },
         success: function (data) {
             llenarTablaOc2(data, eb);
@@ -512,31 +513,44 @@ function llenarTablaOc2(val, eb) {
             type: "POST",
             url: 'calculoAntAmor',
             dataType: "json",
+            async: false,
             data: { "ebeln": eb, "belnr": belnr },
             success: function (data) {
                 mt = data;
                 //
+                var at = 0;
+                tabl.row.add([
+                    ebelp,//POSC
+                    buzei,//POS
+                    belnr,//numdoc
+                    gjar,//EJERCICIO
+                    toShow(mt),//Anticipo amortizado
+                    toShow(wt),//total anticipo
+                    mon,//MONEDA,
+                    toShow(at),//anticipo en transito
+                    "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
+                ]).draw(false).node();
                 //calculo de anticipo en transito
-                $.ajax({
-                    type: "POST",
-                    url: 'calculoAntTr',
-                    dataType: "json",
-                    success: function (datax) {
-                        at = datax;
-                        //
-                        tabl.row.add([
-                            ebelp,//POSC
-                            buzei,//POS
-                            belnr,//numdoc
-                            gjar,//EJERCICIO
-                            toShow(mt),//Anticipo amortizado
-                            toShow(wt),//total anticipo
-                            mon,//MONEDA,
-                            toShow(at),//anticipo en transito
-                            "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
-                        ]).draw(false).node();
-                    }
-                });
+                //$.ajax({
+                //    type: "POST",
+                //    url: 'calculoAntTr',
+                //    dataType: "json",
+                //    success: function (datax) {
+                //        at = datax;
+                //        //
+                //        tabl.row.add([
+                //            ebelp,//POSC
+                //            buzei,//POS
+                //            belnr,//numdoc
+                //            gjar,//EJERCICIO
+                //            toShow(mt),//Anticipo amortizado
+                //            toShow(wt),//total anticipo
+                //            mon,//MONEDA,
+                //            toShow(at),//anticipo en transito
+                //            "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
+                //        ]).draw(false).node();
+                //    }
+                //});
             }
         });
     }
@@ -1122,7 +1136,7 @@ function copiarTableInfoPControl() {
             while (cantidad.indexOf(',') > -1) {
                 cantidad = cantidad.replace('$', '').replace(',', '');
             }
-            var monto1 = $(this).find("td.MONTO input").val();
+            var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
             while (monto1.indexOf(',') > -1) {
                 monto1 = monto1.replace('$', '').replace(',', '');
             }

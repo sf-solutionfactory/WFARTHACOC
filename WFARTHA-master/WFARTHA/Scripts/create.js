@@ -1902,6 +1902,9 @@ function traerCadAutR(u, s) {
         },
         async: false
     });
+
+    var eleml = document.getElementById('list_detaa');//MGC 20-12-2018 Archivo contable
+    var instance = M.Select.init(eleml, []);//MGC 20-12-2018 Archivo contable
 }
 //LEJGG 28-10-2018
 function validarUuid(uuid) {

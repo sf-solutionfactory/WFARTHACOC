@@ -266,7 +266,7 @@ $(document).ready(function () {
                 "name": 'AntTr',
                 "className": 'AntTr',
                 "orderable": false,
-                "visible": true
+                "visible": false
             },
             {
                 "className": 'AntXAMOR',
@@ -1223,8 +1223,13 @@ function copiarTableInfoPControl() {
             while (toant.indexOf(',') > -1) {
                 toant = toant.replace('$', '').replace(',', '');
             }
-            var moneda = $(this).find("td.MONEDA").text();
-            var anttr = $(this).find("td.AntTr").text().replace('$', '');
+            var moneda = tr.find("td.MONEDA").text();
+            //var anttr = $(this).find("td.AntTr").text().replace('$', '');
+            //while (anttr.indexOf(',') > -1) {
+            //    anttr = anttr.replace('$', '').replace(',', '');
+            //}
+            var anttr = toc.row(indexopc).data()[7];
+            anttr = anttr.toString().replace('$', '');
             while (anttr.indexOf(',') > -1) {
                 anttr = anttr.replace('$', '').replace(',', '');
             }

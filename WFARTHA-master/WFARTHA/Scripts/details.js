@@ -266,7 +266,7 @@ $(document).ready(function () {
                 "name": 'AntTr',
                 "className": 'AntTr',
                 "orderable": false,
-                "visible": true
+                "visible": false
             },
             {
                 "className": 'AntXAMOR',

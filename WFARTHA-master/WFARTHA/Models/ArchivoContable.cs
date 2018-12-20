@@ -219,210 +219,331 @@ namespace WFARTHA.Models
 
                             //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
 
-                            for (int i = 0; i < lh.Count; i++)
+                            //MGC COC 16-12-2018 numero de renglones-->
+                            if (doc.TSOL_ID == "SCO")
                             {
-                                string post = "";
-                                string postk = "";
+                                //Obtener las amortizaciones
+                                List<AMOR_ANT> amoral = new List<AMOR_ANT>();
 
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
-                                CLAVES_CONTA clsi = cls.Where(c => c.DH == lh[i].ACCION).FirstOrDefault();
+                                amoral = db.AMOR_ANT.Where(am => am.NUM_DOC == doc.NUM_DOC).ToList();
 
-                                if (clsi != null)
+                                //Obtener las amortizaciones por posición
+                                AMOR_ANT amora = new AMOR_ANT();
+
+                                if (amoral != null && amoral.Count > 0)
                                 {
-                                    post = clsi.BSCHLL;
-                                    postk = clsi.BSCHL;
+                                    amora = amoral.Where(am => am.NUM_DOC == doc.NUM_DOC).FirstOrDefault();
                                 }
 
-                                //if (lh[i].ACCION == "H")
-                                //{
-                                //    post = "P";
-                                //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                //    {
-                                //        postk = "50";
-                                //    }
-                                //    else
-                                //    {
-                                //        postk = "31";
-                                //    }
-                                //}
-                                //else if (lh[i].ACCION == "D")
-                                //{
-                                //    post = "G";
-                                //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                //    {
-                                //        postk = "21";
-                                //    }
-                                //    else
-                                //    {
-                                //        postk = "40";
-                                //    }
+                                string antamor = "";
+                                decimal retcp = 0;
+                                string retcps = "";
 
-                                //}
+                                retcp = Convert.ToDecimal(doc.RETPC);
+                                retcps = retcp + "";
 
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
-
-                                string cuenta = lh[i].CUENTA + "";
-                                string ccosto = lh[i].CCOSTO + "";
-                                string imputacion = lh[i].IMPUTACION + "";
-
-                                sw.WriteLine(
-                                    //det[i].POS_TYPE + "|" +
-                                    "3" + "|" +
-                                    post + "|" +
-                                    doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
-                                                                   //det[i].BUS_AREA + "|" +
-                                    "|" +
-                                    //det[i].POST_KEY + "|" +
-                                    postk + "|" +
-                                    cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
-                                    ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
-                                    imputacion.Trim() + "|" +
-                                    lh[i].MONTO + "|" +//det[i].BALANCE + "|" +
-                                    lh[i].TEXTO + "|" + //det[i].TEXT + "|" +
-                                                        //det[i].SALES_ORG + "|" +
-                                                        //det[i].DIST_CHANEL + "|" +
-                                    "|" +
-                                    "|" +
-                                    //det[i].DIVISION + "|" +
-                                    "|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //det[i].INV_REF + "|" +
-                                    //det[i].PAY_TERM + "|" +
-                                    //det[i].JURIS_CODE + "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    //"|" +
-                                    //det[i].CUSTOMER + "|" +
-                                    //det[i].PRODUCT + "|" +
-                                    "|" +
-                                    "|" +
-                                    lh[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
-                                                       //det[i].PLANT + "|" +
-                                                       //det[i].REF_KEY1 + "|" +
-                                                       //det[i].REF_KEY3 + "|" +
-                                                       //det[i].ASSIGNMENT + "|" +
-                                                       //det[i].QTY + "|" +
-                                                       //det[i].BASE_UNIT + "|" +
-                                                       //det[i].AMOUNT_LC + "|" +
-                                                       //det[i].RETENCION_ID + "|"
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|"
-                                    );
-                            }
-
-                            for (int i = 0; i < ld.Count; i++)
-                            {
-                                string post = "";
-                                string postk = "";
-
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
-                                CLAVES_CONTA clsi = cls.Where(c => c.DH == ld[i].ACCION).FirstOrDefault();
-
-                                if (clsi != null)
+                                if (amora != null)
                                 {
-                                    post = clsi.BSCHLL;
-                                    postk = clsi.BSCHL;
+                                    antamor = amora.ANTAMOR + "";
                                 }
 
-                                //if (ld[i].ACCION == "H")
-                                //{
-                                //    post = "P";
-                                //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                //    {
-                                //        postk = "50";
-                                //    }
-                                //    else
-                                //    {
-                                //        postk = "31";
-                                //    }
-                                //}
-                                //else if (ld[i].ACCION == "D")
-                                //{
-                                //    post = "G";
-                                //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                //    {
-                                //        postk = "21";
-                                //    }
-                                //    else
-                                //    {
-                                //        postk = "40";
-                                //    }
+                                //Documentos P --> H
+                                for (int i = 0; i < lh.Count; i++)
+                                {
+                                    string post = "P";
 
-                                //}
+                                    string cuenta = lh[i].CUENTA + "";
 
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+                                    sw.WriteLine(
+                                        "6" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" +
+                                        cuenta.Trim() + "|" +
+                                        lh[i].MONTO + "|" + "|"
+                                        //retcps.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        //antamor.Trim()//MGC 18-12-2018 Archivo de contabilización
+                                        );
+                                }
 
-                                string cuenta = ld[i].CUENTA + "";
-                                string ccosto = ld[i].CCOSTO + "";
-                                string imputacion = ld[i].IMPUTACION + "";
+                                //Documentos G --> D
+                                for (int i = 0; i < ld.Count; i++)
+                                {
 
-                                sw.WriteLine(
-                                    //det[i].POS_TYPE + "|" +
-                                    "3" + "|" +
-                                    post + "|" +
-                                    doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
-                                                                   //det[i].BUS_AREA + "|" +
-                                    "|" +
-                                    //det[i].POST_KEY + "|" +
-                                    postk + "|" +
-                                    cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
-                                    ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
-                                    imputacion.Trim() + "|" +
-                                    ld[i].MONTO + "|" +//det[i].BALANCE + "|" +
-                                    ld[i].TEXTO + "|" + //det[i].TEXT + "|" +
-                                                        //det[i].SALES_ORG + "|" +
-                                                        //det[i].DIST_CHANEL + "|" +
-                                    "|" +
-                                    "|" +
-                                    //det[i].DIVISION + "|" +
-                                    "|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //"|" +
-                                    //det[i].INV_REF + "|" +
-                                    //det[i].PAY_TERM + "|" +
-                                    //det[i].JURIS_CODE + "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    //"|" +
-                                    //det[i].CUSTOMER + "|" +
-                                    //det[i].PRODUCT + "|" +
-                                    "|" +
-                                    "|" +
-                                    ld[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
-                                                       //det[i].PLANT + "|" +
-                                                       //det[i].REF_KEY1 + "|" +
-                                                       //det[i].REF_KEY3 + "|" +
-                                                       //det[i].ASSIGNMENT + "|" +
-                                                       //det[i].QTY + "|" +
-                                                       //det[i].BASE_UNIT + "|" +
-                                                       //det[i].AMOUNT_LC + "|" +
-                                                       //det[i].RETENCION_ID + "|"
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|" +
-                                    "|"
-                                    );
+                                    //Obtener el documento coc
+                                    DOCUMENTOCOC dcoc = new DOCUMENTOCOC();
+
+                                    decimal numdocl = ld[i].NUM_DOC;//MGC 18-12-2018 Archivo de contabilización
+                                    decimal posdl = ld[i].POS;//MGC 18-12-2018 Archivo de contabilización
+
+                                    //dcoc = db.DOCUMENTOCOCs.Where(dc => dc.NUM_DOC == ld[i].NUM_DOC && dc.POSD == ld[i].POS).FirstOrDefault();
+
+                                    try//MGC 18-12-2018 Archivo de contabilización
+                                    {
+                                        dcoc = db.DOCUMENTOCOCs.Where(dco => dco.NUM_DOC == numdocl && dco.POSD == posdl).FirstOrDefault();
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                    }
+
+                                    string ebelp = "";
+                                    string post = "G";
+                                    string meins = "";
+                                    decimal menge = 0;
+
+                                    if (dcoc != null)
+                                    {
+                                        ebelp = dcoc.POS + "";
+                                        meins = dcoc.MEINS + "";
+                                        menge = Convert.ToDecimal(dcoc.MENGE_BIL);
+                                    }
+
+
+
+                                    string cuenta = ld[i].CUENTA + "";
+                                    string ccosto = ld[i].CCOSTO + "";
+                                    string imputacion = ld[i].IMPUTACION + "";
+
+                                    sw.WriteLine(
+                                        "7" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" +
+                                        //cuenta.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        doc.EBELN + "|" +
+                                        ebelp + "|" +
+                                        //ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        menge + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        meins + "|" +
+                                        //ld[i].TOTAL + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        ld[i].TEXTO + "|" +
+                                        ld[i].MWSKZ + "|"
+                                        );
+                                }
+
+                                //Agregar las amortizaciones amoral
+                                for (int i = 0; i < amoral.Count; i++)
+                                {
+                                    sw.WriteLine(
+                                        "8" + "|" +
+                                        amoral[i].EBELN + "|" +
+                                        amoral[i].EBELP + "|" +
+                                        amoral[i].GJAHR + "|" +
+                                        amoral[i].BELNR + "|" +
+                                        amoral[i].BUZEI + "|" +
+                                        amoral[i].ANTXAMORT
+                                        );
+                                }
                             }
+                            else
+                            {
 
+                                for (int i = 0; i < lh.Count; i++)
+                                {
+                                    string post = "";
+                                    string postk = "";
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
+                                    CLAVES_CONTA clsi = cls.Where(c => c.DH == lh[i].ACCION).FirstOrDefault();
+
+                                    if (clsi != null)
+                                    {
+                                        post = clsi.BSCHLL;
+                                        postk = clsi.BSCHL;
+                                    }
+
+                                    //if (lh[i].ACCION == "H")
+                                    //{
+                                    //    post = "P";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "50";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "31";
+                                    //    }
+                                    //}
+                                    //else if (lh[i].ACCION == "D")
+                                    //{
+                                    //    post = "G";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "21";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "40";
+                                    //    }
+
+                                    //}
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+
+                                    string cuenta = lh[i].CUENTA + "";
+                                    string ccosto = lh[i].CCOSTO + "";
+                                    string imputacion = lh[i].IMPUTACION + "";
+
+                                    sw.WriteLine(
+                                        //det[i].POS_TYPE + "|" +
+                                        "3" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
+                                                                       //det[i].BUS_AREA + "|" +
+                                        "|" +
+                                        //det[i].POST_KEY + "|" +
+                                        postk + "|" +
+                                        cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
+                                        ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
+                                        imputacion.Trim() + "|" +
+                                        lh[i].MONTO + "|" +//det[i].BALANCE + "|" +
+                                        lh[i].TEXTO + "|" + //det[i].TEXT + "|" +
+                                                            //det[i].SALES_ORG + "|" +
+                                                            //det[i].DIST_CHANEL + "|" +
+                                        "|" +
+                                        "|" +
+                                        //det[i].DIVISION + "|" +
+                                        "|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //det[i].INV_REF + "|" +
+                                        //det[i].PAY_TERM + "|" +
+                                        //det[i].JURIS_CODE + "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        //"|" +
+                                        //det[i].CUSTOMER + "|" +
+                                        //det[i].PRODUCT + "|" +
+                                        "|" +
+                                        "|" +
+                                        lh[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
+                                                           //det[i].PLANT + "|" +
+                                                           //det[i].REF_KEY1 + "|" +
+                                                           //det[i].REF_KEY3 + "|" +
+                                                           //det[i].ASSIGNMENT + "|" +
+                                                           //det[i].QTY + "|" +
+                                                           //det[i].BASE_UNIT + "|" +
+                                                           //det[i].AMOUNT_LC + "|" +
+                                                           //det[i].RETENCION_ID + "|"
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|"
+                                        );
+                                }
+
+                                for (int i = 0; i < ld.Count; i++)
+                                {
+                                    string post = "";
+                                    string postk = "";
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
+                                    CLAVES_CONTA clsi = cls.Where(c => c.DH == ld[i].ACCION).FirstOrDefault();
+
+                                    if (clsi != null)
+                                    {
+                                        post = clsi.BSCHLL;
+                                        postk = clsi.BSCHL;
+                                    }
+
+                                    //if (ld[i].ACCION == "H")
+                                    //{
+                                    //    post = "P";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "50";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "31";
+                                    //    }
+                                    //}
+                                    //else if (ld[i].ACCION == "D")
+                                    //{
+                                    //    post = "G";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "21";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "40";
+                                    //    }
+
+                                    //}
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+
+                                    string cuenta = ld[i].CUENTA + "";
+                                    string ccosto = ld[i].CCOSTO + "";
+                                    string imputacion = ld[i].IMPUTACION + "";
+
+                                    sw.WriteLine(
+                                        //det[i].POS_TYPE + "|" +
+                                        "3" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
+                                                                       //det[i].BUS_AREA + "|" +
+                                        "|" +
+                                        //det[i].POST_KEY + "|" +
+                                        postk + "|" +
+                                        cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
+                                        ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
+                                        imputacion.Trim() + "|" +
+                                        ld[i].MONTO + "|" +//det[i].BALANCE + "|" +
+                                        ld[i].TEXTO + "|" + //det[i].TEXT + "|" +
+                                                            //det[i].SALES_ORG + "|" +
+                                                            //det[i].DIST_CHANEL + "|" +
+                                        "|" +
+                                        "|" +
+                                        //det[i].DIVISION + "|" +
+                                        "|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //det[i].INV_REF + "|" +
+                                        //det[i].PAY_TERM + "|" +
+                                        //det[i].JURIS_CODE + "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        //"|" +
+                                        //det[i].CUSTOMER + "|" +
+                                        //det[i].PRODUCT + "|" +
+                                        "|" +
+                                        "|" +
+                                        ld[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
+                                                           //det[i].PLANT + "|" +
+                                                           //det[i].REF_KEY1 + "|" +
+                                                           //det[i].REF_KEY3 + "|" +
+                                                           //det[i].ASSIGNMENT + "|" +
+                                                           //det[i].QTY + "|" +
+                                                           //det[i].BASE_UNIT + "|" +
+                                                           //det[i].AMOUNT_LC + "|" +
+                                                           //det[i].RETENCION_ID + "|"
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|"
+                                        );
+                                }
+
+                            }
+                            //MGC COC 16-12-2018 numero de renglones--<
                             //MGC 11-10-2018 Acciones para el encabezado RETENCIONES -->
                             for (int i = 0; i < doc.DOCUMENTORs.Count; i++)
                             {

@@ -134,7 +134,17 @@ namespace WFARTHA.Controllers
                         dm.CUENTA = dps.ElementAt(i).CUENTA;
                         string ct = dps.ElementAt(i).GRUPO;
                         var tct = dps.ElementAt(i).TCONCEPTO;
-                        dm.NOMCUENTA = db.CONCEPTOes.Where(x => x.ID_CONCEPTO == ct && x.TIPO_CONCEPTO == tct).FirstOrDefault().DESC_CONCEPTO.Trim();
+                        //LEJGG 18-12-2018------------------------
+                        //Validacion si es OC
+                        if (dOCUMENTO.TSOL_ID == "SCO")
+                        {
+                            dm.MWSKZ = dps.ElementAt(i).MWSKZ;
+                        }
+                        if (dOCUMENTO.TSOL_ID != "SCO")
+                        {
+                            dm.NOMCUENTA = db.CONCEPTOes.Where(x => x.ID_CONCEPTO == ct && x.TIPO_CONCEPTO == tct).FirstOrDefault().DESC_CONCEPTO.Trim();
+                        }
+                        //LEJGG 18-12-2018------------------------
                         dm.TIPOIMP = dps.ElementAt(i).TIPOIMP;
                         dm.IMPUTACION = dps.ElementAt(i).IMPUTACION;
                         dm.MONTO = fc.toShow(dps.ElementAt(i).MONTO, formato.DECIMALES);
@@ -395,7 +405,9 @@ namespace WFARTHA.Controllers
             doc.ESTATUS_WF = dOCUMENTO.ESTATUS_WF;
             doc.ESTATUS_PRE = dOCUMENTO.ESTATUS_PRE;//MGC 17-12-2018 Reprocesar Archivo preliminar
             doc.USUARIOC_ID = dOCUMENTO.USUARIOC_ID;//MGC 17-12-2018 Reprocesar Archivo preliminar
-
+            doc.EBELN = dOCUMENTO.EBELN;//lejgg 16-12-2018
+            ViewBag.ebeln = dOCUMENTO.EBELN;//lejgg 16-12-2018
+            ViewBag.total = dOCUMENTO.MONTO_DOC_MD;
             //FRT07112018 Se agrega el nombre del impueto en la cabecera
             var impcab = dOCUMENTO.IMPUESTO;
             var impuestotcab = db.IMPUESTOTs.Where(a => a.MWSKZ.Equals(impcab)).FirstOrDefault().TXT50;//MGC 07-11-2018 Descripción corta
@@ -725,6 +737,46 @@ namespace WFARTHA.Controllers
             }
             //ViewBag.DETAA = new SelectList(dta, "ID", "TEXT");
             ViewBag.DETAA = new SelectList(lstDta, "ID", "TEXT");//LEJGG 03-12-2018
+
+            //LEJGG 16-12-2018------------------------------------------------>
+            //traer los datos de documentococ
+            var dcoc = db.DOCUMENTOCOCs.Where(x => x.NUM_DOC == id).ToList();
+            List<DOCUMENTOCOC_MOD> lstdcoc = new List<DOCUMENTOCOC_MOD>();
+            for (int i = 0; i < dcoc.Count; i++)
+            {
+                DOCUMENTOCOC_MOD oc = new DOCUMENTOCOC_MOD();
+                oc.POSD = dcoc[i].POSD;
+                oc.POS = dcoc[i].POS;
+                oc.MATNR = dcoc[i].MATNR;
+                oc.PS_PSP_PNR = dcoc[i].PS_PSP_PNR;
+                oc.WAERS = dcoc[i].WAERS;
+                oc.MEINS = dcoc[i].MEINS;
+                oc.MENGE_BIL = dcoc[i].MENGE_BIL;
+                lstdcoc.Add(oc);
+            }
+            doc.DOCUMENTOCOC = lstdcoc;
+
+
+            List<AMORANT_MOD> lstdamant = new List<AMORANT_MOD>();
+            var amorant = db.AMOR_ANT.Where(x => x.NUM_DOC == id).ToList();
+            for (int i = 0; i < amorant.Count; i++)
+            {
+                AMORANT_MOD oc = new AMORANT_MOD();
+                oc.NUM_DOC = amorant[i].NUM_DOC;
+                oc.BELNR = amorant[i].BELNR;
+                oc.EBELN = amorant[i].EBELN;
+                oc.EBELP = amorant[i].EBELP;
+                oc.GJAHR = amorant[i].GJAHR;
+                oc.BUZEI = amorant[i].BUZEI;
+                oc.ANTAMOR = amorant[i].ANTAMOR;
+                oc.TANT = amorant[i].TANT;
+                oc.WAERS = amorant[i].WAERS;
+                oc.ANTTRANS = amorant[i].ANTTRANS;
+                oc.ANTXAMORT = amorant[i].ANTXAMORT;
+                lstdamant.Add(oc);
+            }
+            doc.AMORANT = lstdamant;
+            //LEJGG 16-12-2018------------------------------------------------<
 
             //Obtener los aprobadores
             JsonResult autorizadores = new JsonResult();
@@ -2097,13 +2149,7 @@ namespace WFARTHA.Controllers
                         //Lejgg 28.10.2018---------------------------------------->
                         Session["Temporal"] = null;
                         //ENDFRT25112018
-
-
                     }
-
-
-
-
                     //Guardar las retenciones por posición
                     //Lej14.09.2018------
                     try
@@ -5994,6 +6040,24 @@ namespace WFARTHA.Controllers
             DOCUMENTO_MOD doc = new DOCUMENTO_MOD();
             doc.DOCUMENTOA_TAB = docs;
             return PartialView("~/Views/Solicitudes/_PartialConTr4.cshtml", doc);
+        }
+
+        //Lejgg 12-12-2018
+        [HttpPost]
+        public ActionResult getPartialCon5(List<DOCUMENTOCOC_MOD> docs)
+        {
+            DOCUMENTO_MOD doc = new DOCUMENTO_MOD();
+            doc.DOCUMENTOCOC = docs;
+            return PartialView("~/Views/Solicitudes/_PartialConTr5.cshtml", doc);
+        }
+
+        //Lejgg 15-12-2018
+        [HttpPost]
+        public ActionResult getPartialConOC(List<AMORANT_MOD> docs)
+        {
+            DOCUMENTO_MOD doc = new DOCUMENTO_MOD();
+            doc.AMORANT = docs;
+            return PartialView("~/Views/Solicitudes/_PartialConOC.cshtml", doc);
         }
 
         [HttpPost]

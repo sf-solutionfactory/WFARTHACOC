@@ -1639,6 +1639,21 @@ $(document).ready(function () {
 
     });
 
+    //lejgg 18-12-2018
+    //Funcion para obtener tsol
+    function valTsol() {
+        var val3 = $("#tsol").val();
+        val3 = "[" + val3 + "]";
+        val3 = val3.replace("{", "{ \"");
+        val3 = val3.replace("}", "\" }");
+        val3 = val3.replace(/\,/g, "\" , \"");
+        val3 = val3.replace(/\=/g, "\" : \"");
+        val3 = val3.replace(/\ /g, "");
+        var jsval = $.parseJSON(val3);
+
+        return jsval[0].ID;
+    }
+
     //lejgg 05-12-2018
     $('#SOCIEDAD_ID').change(function () {
         traerCadAutR($("#UsC").val(), $("#SOCIEDAD_ID").val());

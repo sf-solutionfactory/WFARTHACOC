@@ -555,6 +555,7 @@
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
     <Compile Include="Models\EKKO_MOD.cs" />
     <Compile Include="Models\EKPO_MOD.cs" />
+    <Compile Include="Models\flujo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProyectoSociedadNuevo.cs" />

@@ -105,6 +105,65 @@ namespace WFARTHA.Controllers
 
         //ENDFRT 13-12-2018 para realizar la actualización del tipo de cambio segun la fecha en el modal y la fechacon
 
+        //MGC 20-12-2018 Archivo contable---------------------------------------------------------------------<
+
+        public string TipoCambio(string moneda, decimal ndoc, DateTime? ndate)
+        {
+            var correcto = "0";
+            var _bol = false;
+            decimal? _tipocambio = 0;
+            var dia = 0;
+            //DateTime fechacon = P.FECHACON.Value; //MGC 14-12-2018 Fecha contabilización
+            if (ndate != null)
+            { //verificar fecha null
+                DateTime? datem = ndate;
+                while (dia < 100) // Buscar el tipo de cambio en caso de no encontrarlo buscar el mas cercano hacia abajo 
+                {
+                    DateTime fecha = ndate.Value.AddDays(-dia);
+
+                    string displayName = null;
+                    var keyValue = db.TCAMBIOs.FirstOrDefault(a => a.TCURR == moneda & a.GDATU == fecha);
+                    if (keyValue != null)
+                    {
+                        var lprov = db.TCAMBIOs.Where(a => a.TCURR == moneda & a.GDATU == fecha).First().UKURS;
+                        _tipocambio = lprov;
+                        break;
+                    }
+                    dia++;
+                }
+                DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(ndoc);
+                dOCUMENTO.TIPO_CAMBIO = _tipocambio;
+
+                try
+                {
+                    db.Entry(dOCUMENTO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                }
+
+                try
+                {
+                    //FLUJO fLUJO = db.FLUJOes.Find(F.WORKF_ID, F.WF_VERSION, F.WF_POS, F.NUM_DOC, F.POS, F.DETPOS);
+                    FLUJO fLUJO = db.FLUJOes.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).OrderBy(a => a.POS).FirstOrDefault();
+                    fLUJO.FECHACON = ndate;
+                    db.Entry(fLUJO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                }
+
+
+            }
+
+            return correcto;
+        }
+
+        //MGC 20-12-2018 Archivo contable--------------------------------------------------------------------->
+
         [HttpPost]
         public ActionResult Procesa(FLUJO f)
         {

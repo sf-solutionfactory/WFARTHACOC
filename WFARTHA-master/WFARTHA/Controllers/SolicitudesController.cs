@@ -8824,6 +8824,83 @@ namespace WFARTHA.Controllers
         }
         //MGC 17-12-2018 Reprocesar Archivo preliminar--------------------------------------------------------------------------<
 
+        //MGC 20-12-2018 Archivo contable-------------------------------------------------------------------------->
+        [HttpPost]
+        public ActionResult ReprocesarCo(decimal id, DateTime? txt_fechaconta)
+        {
+
+            DOCUMENTO d = db.DOCUMENTOes.Find(id);
+
+            string fechacon = "";
+
+            if (d != null)
+            {
+                if (txt_fechaconta != null)
+                {
+                    fechacon = String.Format("{0:dd.MM.yyyy}", txt_fechaconta).Replace(".", "");
+                }
+
+                ArchivoContable sa = new ArchivoContable();
+                string file = sa.generarArchivo(d.NUM_DOC, 0, "A", fechacon);//MGC-14-12-2018 Modificación fechacon
+
+                if (file == "")
+                {                 
+                    //d.ESTATUS = "A";//MGC 29-10-2018 El nuevo estatus es C              
+
+                    DOCUMENTO dcc = db.DOCUMENTOes.Find(d.NUM_DOC);
+
+                    dcc.ESTATUS_WF = "A";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS = "C";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS_PRE = "G";//MGC 29-10-2018 El nuevo estatus es C
+                    db.Entry(dcc).State = EntityState.Modified;
+                 
+                    db.SaveChanges();
+
+                    //MGC 04 - 10 - 2018 Botones para acciones WF
+                    //Mensaje para contabilizando SAP
+                    DOCUMENTOPRE dp = new DOCUMENTOPRE();
+
+                    dp.NUM_DOC = d.NUM_DOC;
+                    dp.POS = 1;
+                    dp.MESSAGE = "Contabilizando SAP";
+
+                    try
+                    {
+                        db.DOCUMENTOPREs.Add(dp);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        string r = "";
+                    }
+
+                    //Modificar la fecha
+                    if (d.MONEDA_ID != "MXN" && txt_fechaconta != null)
+                    {
+                        FlujosController fc = new FlujosController();
+                        var moneda = d.MONEDA_ID;
+                        var restipo = fc.TipoCambio( moneda, d.NUM_DOC, txt_fechaconta);
+                    }
+
+                }
+                else
+                {
+                    DOCUMENTO dcc = db.DOCUMENTOes.Find(d.NUM_DOC);
+
+                    dcc.ESTATUS_WF = "A";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS = "C";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS_PRE = "E";//MGC 29-10-2018 El nuevo estatus es C
+                    db.Entry(dcc).State = EntityState.Modified;
+                    db.SaveChanges();
+
+        
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        //MGC 20-12-2018 Archivo contable--------------------------------------------------------------------------<
+
     }
     public class TXTImp
     {

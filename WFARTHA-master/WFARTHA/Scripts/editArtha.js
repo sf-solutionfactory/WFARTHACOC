@@ -11,6 +11,281 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
+    //--LEJGG 21-12-2018
+    $('#table_infoP').DataTable({
+
+        language: {
+            //"url": "../Scripts/lang/@Session["spras"].ToString()" + ".json"
+            "url": "../Scripts/lang/ES.json"
+        },
+        "paging": false,
+        "info": false,
+        "ordering": false,
+        "searching": false,
+        columnDefs: [
+            {
+                targets: [0, 6, 7, 11, 19, 21],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ],
+        "columns": [
+            {
+                "name": 'Fila',
+                "className": 'POS',
+                "orderable": false
+            },
+            {
+                "name": 'A1',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo',
+                "orderable": false
+            },
+            {
+                "name": 'A2',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo2',
+                "orderable": false
+            },
+            {
+                "name": 'A3',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo3',
+                "orderable": false
+            },
+            {
+                "name": 'A4',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo4',
+                "orderable": false
+            },
+            {
+                "name": 'A5',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo5',
+                "orderable": false
+            },
+            {
+                "name": 'MATERIAL',
+                "className": 'MATERIAL',
+                "orderable": false
+            },
+            {
+                "name": 'TXTPOS',
+                "className": 'TXTPOS',
+                "orderable": false
+            },
+            {
+                "name": 'CA',
+                "className": 'CA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'FACTURA',
+                "className": 'FACTURA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'TCONCEPTO',
+                "className": 'TCONCEPTO',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'CONCEPTO',
+                "className": 'GRUPO',
+                "orderable": false
+            },
+            {
+                "name": 'CCOSTO',
+                "className": 'CCOSTO',
+                "orderable": false
+            },
+            {
+                "name": 'PEP',
+                "className": 'PEP',
+                "orderable": false
+            },
+            {
+                "name": 'CUENTA',
+                "className": 'CUENTA',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CUENTANOM',
+                "className": 'CUENTANOM',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'TIPOIMP',
+                "className": 'TIPOIMP',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'IMPUTACION',
+                "className": 'IMPUTACION',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'MONTO',
+                "className": 'MONTO',
+                "orderable": false
+            },
+            {
+                "name": 'MONEDA',
+                "className": 'MONEDA',
+                "orderable": false
+
+            },
+            {
+                "name": 'CANTIDAD',
+                "className": 'CANTIDAD',
+                "orderable": false
+            },
+            {
+                "name": 'UNIDAD',
+                "className": 'UNIDAD',
+                "orderable": false
+            },
+            {
+                "name": 'IMPUESTOP',
+                "className": 'IMPUESTOP',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'IVA',
+                "className": 'IVA',
+                "orderable": false
+            },
+            {
+                "name": 'TOTAL',
+                "className": 'TOTAL',
+                "orderable": false,
+                "visible": false //
+            }
+        ]
+    });
+
+    $('#tableOC').DataTable({
+        language: {
+            "url": "../Scripts/lang/ES.json"
+        },
+        "paging": false,
+        "info": false,
+        "ordering": false,
+        "searching": false,
+        "columns": [
+            {
+                "className": 'BRTWR',
+                "defaultContent": '',
+                "orderable": false
+            },
+            {
+                "className": 'FondoGarantia',
+                "defaultContent": '',
+                "orderable": false
+            },
+            {
+                "name": 'PorAnt',
+                "className": 'PorAnt',
+                "orderable": false,
+                "visible": true
+            }//,
+            //{
+            //    "name": 'AntSol',
+            //    "className": 'AntSol',
+            //    "orderable": false,
+            //    "visible": true
+            //},
+            //{
+            //    "name": 'MontoAntT',
+            //    "className": 'MontoAntT',
+            //    "orderable": false,
+            //    "visible": true
+            //},
+            //{
+            //    "name": 'AntAmort',
+            //    "className": 'AntAmort',
+            //    "orderable": false,
+            //    "visible": true
+            //},
+            //{
+            //    "name": 'AntTr',
+            //    "className": 'AntTr',
+            //    "orderable": false,
+            //    "visible": true
+            //},
+            //{
+            //    "name": 'AmortAnt',
+            //    "className": 'AmortAnt',
+            //    "orderable": false,
+            //    "visible": true
+            //}
+        ]
+    });
+
+    $('#tableOC2').DataTable({
+        language: {
+            "url": "../Scripts/lang/ES.json"
+        },
+        "paging": false,
+        "info": false,
+        "ordering": false,
+        "searching": false,
+        "columns": [
+            {
+                "className": 'POSC',
+                "defaultContent": '',
+                "orderable": false
+            },
+            {
+                "className": 'POS',
+                "defaultContent": '',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "className": 'NDOC',
+                "defaultContent": '',
+                "orderable": false
+            },
+            {
+                "className": 'EJERCICIO',
+                "orderable": false,
+                "visible": true
+            },
+            {
+                "className": 'ANTAMOR',
+                "orderable": false,
+                "visible": true
+            },
+            {
+                "name": 'TOANT',
+                "className": 'TOANT',
+                "orderable": false,
+                "visible": true
+            },
+            {
+                "className": 'MONEDA',
+                "defaultContent": '',
+                "orderable": false
+            },
+            {
+                "name": 'AntTr',
+                "className": 'AntTr',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "className": 'AntXAMOR',
+                "orderable": false,
+                "visible": true
+            }
+        ]
+    });
+    //--LEJGG 21-12-2018
+
     //---
     var _fd = $('#FECHAD').val().split(' ');
     $('#FECHAD').val(_fd[0]);
@@ -254,7 +529,7 @@ $(document).ready(function () {
             var _m = true;
             var _g = true;
             var _f = true;
-            
+
 
             var _anull = true //FRT06122018
             var _asnull = true //FRT06122018
@@ -709,7 +984,7 @@ $(document).ready(function () {
                         statSend = false
                         M.toast({ html: msgerror });
                     }
-                    
+
 
                 }
                 else {
@@ -1107,11 +1382,11 @@ $(document).ready(function () {
                                     $(tdata)
                                 ).draw(false).node();
                             }
-                        //Lejgg 22-10-2018------------------------------------------------>
+                            //Lejgg 22-10-2018------------------------------------------------>
                         } else {
                             M.toast({ html: "No se pueden repetir el anexo: " + fileName });
                         }
-                        
+
                     }
                     else {
                         M.toast({ html: "Tipo de archivo no valido: " + fileName });
@@ -1198,7 +1473,7 @@ $(document).ready(function () {
 
         $("#cargando").css("display", "none");
         document.getElementById('file_sopAnexar').value = '';
-            // END FRT13112018
+        // END FRT13112018
     });
 
     $('#table_anexa tbody').on('click', 'td.select_row', function () {
@@ -1300,7 +1575,12 @@ $(window).on('load', function () {
         $("#DETTA_ID_RUTA_AGENTE").val(dataj.ID_RUTA_AGENTE);
         $("#DETTA_USUARIOA_ID").val(dataj.USUARIOA_ID);
     });
-
+    mostrarTabla(tsolid());//lejgg 21-12-2018
+    //lejgg 21-12-2018
+    if (tsolid() === "SCO") {
+        llenarCOC();       
+    }
+    //lejgg 21-12-2018
     $('.materialize-textarea').css("height", "0px");
     tamanosRenglones();
 });
@@ -3851,7 +4131,7 @@ function obtenerCadena(version, usuarioc, id_ruta, usuarioa, monto, sociedad, vc
     //MGC 11-12-2018 Agregar Contabilizador 0--------------->
     $('#VERSIONC1').val("");
     $('#VERSIONC2').val("");
-   //MGC 11-12-2018 Agregar Contabilizador 0---------------<
+    //MGC 11-12-2018 Agregar Contabilizador 0---------------<
 
     $.ajax({
         type: "POST",
@@ -4073,4 +4353,15 @@ function valF(frmValues) {
 function asigF(fir) {
     firmaVal = fir;
 }
- ////MGC 10-12-2018 Firma del usuario cancelar --------------------------------------------------<
+////MGC 10-12-2018 Firma del usuario cancelar --------------------------------------------------<
+function tsolid() {
+    var val3 = $('#tsol').val();
+    val3 = "[" + val3 + "]";
+    val3 = val3.replace("{", "{ \"");
+    val3 = val3.replace("}", "\" }");
+    val3 = val3.replace(/\,/g, "\" , \"");
+    val3 = val3.replace(/\=/g, "\" : \"");
+    val3 = val3.replace(/\ /g, "");
+    var jsval = $.parseJSON(val3);
+    return jsval[0].ID;
+}

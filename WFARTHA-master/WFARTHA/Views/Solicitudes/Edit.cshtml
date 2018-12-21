@@ -1,5 +1,4 @@
 ﻿@model WFARTHA.Models.DOCUMENTO_MOD
-
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var pacc = (string)ViewBag.pacc;
@@ -24,22 +23,21 @@
     var montomd = formatoc.toShow(total, ViewBag.dec);
 
 }
-
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <link href="~/Content/dataTable.css" rel="stylesheet" />
 @* Para el autocomplete *@
 <link href="~/Content/autocomplete.css" rel="stylesheet" />
 <script src="~/Scripts/autocomplete1.10.2.js"></script>
 <script src="~/Scripts/autocomplete1.11.4.js"></script>
-
 <script>
     var auto = $.noConflict(true);
 </script>
-
 <script src="~/Scripts/editArtha.js"></script>@*LEJGG-04-10-2018*@
 <script src="~/Scripts/ValidarCampos.js"></script>@*LEJGG-19-10-2018*@
 <script src="~/Scripts/formatos.js"></script>
+<script src="~/Scripts/editcoc.js"></script>
 <style>
+
     .leftAlignement {
         text-align: left;
     }
@@ -64,9 +62,9 @@
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="_hd" name="_hd" type="hidden" value="@ViewBag.Retenciones" />
 <input id="pacc" name="pacc" type="hidden" value="@ViewBag.pacc" />
+<input id="eebeln" name="eebeln" type="hidden" value="@ViewBag.ebeln" />
 <input type="hidden" value=" " id="conOrden" name="conOrden" />
 <div class="row" style="margin-bottom:0">
-
     @*@{WFARTHA.Entities.USUARIO us = ViewBag.usuario;
 
             <div class="col s12 m3 l2">
@@ -84,8 +82,8 @@
                 </div>
             </div>
         }*@
-
     <style>
+
         div.dataTables_wrapper {
             margin: 0 auto;
         }
@@ -160,7 +158,6 @@
             font-size: 12px;
         }
     </style>
-
     <div class="col s12 right-align">
         @if (pacc == "B")
         {
@@ -172,14 +169,13 @@
             <a class="btn-small modal-trigger" id="btn_cancel" href="#modal2">Eliminar</a>
 
         }
-
         <a id="btn_cancelar" href="@Url.Action("Index", "Home" )" onclick="return confirm('Deseas salir sin guardar o enviar');" class="btn btn-small">Cancelar</a>@*FRT02122018 Para poder mostrar mensaje*@
         <a id="btn_guardarh" class="btn btn-small">Enviar</a>
         @if (pacc == "R" | pacc == "P")
         {
             using (Html.BeginForm("Cancelar", "Solicitudes", new { id = Model.NUM_DOC }, FormMethod.Post, new { id = "form_procesac" }))
             {
-                 <div id="modal2" class="modal">
+                <div id="modal2" class="modal">
                     @Html.AntiForgeryToken()
                     <div class="modal-content" style="text-align: left;">
                         <div class="row">
@@ -200,14 +196,14 @@
                                 <input type="password" name="txtfirma_usc" id="txtfirma_usc" value="" />
                                 <label for="txtfirma_usc" id="lbl_firma">Firma</label>
                             </div>
-                             <a href="#!" class="modal-action modal-close btn-flat">No</a>
+                            <a href="#!" class="modal-action modal-close btn-flat">No</a>
                             <a id="cont_sendc" href="#!" class="modal-action modal-close btn-flat">Si</a>
                             @*<a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>*@
                             @*<input id="cont_sendc" type="button" value="Si" class="modal-action modal-close btn-flat" onclick="document.getElementById('loader').style.display = 'initial';" />*@
                         </div>
                     </div>
                 </div>
-                 <script>
+                <script>
                     //MGC 18-10-2018 Firma del usuario -------------------------------------------------->
                     var elem2 = document.getElementById('modal2');
                     if (elem2 != undefined)
@@ -215,27 +211,27 @@
                     //Validar la firma del usuario
                     //$("#form_procesa").submit(function (e) {
                     $("#cont_sendc").click(function (e) {
-                         //var $this = $(this);
+                        //var $this = $(this);
                         //var frmValues = JSON.stringify($this)
                         document.getElementById('loader').style.display = 'initial';
-                         var p = $("#txtfirma_usc").val();
-                         var resc = false;
+                        var p = $("#txtfirma_usc").val();
+                        var resc = false;
                         res = valF(p);
-                         if (res == "true") {
+                        if (res == "true") {
                             resc = true;
                         }
-                         if (!resc) {
+                        if (!resc) {
                             //Error
                             document.getElementById('loader').style.display = 'none';
                             M.toast({ html: 'Error con la Firma del Usuario' });
                             e.preventDefault();
-                         } else {
+                        } else {
                             //Hacer el submit
                             $("#form_procesac").submit();
                         }
                         document.getElementById('loader').style.display = 'none';
                     });
-                 </script>
+                </script>
             }
             @*//MGC 06-12-2018 Firma del usuario cancelar --------------------------------------------------<*@
         }
@@ -245,7 +241,6 @@
         <div>
             <h5 id="head_cabecera" style="display:inline-block">@ViewBag.pid - </h5>
             <h5 id="head_cabecera" style="display:inline-block">@ViewBag.PrSl</h5>
-
         </div>
     </div>
     <div class="div_bottom">
@@ -253,7 +248,6 @@
         <hr class="hr_color #4e342e brown darken-3" />
     </div>
 </div>
-
 <div class="row">
     <div class="col s12">
         <ul class="tabs" id="tabs">
@@ -264,13 +258,11 @@
         </ul>
     </div>
 </div>
-
 @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
 {
     <input type="hidden" id="archivo" name="archivo" value="" />
     <button id="btnDownload" class="btn" type="submit" style="display:none">Descargar</button>
 }
-
 @using (Html.BeginForm("Edit", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
 {
     @Html.AntiForgeryToken()
@@ -355,14 +347,12 @@
                                     var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
                                 </script>
-
                                 <div class="form-group col s3" style="display:none;">
                                     @Html.LabelFor(model => model.FECHACON, "Fecha Contabilización", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.FECHACON, new { htmlAttributes = new { @class = "form-control fechaVal", @disabled = "disabled" } })@*LEJ 04.09.2018*@
                                     </div>
                                 </div>
-
                                 <script>
                                     var elemdp = document.querySelector('#FECHACON');
                                     var optionsdp = {
@@ -385,14 +375,12 @@
                                     var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
                                 </script>
-
                                 <div class="form-group col s3" style="display:none;">
                                     @Html.LabelFor(model => model.FECHA_BASE, "Fecha Base Line", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.FECHA_BASE, new { htmlAttributes = new { @class = "form-control fechaVal", @disabled = "disabled" } })@*LEJ 04.09.2018*@
                                     </div>
                                 </div>
-
                                 <script>
                                     var elemdp = document.querySelector('#FECHA_BASE');
                                     var optionsdp = {
@@ -417,13 +405,12 @@
                                 </script>
                                 @*MGC 03-10-2018 solicitud con orden de compra -->*@
                                 @*<div class="form-group col s3">*@
-                                <div id="div_norden_compra" class="input-field col s3" style="display:none">
+                                @*<div id="div_norden_compra" class="input-field col s3" style="display:none">
                                     <input type="text" id="norden_compra" value="" />
                                     <label for="norden_compra" id="lbl_norden_compra">Orden de Compra</label>
-                                </div>
+                                </div>*@
                                 @*MGC 03-10-2018 solicitud con orden de compra <--*@
                             </div>
-
                             <div class="row" style="margin-bottom:0">
                                 <div class="form-group col s3">
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -438,7 +425,6 @@
                                         }
                                     </div>
                                 </div>
-
                                 <div class="form-group col s3">
                                     @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de Cambio", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -452,7 +438,6 @@
                                         }
                                     </div>
                                 </div>
-
                                 <div class="form-group col s2">
                                     @Html.LabelFor(model => model.CONDICIONES, "Condición de Pago", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -466,20 +451,16 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s3">
 
-
                                     @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @class = "form-control" } })@*LEJ 04.09.2018*@
                                     @Html.LabelFor(model => model.PAYER_ID, "Proveedor", htmlAttributes: new { @class = "active", @for = "PAYER_ID" })
-
                                 </div>
                                 @*//LEJGG 04.10.2018 Conceptos*@
                                 <link href="~/Content/autocomplete.css" rel="stylesheet" />
                                 <script src="~/Scripts/autocomplete1.10.2.js"></script>
                                 <script src="~/Scripts/autocomplete1.11.4.js"></script>
-
                                 <script>
                                     var auto = $.noConflict(true);
                                 </script>
@@ -503,7 +484,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row" style="margin-bottom:0">
                                 <div class="form-group col s3" style="display:none;">
                                     @Html.LabelFor(model => model.REFERENCIA, "Referencia", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -512,14 +492,12 @@
                                         <input type="hidden" id="ndoc" value="@ViewBag.ndoc" />
                                     </div>
                                 </div>
-
                                 <div class="form-group col s6">
                                     @Html.LabelFor(model => model.CONCEPTO, "Explicacion", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.CONCEPTO, "Concepto", new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })@*LEJ 04.09.2018*@
                                     </div>
                                 </div>
-
                                 <div class="form-group col s3" style="display:none;">
                                     @Html.LabelFor(model => model.CLAVE_CTA, "Clave Cuenta", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -540,7 +518,6 @@
                                         @*@Html.ValidationMessageFor(model => model.TEXTO_POS, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
-
                             </div>
                             <div class="row" style="margin-bottom:0">
                                 <div class="form-group col s4">
@@ -624,7 +601,6 @@
                                     }
                                 </tbody>
                             </table>
-
                             <table class="table display mdl-data-table striped" id="table_reth" style="width:100%; display:none">
                                 <thead>
                                     <tr>
@@ -659,97 +635,279 @@
                 </div>
             </div>
         </div>
-
         @*Información Contable*@
         <div id="Contable_cont" class="col s12" style="font-size:12px;">
             <div class="row">
+                <div class="col s12 hide" id="div_garantia">
+                    <div class="card-panel">
+                        @*MGC 29-10-2018 Agregar funcionalidad de proyecto ---------------------------------------------------->*@
+                        @{string proy = ViewBag.pid + "";}
+                        @Html.Hidden("PROY_SEL", proy)
+                        @*MGC 29-10-2018 Agregar funcionalidad de proyecto ----------------------------------------------------<*@
+                        <div class="row" style="margin-bottom:0px;">
+                            <div class="col s12 m12 l3">
+                                <div id="div_norden_compra" class="input-field col s12">
+                                    <select id="norden_compra"></select><!--ADD RSG 19.10.2018-->
+                                    <label for="norden_compra" id="lbl_norden_compra">Orden de compra</label>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l9">
+                                <div class="row" style="margin-bottom:0px;">
+                                    <div class="col s12" style="overflow-x:auto;">
+                                        <table class="mdl-data-table striped" id="tableOC">
+                                            <thead>
+                                                <tr>
+                                                    <th>Monto Contrato</th>
+                                                    <th>% Fondo de Garantía</th>
+                                                    <th>% Anticipo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m12 l12" style="margin-top:5px;">
+                                <div class="row" style="margin-bottom:0px;">
+                                    <div class="col s12" style="overflow-x:auto;">
+                                        <table class="mdl-data-table striped" id="tableOC2" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fila</th>
+                                                    <th>Pos</th>
+                                                    <th>No. Doc. SAP</th>
+                                                    <th>Ejercicio</th>
+                                                    <th>Anticipo Amortizado</th>
+                                                    <th>Total Anticipo</th>
+                                                    <th>Moneda</th>
+                                                    <th>Anticipo en Transito</th>
+                                                    <th>Anticipo por Amortizar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        @*-----TABLA AMORANT HIDDEN----- 15-12-2018*@
+                                        <table class="mdl-data-table striped" id="tableOC2H" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pos Compra</th>
+                                                    <th>Pos</th>
+                                                    <th>Ndoc</th>
+                                                    <th>Ejercicio</th>
+                                                    <th>Anticipo Amortizado</th>
+                                                    <th>Total Anticipo</th>
+                                                    <th>Moneda</th>
+                                                    <th>Anticipo en Transito</th>
+                                                    <th>Anticipo por Amortizar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col s12">
                     <div class="card-panel">
                         <h5 id="head_cabecera">Detalle</h5>
                         <div class="row" style="margin-bottom:0">
-
                             @*//MGC 04092018 Conceptos*@
                             @{string jval = ViewBag.TSOL_VALUES;
                                 @Html.Hidden("impuestosval", jval)
                             }
                             <!--ADD RSG 18.10.2018-->
-
-                            <div id="div_btns_row_info">
-
-                                @*<a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">Registros Add</span></a>*@
-                                <a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">AGREGAR FILA</span></a>
-                                <a class="btn"><i class="material-icons left">clear</i><span id="delRowInfo">ELIMINAR FILA</span></a>
+                            <div id="div_sinPedido" class="col s12">
+                                <div id="div_btns_row_info">
+                                    @*<a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">Registros Add</span></a>*@
+                                    <a class="btn"><i class="material-icons left">add</i><span id="addRowInfo">AGREGAR FILA</span></a>
+                                    <a class="btn"><i class="material-icons left">clear</i><span id="delRowInfo">ELIMINAR FILA</span></a>
+                                </div>
+                                <div style="overflow:auto;">
+                                    <table class="table display mdl-data-table striped" id="table_info" style="width:100%;"></table>
+                                </div>
+                                <table class="table display mdl-data-table striped" id="table_infoh" style="width:100%; display:none">
+                                    <thead>
+                                        <tr>
+                                            <th class="lbl_pos">
+                                                Fila
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                Numero Anexo1
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                Numero Anexo2
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                Numero Anexo3
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                Numero Anexo4
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                Numero Anexo5
+                                            </th>
+                                            <th class="lbl_cargoAbono">
+                                                Cargo/Abono
+                                            </th>
+                                            <th class="lbl_factura">
+                                                Factura
+                                            </th>
+                                            <th id="lbl_tconcepto">
+                                                Tipo Concepto
+                                            </th>
+                                            <th id="lbl_grupo">
+                                                Concepto
+                                            </th>
+                                            <th id="lbl_cuenta">
+                                                Cuenta
+                                            </th>
+                                            <th id="lbl_cuentaNom">
+                                                Nombre de Cuenta
+                                            </th>
+                                            <th id="lbl_tipoimp">
+                                                Tipo Imp.
+                                            </th>
+                                            <th id="lbl_imputacion">
+                                                Imputación
+                                            </th>
+                                            <th id="lbl_ccosto">
+                                                Centro de Costo
+                                            </th>
+                                            <th id="lbl_monto">
+                                                Monto
+                                            </th>
+                                            <th id="lbl_impuesto">
+                                                Impuesto
+                                            </th>
+                                            <th id="lbl_iva">
+                                                IVA
+                                            </th>
+                                            <th id="lbl_texto">
+                                                Texto
+                                            </th>
+                                            <th id="lbl_total">
+                                                Total
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div style="overflow:auto;">
-                                <table class="table display mdl-data-table striped" id="table_info" style="width:100%;"></table>
+                            <div id="div_conPedido" class="hide" style="overflow-x:auto;">
+                                <table class="table display mdl-data-table striped" id="table_infoP" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="lbl_pos">
+                                                Fila
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                A1
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                A2
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                A3
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                A4
+                                            </th>
+                                            <th class="lbl_NmAnexo">
+                                                A5
+                                            </th>
+                                            <th class="lbl_mat">
+                                                Material
+                                            </th>
+                                            <th id="lbl_Texto" style="text-align:center;">
+                                                Texto
+                                            </th>
+                                            <th class="lbl_cargoAbono">
+                                                D/H
+                                            </th>
+                                            <th class="lbl_factura">
+                                                Factura
+                                            </th>
+                                            <th id="lbl_tconcepto">
+                                                Tipo Concepto
+                                            </th>
+                                            <th id="lbl_grupo">
+                                                Concepto
+                                            </th>
+                                            <th id="lbl_ccosto">
+                                                Centro de Costo
+                                            </th>
+                                            <th id="lbl_pep">
+                                                PEP
+                                            </th>
+                                            <th id="lbl_cuenta">
+                                                Cuenta
+                                            </th>
+                                            <th id="lbl_cuentaNom">
+                                                Nombre de Cuenta
+                                            </th>
+                                            <th id="lbl_tipoimp">
+                                                Tipo Imp.
+                                            </th>
+                                            <th id="lbl_imputacion">
+                                                Imputación
+                                            </th>
+                                            <th id="lbl_monto">
+                                                Monto
+                                            </th>
+                                            <th id="lbl_moneda">
+                                                Moneda
+                                            </th>
+                                            <th id="lbl_cantidad">
+                                                Cantidad
+                                            </th>
+                                            <th id="lbl_unidad">
+                                                Unidad
+                                            </th>
+                                            <th id="lbl_impuesto">
+                                                Impuesto
+                                            </th>
+                                            <th id="lbl_iva" class="tcent">
+                                                IVA
+                                            </th>
+                                            <th id="lbl_total">
+                                                Total
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <input id="totalCOC" style="display:none;" />
+                                <table class="table display mdl-data-table striped" id="table_infoPh" style="width:100%; display:none">
+                                    <thead>
+                                        <tr>
+                                            <th class="lbl_pos">
+                                                POS
+                                            </th>
+                                            <th class="lbl_mat">
+                                                Material
+                                            </th>
+                                            <th id="lbl_pep">
+                                                PEP
+                                            </th>
+                                            <th id="lbl_moneda">
+                                                Moneda
+                                            </th>
+                                            <th id="lbl_cant">
+                                                Cantidad
+                                            </th>
+                                            <th id="lbl_unidad">
+                                                Unidad
+                                            </th>
+                                            <th id="lbl_total">
+                                                Total
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <table class="table display mdl-data-table striped" id="table_infoh" style="width:100%; display:none">
-                                <thead>
-                                    <tr>
-                                        <th class="lbl_pos">
-                                            Fila
-                                        </th>
-                                        <th class="lbl_NmAnexo">
-                                            Numero Anexo1
-                                        </th>
-                                        <th class="lbl_NmAnexo">
-                                            Numero Anexo2
-                                        </th>
-                                        <th class="lbl_NmAnexo">
-                                            Numero Anexo3
-                                        </th>
-                                        <th class="lbl_NmAnexo">
-                                            Numero Anexo4
-                                        </th>
-                                        <th class="lbl_NmAnexo">
-                                            Numero Anexo5
-                                        </th>
-                                        <th class="lbl_cargoAbono">
-                                            Cargo/Abono
-                                        </th>
-                                        <th class="lbl_factura">
-                                            Factura
-                                        </th>
-                                        <th id="lbl_tconcepto">
-                                            Tipo Concepto
-                                        </th>
-                                        <th id="lbl_grupo">
-                                            Concepto
-                                        </th>
-                                        <th id="lbl_cuenta">
-                                            Cuenta
-                                        </th>
-                                        <th id="lbl_cuentaNom">
-                                            Nombre de Cuenta
-                                        </th>
-                                        <th id="lbl_tipoimp">
-                                            Tipo Imp.
-                                        </th>
-                                        <th id="lbl_imputacion">
-                                            Imputación
-                                        </th>
-                                        <th id="lbl_ccosto">
-                                            Centro de Costo
-                                        </th>
-                                        <th id="lbl_monto">
-                                            Monto
-                                        </th>
-                                        <th id="lbl_impuesto">
-                                            Impuesto
-                                        </th>
-                                        <th id="lbl_iva">
-                                            IVA
-                                        </th>
-                                        <th id="lbl_texto">
-                                            Texto
-                                        </th>
-                                        <th id="lbl_total">
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
                             @*Para las retenciones dinamicas*@
                             <table class="table display mdl-data-table striped" id="table_inforeth" style="width:100%; display:none;"></table>
                             @*Para las columnas de anexos*@
@@ -757,14 +915,15 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div style="text-align:right">
-                            <label id="lbl_status" style="font-size: 1.1rem; font-weight: bold;">Total:</label>
-                            <label id="total_info1" style="font-size: 1.1rem;font-weight: bold;"></label>
+                        <div id="divTot">
+                            <div style="text-align:right">
+                                <label id="lbl_status" style="font-size: 1.1rem; font-weight: bold;">Total:</label>
+                                <label id="total_info1" style="font-size: 1.1rem;font-weight: bold;"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col s12">
                     <div class="card-panel">
@@ -806,7 +965,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @if (@lstDocsA != null)
                                     {
                                         for (int i = 0; i < @lstDocsA.Count; i++)
@@ -829,7 +987,6 @@
                                         }
                                     }
 
-
                                 </tbody>
                             </table>
                             <table class="table display mdl-data-table striped" id="table_anexah" style="width:100%;display:none">
@@ -840,11 +997,9 @@
                 </div>
             </div>
         </div>
-
         @*Soporte Contable*@
         <div id="Informacion_cont" class="col s12" style="font-size:12px;">
             <div class="row">
-
                 @*MGC 02-10-2018 Cadena de autorización -->*@
                 <div class="col s12">
                     <div class="card-panel">
@@ -866,7 +1021,6 @@
                                 <input id="DETTA_USUARIOC_ID" name="DETTA_USUARIOC_ID" value="" hidden />
                                 <input id="DETTA_ID_RUTA_AGENTE" name="DETTA_ID_RUTA_AGENTE" value="" hidden />
                                 <input id="DETTA_USUARIOA_ID" name="DETTA_USUARIOA_ID" value="" hidden />
-
                                 @*//MGC 11-12-2018 Agregar Contabilizador 0--------------->*@
                                 <input id="VERSIONC1" name="VERSIONC1" value="" hidden />
                                 <input id="VERSIONC2" name="VERSIONC2" value="" hidden />
@@ -876,12 +1030,10 @@
                     </div>
                 </div>
                 @*MGC 02-10-2018 Cadena de autorización <--*@
-
                 <div class="col s12" style="display:none">
                     <div class="card-panel">
                         <h5 id="head_cabecera">Detalle</h5>
                         <div class="row" style="margin-bottom:0">
-
                             <div class="file-field input-field" id="cargar_archivo" style="display:none">
                                 <div class="btn">
                                     <span id="span_fileload">Examinar</span>
@@ -891,17 +1043,14 @@
                                     <input class="file-path validate" type="text">
                                 </div>
                             </div>
-
                             <div id="div_btns_row_sop">
                                 <a class="btn"><i class="material-icons left">add</i><span id="addRowSop">Registros Add</span></a>
                                 <a class="btn"><i class="material-icons left">clear</i><span id="delRowSop">Registro Del</span></a>
                             </div>
-
                             <table class="table display mdl-data-table striped" id="table_sop" style="width:100%;">
                                 <thead>
                                     <tr>
                                         <th>
-
                                         </th>
                                         <th class="lbl_opc">
                                             OPC
@@ -943,7 +1092,6 @@
                     </div>
                 </div>
             </div>
-
             @*MGC 14-11-2018 Cadena de autorización----------------------------------------------------------------------------->*@
             <div class="row" style="font-size:12px;">
                 <div class="col s12">
@@ -968,7 +1116,6 @@
                 </div>
             </div>
             @*MGC 14-11-2018 Cadena de autorización-----------------------------------------------------------------------------<*@
-
             <div class="row" style="display:none;">
                 <div class="col s12">
                     <div class="card-panel">
@@ -1017,10 +1164,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
         @*Soporte SAP*@
         <div id="Informacion_sap" class="col s12" style="font-size:12px;">
             <div class="row">
@@ -1147,7 +1292,6 @@
 
 }
 @* -----------------------------WORKFLOW----------------------------- *@
-
 <div>
     @*@Html.ActionLink("Back to List", "Index")*@
 </div>

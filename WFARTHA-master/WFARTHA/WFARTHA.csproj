@@ -720,6 +720,7 @@
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />
     <Content Include="files\masiva.xlsx" />
+    <Content Include="Scripts\editcoc.js" />
     <Content Include="Scripts\Homescript.js" />
     <Content Include="Views\Appsetting\Create.cshtml" />
     <Content Include="Views\Appsetting\Details.cshtml" />

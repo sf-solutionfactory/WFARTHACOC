@@ -544,45 +544,50 @@ $(document).ready(function () {
     });
 
     $('#btn_guardarh').on("click", function (e) {
-
+        var borrador = $("#borr").val();
         if (valTsol() == "SCO") {
             copiarTableInfoPControl();
             var r = false;
             var ren = 0;
             var tabl = $("#table_infoP").DataTable();
-            $("#table_infoP tbody tr[role='row']").each(function () {
-                ren++;
-                //
-                var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
-                while (monto1.indexOf(',') > -1) {
-                    monto1 = monto1.replace('$', '').replace(',', '');
+            if (borrador != null) {
+                $("#table_infoP tbody tr[role='row']").each(function () {
+                    ren++;
+                    //
+                    var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
+                    while (monto1.indexOf(',') > -1) {
+                        monto1 = monto1.replace('$', '').replace(',', '');
+                    }
+                    monto1 = monto1.replace(/\s/g, '');
+                    monto1 = parseFloat(monto1);
+                    //
+                    var cantidad = $(this).find("td.CANTIDAD input").val();
+                    if (cantidad == "") {
+                        cantidad = 0;
+                    }
+                    while (cantidad.indexOf(',') > -1) {
+                        cantidad = cantidad.replace('$', '').replace(',', '');
+                    }
+                    cantidad = parseFloat(cantidad);
+                    if (monto1 == 0 && cantidad != 0) {
+                        M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
+                    }
+                    else if (monto1 != 0 && cantidad == 0) {
+                        M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
+                    }
+                    else if (monto1 != 0 && cantidad != 0) {
+                        r = true;
+                    }
+                    if (!r) {
+                        return;
+                    }
+                });
+                if (r) {
+                    $('#btn_guardar').trigger("click");
                 }
-                monto1 = monto1.replace(/\s/g, '');
-                monto1 = parseFloat(monto1);
-                //
-                var cantidad = $(this).find("td.CANTIDAD input").val();
-                if (cantidad == "") {
-                    cantidad = 0;
-                }
-                while (cantidad.indexOf(',') > -1) {
-                    cantidad = cantidad.replace('$', '').replace(',', '');
-                }
-                cantidad = parseFloat(cantidad);
-                if (monto1 == 0 && cantidad != 0) {
-                    M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
-                }
-                else if (monto1 != 0 && cantidad == 0) {
-                    M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
-                }
-                else if (monto1 != 0 && cantidad != 0) {
-                    r = true;
-                }
-                if (!r) {
-                    return;
-                }
-            });
-            if (r) {
-               $('#btn_guardar').trigger("click");
+            }
+            else {
+                $('#btn_guardar').trigger("click");
             }
         }
         else {
@@ -647,8 +652,7 @@ $(document).ready(function () {
                     }
 
                 }
-
-                var borrador = $("#borr").val();
+                
                 //$("#table_info > tbody  > tr[role='row']").each(function () { //MGC 24-10-2018 Conflicto Enrique-Rogelio
                 var t = $('#table_info').DataTable();
                 var tabble = "table_info";

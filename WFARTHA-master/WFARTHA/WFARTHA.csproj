@@ -626,6 +626,7 @@
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
     <Content Include="images\6792532.jpg" />
+    <Content Include="images\artha.png" />
     <Content Include="images\artha_logo.jpg" />
     <Content Include="images\expandl.png" />
     <Content Include="images\expandm.png" />

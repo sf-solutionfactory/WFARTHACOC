@@ -473,7 +473,7 @@
 
                             }
                             @*//MGC 30-10-2018 Modificación estatus  *@
-                            else if (item.ESTATUS_WF.Equals("A") && item.ESTATUS_PRE == "E")
+                            else if (item.ESTATUS_WF.Equals("A") && item.ESTATUS_PRE == "E" && item.ESTATUS_SAP == null)
                             {
                                 @*<td class="red darken-1 white-text">
                                         <div class="lbl_contab">Error generando archivo de contabilizacion</div>
@@ -513,8 +513,8 @@
                                 {
                                     //MGC 20-12-2018 Reprocesar Archivo contabilizar------------------------------------------->
                                     //visible = false;
-                                    estatus = "Error Contabilizar SAP";
-                                     visible = true;
+                                    estatus = "Error Contabilizar Portal";
+                                     visible = false;
                                     color = "red darken-2";
                                     //MGC 20-12-2018 Reprocesar Archivo contabilizar-------------------------------------------<
                                 }
@@ -555,7 +555,7 @@
                                     if (ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID)
                                     {
                                         estatus = "Error Contabilizar SAP";
-                                        visible = true;
+                                        visible = false;
                                         color = "red darken-2";
                                     }
                                     else
@@ -572,7 +572,13 @@
                             }
                             else
                             {
+
+                                //MGC 20-12-2018 Reprocesar Archivo contabilizar-------------------------------------------<
+                                //visible = false;
+                                estatus = "Error Contabilizar SAP";
                                 visible = false;
+                                color = "red darken-2";
+                                //MGC 20-12-2018 Reprocesar Archivo contabilizar-------------------------------------------<
                             }
                         }
 

@@ -514,7 +514,7 @@
                 //Checar si ESTATUS = "C", ESTATUS_WF = "A" Y ESTATUS_PRE = "E" y si el usuario creador es el usuario actual **********Creación"
                 else if ((Model.D.ESTATUS != null && Model.D.ESTATUS.Equals("C")) && (Model.D.ESTATUS_WF != null && Model.D.ESTATUS_WF.Equals("A")) && (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E")))
                 {
-                    if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
+                    if (Model.D.USUARIOC_ID != ViewBag.usuario.ID)
                     {
                         <a class="btn-small modal-trigger" id="btn_reprocesaco" onclick="contabilizarr()" href="#modal3">Reprocesar</a>
 

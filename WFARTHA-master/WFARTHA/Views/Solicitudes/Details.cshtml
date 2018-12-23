@@ -429,8 +429,8 @@
                         }*@
                 }
                 //MGC 17-12-2018 Reprocesar Archivo preliminar------------------------------------------->
-                //Checar si ESTATUS_PRE = "E" y si el usuario creador es el usuario actual **********Creación"
-                else if (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E"))
+                //Checar si ESTATUS = "N", ESTATUS_PRE = "E" y si el usuario creador es el usuario actual **********Creación"
+                else if ((Model.D.ESTATUS != null && Model.D.ESTATUS.Equals("N")) &&  (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E")))
                 {
                     if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                     {
@@ -509,6 +509,113 @@
                 }
 
                 //MGC 17-12-2018 Reprocesar Archivo preliminar-------------------------------------------<
+
+                //MGC 20-12-2018 Reprocesar Archivo contabilizar------------------------------------------->
+                //Checar si ESTATUS = "C", ESTATUS_WF = "A" Y ESTATUS_PRE = "E" y si el usuario creador es el usuario actual **********Creación"
+                else if ((Model.D.ESTATUS != null && Model.D.ESTATUS.Equals("C")) && (Model.D.ESTATUS_WF != null && Model.D.ESTATUS_WF.Equals("A")) && (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E")))
+                {
+                    if (Model.D.USUARIOC_ID != ViewBag.usuario.ID)
+                    {
+                        <a class="btn-small modal-trigger" id="btn_reprocesaco" onclick="contabilizarr()" href="#modal3">Reprocesar</a>
+
+                        using (Html.BeginForm("ReprocesarCo", "Solicitudes", new { id = @Model.D.NUM_DOC }, FormMethod.Post, new { id = "form_procesaco" }))
+                        {
+
+                            <div id="modal3" class="modal">
+                                @Html.AntiForgeryToken()
+                                <div class="modal-content">
+                                    <div class="row">
+                                        <h4 id="txt_can">Reprocesar Contabilización</h4>
+                                        <br />
+                                    </div>
+                                    <div class="row" style="">
+                                        <div class="col s12 m12 l12">
+                                            <div class="row" style="margin-bottom:0">
+                                                ¿Está seguro de reprocesar la contabilización de esta solicitud?
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div>
+                                        <div class="input-field col s2 offset-s1" style="width:auto;margin-top:0px;margin-left:0px">
+                                            <input type="password" name="txtfirma_usco" id="txtfirma_usco" value="" />
+                                            <label for="txtfirma_usco" id="lbl_firma">Firma</label>
+                                        </div>
+                                        @*//FRT 13-12-2018 Para mostrar fecha al contabilizar -------------------------------------------------->*@
+                                        <div class="input-field col s2 offset-s1" style="width:auto;margin-left:0px;margin-top:0px">
+                                            @*<div class="col-md-10">
+                                                <label style="display:none" id="lbl_fechaconta">Fecha de contabilizacion</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.F.FECHACON, new { htmlAttributes = new { @id = "", @style = "display: none", @class = "form-control datepicker", Value = DateTime.Now.ToShortDateString(), @type = "date" } })
+                                            </div>*@
+                                            <input type="date" name="txt_fechaconta" id="txt_fechaconta" value="" style="display:none" class="form-control datepicker"/>
+                                            <label for="txt_fechaconta" id="lbl_fechaconta"></label>
+
+                                        </div>
+
+                                        @*//FRT 13-12-2018 Para mostrar fecha al contabilizar --------------------------------------------------<*@
+                                        <a href="#!" class="modal-action modal-close btn-flat">No</a>
+                                        <a id="cont_sendco" href="#!" class="modal-action modal-close btn-flat">Si</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                //MGC 17-12-2018 Reprocesar Archivo preliminar------------------------------------------->
+                                var elem3 = document.getElementById('modal3');
+                                var instance4 = M.Modal.init(elem3, []);
+                                //MGC 17-12-2018 Reprocesar Archivo preliminar-------------------------------------------<
+                                //MGC 18-10-2018 Firma del usuario -------------------------------------------------->
+                                //Validar la firma del usuario
+                                //$("#form_procesa").submit(function (e) {
+                                $("#cont_sendco").click(function (e) {
+
+                                    document.getElementById('loader').style.display = 'initial';
+
+                                    var p = $("#txtfirma_usco").val();
+
+                                    var resc = false;
+                                    res = valF(p);
+
+                                    if (res == "true") {
+                                        resc = true;
+                                    }
+
+                                    if (!resc) {
+                                        //Error
+                                        document.getElementById('loader').style.display = 'none';
+                                        M.toast({ html: 'Error con la Firma del Usuario' });
+                                        e.preventDefault();
+
+                                    } else {
+                                        //Hacer el submit
+                                        $("#form_procesaco").submit();
+                                    }
+                                    document.getElementById('loader').style.display = 'none';
+                                });
+
+                                function contabilizarr() {
+                                    var moneda = $("#MONEDA_ID").val();
+
+                                    document.getElementById("txtfirma_usco").value = '';//MGC 18-10-2018 Firma del usuario
+                                    if (moneda != "MXN") {
+                                        document.getElementById("txt_fechaconta").style.display = 'inline'; //FRT 13-12-2018 mostrar el calendario solo al contabilizar
+                                        document.getElementById("lbl_fechaconta").style.display = 'inline'; //FRT 13-12-2018 mostrar el calendario solo al contabilizar
+                                    }
+
+                                }
+
+                            </script>
+                        }
+
+
+
+                    }
+                }
+
+                //MGC 20-12-2018 Reprocesar Archivo contabilizar-------------------------------------------<
 
                 if (false)
                 {

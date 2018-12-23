@@ -363,7 +363,7 @@ namespace WFARTHA.Controllers
                 }
                 lst[x].PATH = _path;
             }
-            
+
             ViewBag.docAn = result1; //frt06122018
             //ViewBag.docAn = lst;
 
@@ -1176,7 +1176,7 @@ namespace WFARTHA.Controllers
             //MGC 02-10-2018 Cadenas de autorización
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string mtTot, string DETTA_USUARIOA_ID, string borr, string FECHADO, string Uuid
             //MGC 11-12-2018 Agregar Contabilizador 0
-            ,string VERSIONC1, string VERSIONC2)
+            , string VERSIONC1, string VERSIONC2)
         {
             int pagina = 202; //ID EN BASE DE DATOS
             string errorString = "";
@@ -2789,10 +2789,6 @@ namespace WFARTHA.Controllers
                 }
             }
 
-
-
-
-
             //ViewBag.docAn = lst;
             ViewBag.docAn = result;
             //ViewBag.docAn2 = db.DOCUMENTOAS1.Where(a => a.NUM_DOC == id).ToList(); //LEJGG 28-10 2018
@@ -2809,11 +2805,12 @@ namespace WFARTHA.Controllers
                          {
                              //ts.ID,
                              ID = new { ID = ts.ID.ToString().Replace(" ", ""), RANGO = ts.RANGO_ID.ToString().Replace(" ", ""), EDITDET = ts.EDITDET.ToString().Replace(" ", "") },
-                             TEXT = ts.ID + " - " + tt.TXT50,
-                             DEFAULT = ts.DEFAULT
+                             TEXT = ts.ID + " - " + tt.TXT50//,
+                             //DEFAULT = ts.DEFAULT
                          }).ToList();
             //Obtener el valor default
-            var tsolldef = tsoll.Where(tsd => tsd.DEFAULT == true).Select(tsds => tsds.ID).FirstOrDefault();
+            //var tsolldef = tsoll.Where(tsd => tsd.DEFAULT == true).Select(tsds => tsds.ID).FirstOrDefault();
+            var tsolldef = tsoll.Where(tsd => tsd.ID.ID == dOCUMENTO.TSOL_ID).Select(tsds => tsds.ID).FirstOrDefault();
             //solicitud con orden de compra <------
 
             var monedal = db.MONEDAs.Where(m => m.ACTIVO == true).Select(m => new { m.WAERS, TEXT = m.WAERS + " - " + m.LTEXT }).ToList();
@@ -2829,9 +2826,16 @@ namespace WFARTHA.Controllers
                                  im.MWSKZ,
                                  TEXT = im.MWSKZ + " - " + tt.TXT50
                              }).ToList();
-
+            var postsolid = 0;
+            for (int i = 0; i < tsoll.Count; i++)
+            {
+                if (dOCUMENTO.TSOL_ID == tsoll[i].ID.ID)
+                {
+                    postsolid = i;
+                }
+            }
             ViewBag.SOCIEDAD_ID = new SelectList(sociedades, "BUKRS", "TEXT", dOCUMENTO.SOCIEDAD_ID);
-            ViewBag.TSOL_IDL = new SelectList(tsoll, "ID", "TEXT", selectedValue: tsolldef);
+            ViewBag.TSOL_IDL = new SelectList(tsoll, "ID", "TEXT", tsolldef);
             ViewBag.IMPUESTO = new SelectList(impuestol, "MWSKZ", "TEXT", "V3");
             ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT");
             //LEJ 04 10 2018------------------------------
@@ -2852,8 +2856,15 @@ namespace WFARTHA.Controllers
             doc.TEXTO_POS = dOCUMENTO.TEXTO_POS;
             doc.ASIGNACION_POS = dOCUMENTO.ASIGNACION_POS;
             doc.CLAVE_CTA = dOCUMENTO.CLAVE_CTA;
-
-
+            doc.ESTATUS = dOCUMENTO.ESTATUS;
+            doc.ESTATUS_C = dOCUMENTO.ESTATUS_C;
+            doc.ESTATUS_EXT = doc.ESTATUS_EXT;
+            doc.ESTATUS_SAP = doc.ESTATUS_SAP;
+            doc.ESTATUS_WF = dOCUMENTO.ESTATUS_WF;
+            doc.ESTATUS_PRE = dOCUMENTO.ESTATUS_PRE;//MGC 17-12-2018 Reprocesar Archivo preliminar
+            doc.USUARIOC_ID = dOCUMENTO.USUARIOC_ID;//MGC 17-12-2018 Reprocesar Archivo preliminar
+            doc.EBELN = dOCUMENTO.EBELN;//lejgg 16-12-2018
+            ViewBag.ebeln = dOCUMENTO.EBELN;//lejgg 16-12-2018
             List<DOCUMENTOR> retl = new List<DOCUMENTOR>();
             List<DOCUMENTOR_MOD> retlt = new List<DOCUMENTOR_MOD>();
 
@@ -6209,55 +6220,55 @@ namespace WFARTHA.Controllers
                 //FRT07112018.2  Lectura de XML
                 var _ff = file.ToList();
                 var lines = ReadLines(() => _ff[0].InputStream, Encoding.UTF8).ToArray();
-               
-                    var _lin = lines.Count();
-                    string _soc = (string)Session["SOC"];
 
-                    string _rfc_soc = db.SOCIEDADs.Where(soc => soc.BUKRS == _soc).FirstOrDefault().STCD1;
-                    var _xml = "";
-                    //Proceso a realizar si el xml viene estructurado en varios renglones, se concatena en 1 solo //FRT Y LEJGG 07-11-18
-                    for (int i = 0; i < _lin; i++)
-                    {
-                        _xml += lines[i];
-                    }
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(_xml);
+                var _lin = lines.Count();
+                string _soc = (string)Session["SOC"];
 
-                    var xmlnode = doc.GetElementsByTagName("cfdi:Comprobante");
-                    var xmlnode2 = doc.GetElementsByTagName("cfdi:Receptor");
-                    var xmlnode3 = doc.GetElementsByTagName("cfdi:Emisor");
-                    var xmlnode4 = doc.GetElementsByTagName("tfd:TimbreFiscalDigital");
+                string _rfc_soc = db.SOCIEDADs.Where(soc => soc.BUKRS == _soc).FirstOrDefault().STCD1;
+                var _xml = "";
+                //Proceso a realizar si el xml viene estructurado en varios renglones, se concatena en 1 solo //FRT Y LEJGG 07-11-18
+                for (int i = 0; i < _lin; i++)
+                {
+                    _xml += lines[i];
+                }
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(_xml);
 
-                    var _F = DateTime.Parse(xmlnode[0].Attributes["Fecha"].Value).ToShortDateString();
-                    var _Mt = xmlnode[0].Attributes["Total"].Value;
-                    var _RFCReceptor = xmlnode2[0].Attributes["Rfc"].Value;
-                    var _RFCEmisor = xmlnode3[0].Attributes["Rfc"].Value;
-                    var _Uuid = xmlnode4[0].Attributes["UUID"].Value;
-                    var _Moneda = xmlnode[0].Attributes["Moneda"].Value;   //FRT14112018.3 para agregar la moneda al JSON
-                    var _TipoCambio = "0";
-                    if (_Moneda != "MXN")
-                    {
-                        _TipoCambio = xmlnode[0].Attributes["TipoCambio"].Value;  //FRT14112018.3 para agregar la TIPO CAMBIO al JSON
-                    }
+                var xmlnode = doc.GetElementsByTagName("cfdi:Comprobante");
+                var xmlnode2 = doc.GetElementsByTagName("cfdi:Receptor");
+                var xmlnode3 = doc.GetElementsByTagName("cfdi:Emisor");
+                var xmlnode4 = doc.GetElementsByTagName("tfd:TimbreFiscalDigital");
+
+                var _F = DateTime.Parse(xmlnode[0].Attributes["Fecha"].Value).ToShortDateString();
+                var _Mt = xmlnode[0].Attributes["Total"].Value;
+                var _RFCReceptor = xmlnode2[0].Attributes["Rfc"].Value;
+                var _RFCEmisor = xmlnode3[0].Attributes["Rfc"].Value;
+                var _Uuid = xmlnode4[0].Attributes["UUID"].Value;
+                var _Moneda = xmlnode[0].Attributes["Moneda"].Value;   //FRT14112018.3 para agregar la moneda al JSON
+                var _TipoCambio = "0";
+                if (_Moneda != "MXN")
+                {
+                    _TipoCambio = xmlnode[0].Attributes["TipoCambio"].Value;  //FRT14112018.3 para agregar la TIPO CAMBIO al JSON
+                }
 
 
-                    var _xmlcorrecto = "1";  //FRT20112018 Para poder saber si el XML esta correcto
+                var _xmlcorrecto = "1";  //FRT20112018 Para poder saber si el XML esta correcto
 
-                    List<string> lstvals = new List<string>();
-                    lstvals.Add(_xmlcorrecto);//FRT20112018 Xml correcto en primera posicion
-                    lstvals.Add(_F);//Fecha
-                    lstvals.Add(_Mt);//Monto
-                    lstvals.Add(_RFCReceptor);//RFCReceptor
-                    lstvals.Add(_RFCEmisor);//RFCEmisor
-                    lstvals.Add(_Uuid);//UUID
-                    lstvals.Add(_Moneda);//Moneda //FRT14112018.3 para agregar la moneda al JSON
-                    lstvals.Add(_rfc_soc);//Sociedad
-                    lstvals.Add(_TipoCambio);//Tipo de Cambio //FRT14112018.3 para agregar tipo de cambio  al JSON
-                    JsonResult jc = Json(lstvals, JsonRequestBehavior.AllowGet);
-                    return jc;
+                List<string> lstvals = new List<string>();
+                lstvals.Add(_xmlcorrecto);//FRT20112018 Xml correcto en primera posicion
+                lstvals.Add(_F);//Fecha
+                lstvals.Add(_Mt);//Monto
+                lstvals.Add(_RFCReceptor);//RFCReceptor
+                lstvals.Add(_RFCEmisor);//RFCEmisor
+                lstvals.Add(_Uuid);//UUID
+                lstvals.Add(_Moneda);//Moneda //FRT14112018.3 para agregar la moneda al JSON
+                lstvals.Add(_rfc_soc);//Sociedad
+                lstvals.Add(_TipoCambio);//Tipo de Cambio //FRT14112018.3 para agregar tipo de cambio  al JSON
+                JsonResult jc = Json(lstvals, JsonRequestBehavior.AllowGet);
+                return jc;
 
-              
-               
+
+
             }
             catch (Exception e)
             {
@@ -7877,6 +7888,14 @@ namespace WFARTHA.Controllers
         //END OF INSERT RSG 19.10.2018
 
         [HttpPost]
+        public JsonResult getDataAmorAnt(string id)
+        {
+            var data = db.AMOR_ANT.Where(x => x.NUM_DOC == decimal.Parse(id)).ToList();
+            JsonResult jc = Json(data, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
         public JsonResult getCadAut(decimal nd)
         {
             //Traigo el usuario
@@ -7975,8 +7994,35 @@ namespace WFARTHA.Controllers
         [HttpPost]
         public JsonResult getEKBEInfo(string ebeln)
         {
-            var r = db.EKBEs.Where(x => x.EBELN == ebeln && x.BEWTP == "A" && x.XREVERSED != "X" && x.XREVERSEING != "X").ToList();
-            JsonResult jc = Json(r, JsonRequestBehavior.AllowGet);
+            var r = db.EKBEs.Where(x => x.EBELN == ebeln && x.BEWTP == "A").ToList();
+            var rxrv = r.Where(x => x.XREVERSED == "X" || x.XREVERSEING == "X").ToList();
+            for (int i = 0; i < rxrv.Count; i++)
+            {
+                if (rxrv[i].STBLG != "")
+                {
+                    for (int x = 0; x < r.Count; x++)
+                    {
+                        if (r[x].BELNR == rxrv[i].STBLG)
+                        {
+                            //
+                            var rwr = r[x].WRBTR;
+                            if (r[x].SHKZG == "H")
+                            {
+                                rwr = rwr * (-1);
+                            }
+                            //
+                            var rwr2 = rxrv[i].WRBTR;
+                            if (rxrv[i].SHKZG == "H")
+                            {
+                                rwr2 = rwr2 * (-1);
+                            }
+                            r[x].WRBTR = rwr + rwr2;
+                        }
+                    }
+                }
+            }
+            var rf = r.Where(x => x.XREVERSED != "X" && x.XREVERSEING != "X").ToList();
+            JsonResult jc = Json(rf, JsonRequestBehavior.AllowGet);
             return jc;
         }
 
@@ -8357,7 +8403,7 @@ namespace WFARTHA.Controllers
 
             //Obtener las fases del proyecto
             fases = deta.Select(da => da.STEP_FASE).Distinct().ToList();
-            
+
             //loop para obtener los autorizadores por fase
             for (int i = 0; i < fases.Count(); i++)
             {
@@ -8507,7 +8553,7 @@ namespace WFARTHA.Controllers
 
             //Obtener las fases del proyecto
             fases = deta.Select(da => da.STEP_FASE).Distinct().ToList();
-            
+
             //loop para obtener los autorizadores por fase
             for (int i = 0; i < fases.Count(); i++)
             {
@@ -8708,12 +8754,13 @@ namespace WFARTHA.Controllers
                 try
                 {
                     rech = db.FLUJOes.Where(fl => fl.NUM_DOC == d.NUM_DOC && fl.ESTATUS == "R").FirstOrDefault().ESTATUS;
-                }catch(Exception)
+                }
+                catch (Exception)
                 {
                     rech = "";
                 }
 
-                if(d.ESTATUS_WF == "P" && rech == "R")
+                if (d.ESTATUS_WF == "P" && rech == "R")
                 {
                     //Edición
                     edit = true;
@@ -8823,6 +8870,83 @@ namespace WFARTHA.Controllers
             return RedirectToAction("Index", "Home");
         }
         //MGC 17-12-2018 Reprocesar Archivo preliminar--------------------------------------------------------------------------<
+
+        //MGC 20-12-2018 Archivo contable-------------------------------------------------------------------------->
+        [HttpPost]
+        public ActionResult ReprocesarCo(decimal id, DateTime? txt_fechaconta)
+        {
+
+            DOCUMENTO d = db.DOCUMENTOes.Find(id);
+
+            string fechacon = "";
+
+            if (d != null)
+            {
+                if (txt_fechaconta != null)
+                {
+                    fechacon = String.Format("{0:dd.MM.yyyy}", txt_fechaconta).Replace(".", "");
+                }
+
+                ArchivoContable sa = new ArchivoContable();
+                string file = sa.generarArchivo(d.NUM_DOC, 0, "A", fechacon);//MGC-14-12-2018 Modificación fechacon
+
+                if (file == "")
+                {                 
+                    //d.ESTATUS = "A";//MGC 29-10-2018 El nuevo estatus es C              
+
+                    DOCUMENTO dcc = db.DOCUMENTOes.Find(d.NUM_DOC);
+
+                    dcc.ESTATUS_WF = "A";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS = "C";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS_PRE = "G";//MGC 29-10-2018 El nuevo estatus es C
+                    db.Entry(dcc).State = EntityState.Modified;
+                 
+                    db.SaveChanges();
+
+                    //MGC 04 - 10 - 2018 Botones para acciones WF
+                    //Mensaje para contabilizando SAP
+                    DOCUMENTOPRE dp = new DOCUMENTOPRE();
+
+                    dp.NUM_DOC = d.NUM_DOC;
+                    dp.POS = 1;
+                    dp.MESSAGE = "Contabilizando SAP";
+
+                    try
+                    {
+                        db.DOCUMENTOPREs.Add(dp);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        string r = "";
+                    }
+
+                    //Modificar la fecha
+                    if (d.MONEDA_ID != "MXN" && txt_fechaconta != null)
+                    {
+                        FlujosController fc = new FlujosController();
+                        var moneda = d.MONEDA_ID;
+                        var restipo = fc.TipoCambio( moneda, d.NUM_DOC, txt_fechaconta);
+                    }
+
+                }
+                else
+                {
+                    DOCUMENTO dcc = db.DOCUMENTOes.Find(d.NUM_DOC);
+
+                    dcc.ESTATUS_WF = "A";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS = "C";//MGC 29-10-2018 El nuevo estatus es C
+                    dcc.ESTATUS_PRE = "E";//MGC 29-10-2018 El nuevo estatus es C
+                    db.Entry(dcc).State = EntityState.Modified;
+                    db.SaveChanges();
+
+        
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        //MGC 20-12-2018 Archivo contable--------------------------------------------------------------------------<
 
     }
     public class TXTImp

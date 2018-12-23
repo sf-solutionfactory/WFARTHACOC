@@ -1,43 +1,116 @@
 ﻿$(document).ready(function () { });
 
 //LEJGG 11/12/2018------------------------------------------------I
-$('body').on('change', '#norden_compra', function (event, param1) {
-    var eb = $(this).val();
-    $.ajax({
-        type: "POST",
-        url: 'getEKKOInfo',
-        dataType: "json",
-        data: { "ebeln": $(this).val() },
-        success: function (data) {
-            var ekko = data.ekmo;
-            var cuentas = data.res;
-            var mtr = data.mtr;
-            var brtwr = data.brtwr;
-            llenarTablaOc(ekko, cuentas, mtr, brtwr);
-        }
-    });
+//$('body').on('change', '#norden_compra', function (event, param1) {
+//    var eb = $(this).val();
+//    $.ajax({
+//        type: "POST",
+//        url: '../getEKKOInfo',
+//        dataType: "json",
+//        data: { "ebeln": $(this).val() },
+//        success: function (data) {
+//            var ekko = data.ekmo;
+//            var cuentas = data.res;
+//            var mtr = data.mtr;
+//            var brtwr = data.brtwr;
+//            llenarTablaOc(ekko, cuentas, mtr, brtwr);
+//        }
+//    });
 
+//    $.ajax({
+//        type: "POST",
+//        url: '../getEKBEInfo',
+//        dataType: "json",
+//        async: false,
+//        data: { "ebeln": $(this).val() },
+//        success: function (data) {
+//            llenarTablaOc2(data, eb);
+//        }
+//    });
+
+//    $.ajax({
+//        type: "POST",
+//        url: '../getEKPOInfo',
+//        dataType: "json",
+//        data: { "ebeln": $(this).val() },
+//        success: function (data) {
+//            armarTabla(data);
+//        }
+//    });
+//});
+
+//LEJGG 22-12-2018----------------------------------------I
+function Tabla2oc() {
+    var nd = $("#NUM_DOC").val();
     $.ajax({
         type: "POST",
-        url: 'getEKBEInfo',
+        url: '../getAmorAntTable',
         dataType: "json",
+        data: { "id": nd },
         async: false,
-        data: { "ebeln": $(this).val() },
         success: function (data) {
-            llenarTablaOc2(data, eb);
+            llenarTablaOc2(data);
         }
     });
+}
 
+function tablaDet() {
+    var nd = $("#NUM_DOC").val();
     $.ajax({
         type: "POST",
-        url: 'getEKPOInfo',
+        url: '../getDocumentoPs',
         dataType: "json",
-        data: { "ebeln": $(this).val() },
-        success: function (data) {
-            armarTabla(data);
+        data: { "id": nd },
+        async: false,
+        success: function (data1) {
+            var d1 = data1;
+            $.ajax({
+                type: "POST",
+                url: '../getDocumentoCOC',
+                dataType: "json",
+                data: { "id": nd },
+                async: false,
+                success: function (data2) {
+                    var d2 = data2;
+                    armarTablaDet(d1, d2);
+                }
+            });
         }
     });
-});
+}
+
+function llenarTablaOc2(val) {
+    var tabl = $('#tableOC2').DataTable();
+    //Limpio primero la tabla
+    $("#tableOC2 tbody tr[role='row']").each(function () {
+        var _t = $(this);
+        tabl.row(_t).remove().draw(false);
+    });
+    //Ajax para llenar campos calculados
+    for (var i = 0; i < val.length; i++) {
+        var ebelp = val[i].EBELP;
+        var buzei = val[i].BUZEI;
+        var belnr = val[i].BELNR;
+        var gjar = val[i].GJAHR;
+        var mon = val[i].WAERS;
+        var tant = val[i].TANT;
+        var mt = val[i].ANTAMOR;
+        var at = val[i].ANTTRANS;
+        var axam = val[i].ANTXAMORT;
+        tabl.row.add([
+            ebelp,//POSC
+            buzei,//POS
+            belnr,//numdoc
+            gjar,//EJERCICIO
+            toShow(mt),//Anticipo amortizado
+            toShow(tant),//total anticipo
+            mon,//MONEDA,
+            toShow(at),//anticipo en transito
+            "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"" + toShow(axam) + "\">"
+        ]).draw(false).node();
+    }
+}
+//LEJGG 22-12-2018----------------------------------------T
 
 //LEJGG 21-12-2018
 function mostrarTabla(ban) {
@@ -77,8 +150,6 @@ function llenarCOC() {
 
 function llenaOrdenes(lifnr, bukrs) {
     var tr = $(this).closest('tr'); //Obtener el row
-    var t = $('#table_infoP').DataTable();
-
     var pedidosNum = [];
     $("#norden_compra").empty();
 
@@ -122,109 +193,6 @@ function solData() {
 }
 
 //LEJGG 11/12/2018------------------------------------------------I
-$('body').on('change', '#norden_compra', function (event, param1) {
-    var eb = $(this).val();
-    $.ajax({
-        type: "POST",
-        url: 'getEKKOInfo',
-        dataType: "json",
-        data: { "ebeln": $(this).val() },
-        success: function (data) {
-            var ekko = data.ekmo;
-            var cuentas = data.res;
-            var mtr = data.mtr;
-            var brtwr = data.brtwr;
-            llenarTablaOc(ekko, cuentas, mtr, brtwr);
-        }
-    });
-
-    $.ajax({
-        type: "POST",
-        url: 'getEKBEInfo',
-        dataType: "json",
-        async: false,
-        data: { "ebeln": $(this).val() },
-        success: function (data) {
-            llenarTablaOc2(data, eb);
-        }
-    });
-
-    $.ajax({
-        type: "POST",
-        url: 'getEKPOInfo',
-        dataType: "json",
-        data: { "ebeln": $(this).val() },
-        success: function (data) {
-            armarTabla(data);
-        }
-    });
-});
-
-function llenarTablaOc2(val, eb) {
-    var mt = "";
-    var at = "";
-
-    var tabl = $('#tableOC2').DataTable();
-    //Limpio primero la tabla
-    $("#tableOC2 tbody tr[role='row']").each(function () {
-        var _t = $(this);
-        tabl.row(_t).remove().draw(false);
-    });
-    //Ajax para llenar campos calculados
-    for (var i = 0; i < val.length; i++) {
-        var ebelp = val[i].EBELP;
-        var buzei = val[i].BUZEI;
-        var belnr = val[i].BELNR;
-        var gjar = val[i].GJAHR;
-        var wt = val[i].WRBTR;
-        var mon = val[i].WAERS;
-        //calculo de anticipo amortizado
-        $.ajax({
-            type: "POST",
-            url: 'calculoAntAmor',
-            dataType: "json",
-            async: false,
-            data: { "ebeln": eb, "belnr": belnr },
-            success: function (data) {
-                mt = data;
-                //
-                var at = 0;
-                tabl.row.add([
-                    ebelp,//POSC
-                    buzei,//POS
-                    belnr,//numdoc
-                    gjar,//EJERCICIO
-                    toShow(mt),//Anticipo amortizado
-                    toShow(wt),//total anticipo
-                    mon,//MONEDA,
-                    toShow(at),//anticipo en transito
-                    "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
-                ]).draw(false).node();
-                //calculo de anticipo en transito
-                //$.ajax({
-                //    type: "POST",
-                //    url: 'calculoAntTr',
-                //    dataType: "json",
-                //    success: function (datax) {
-                //        at = datax;
-                //        //
-                //        tabl.row.add([
-                //            ebelp,//POSC
-                //            buzei,//POS
-                //            belnr,//numdoc
-                //            gjar,//EJERCICIO
-                //            toShow(mt),//Anticipo amortizado
-                //            toShow(wt),//total anticipo
-                //            mon,//MONEDA,
-                //            toShow(at),//anticipo en transito
-                //            "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
-                //        ]).draw(false).node();
-                //    }
-                //});
-            }
-        });
-    }
-}
 
 $('body').on('keydown', '.ANTXAMORT', function (e) {
     if (e.keyCode == 110 || e.keyCode == 190) {
@@ -430,3 +398,83 @@ function alinearTOC() {
     });
 }
 //LEJGG 11/12/2018------------------------------------------------T
+function addRowInfoP(t, POS, NumAnexo, NumAnexo2, NumAnexo3, NumAnexo4, NumAnexo5, MATERIAL, CA, FACTURA,
+    TIPO_CONCEPTO, GRUPO, CUENTA, CUENTANOM, TIPOIMP, IMPUTACION, CCOSTO, MONTO, MONEDA, CANTIDAD, UNIDAD, IMPUESTO, IVA, TEXTO, TOTAL, PEP) { //MGC 03 - 10 - 2018 solicitud con orden de compra
+    var r = addRowlP(
+        t,
+        "<input  class='NumAnexo' style='font-size:12px;width:21px' type='text' id='' name='' value='" + NumAnexo + "'>",
+        "<input  class='NumAnexo2' style='font-size:12px;width:21px' type='text' id='' name='' value='" + NumAnexo2 + "'>",
+        "<input  class='NumAnexo3' style='font-size:12px;width:21px' type='text' id='' name='' value='" + NumAnexo3 + "'>",
+        "<input  class='NumAnexo4' style='font-size:12px;width:21px' type='text' id='' name='' value='" + NumAnexo4 + "'>",
+        "<input  class='NumAnexo5' style='font-size:12px;width:21px' type='text' id='' name='' value='" + NumAnexo5 + "'>",
+        POS,
+        MATERIAL,
+        TEXTO,
+        CA,
+        FACTURA,
+        TIPO_CONCEPTO,
+        GRUPO,
+        CCOSTO,
+        PEP,
+        CUENTA,
+        CUENTANOM,
+        TIPOIMP,
+        IMPUTACION,
+        "<input  class='MONTOP' style='font-size:12px;width:90px;' type='text' id='' name='' value='" + toShow(MONTO) + "'>",
+        MONEDA,
+        "<input  class='CANTIDADP' style='font-size:12px;width:90px;' type='text' id='' name='' value='" + CANTIDAD + "'>",
+        UNIDAD,
+        IMPUESTO,
+        IVA,
+        toShow(TOTAL)
+    );
+
+    return r;
+}
+
+function addRowlP(t, nA, nA2, nA3, nA4, nA5, pos, mtr, txt, ca, factura, tc, grupo, ccentro, pep, cuenta, cuentanombre, tipoimpt, imput, monto, moneda, cantidad, unidad, impuesto, iva, total) {
+    var colstoAdd = "";
+    for (i = 0; i < extraCols; i++) {
+        colstoAdd += '<td class=\"BaseImp' + tRet2[i] + '\"><input class=\"extrasCP BaseImp' + i + '\" style=\"font-size:12px;width:76px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td>';
+        colstoAdd += '<td class=\"ImpRet' + tRet2[i] + '\"><input class=\"extrasC2P ImpRet' + i + '\" style=\"font-size:12px;width:76px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td>';
+    }
+    var table_rows = '<tr><td>' + pos + '</td><td><input class=\"NumAnexo\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td><td><input class=\"NumAnexo2\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td><td><input class=\"NumAnexo3\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td><td><input class=\"NumAnexo4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td><td><input class=\"NumAnexo5\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\"></td>' +
+        '<td> ' + mtr + '</td><td> ' + txt + '</td><td>' + ca + '</td><td>' + factura + '</td><td>' + tc + '</td><td>' + grupo + '</td><td>' + ccentro + '</td><td>' + pep + '</td><td>' + cuenta + '</td><td>' + cuentanombre
+        + '</td><td>' + tipoimpt + '</td><td>' + imput + '</td><td>' + monto + '</td><td>' + moneda + '</td><td>' + cantidad + '</td><td>' + unidad + '</td><td>' + impuesto + '</td><td></td><td>' + total + '</td>' + colstoAdd + '</tr>';
+    //Lej 11.12.2018--------------------------------
+    if (colstoAdd == "") {
+        var r = t.row.add([
+            pos,
+            nA,
+            nA2,
+            nA3,
+            nA4,
+            nA5,
+            mtr,//Material
+            txt,//Texto
+            ca,
+            factura,//Factura
+            tc,//
+            grupo,//Grupo
+            ccentro,//CECO
+            pep,//PEP
+            cuenta,
+            cuentanombre,
+            tipoimpt,
+            imput,
+            monto,//Monto
+            moneda,//Moneda
+            cantidad,//Cantidad
+            unidad,//Unidad
+            impuesto,//Impuesto
+            "",//Iva        
+            total//TOTAL
+        ]).draw(false).node();
+    }
+    else {
+        var r = t.row.add(
+            $(table_rows)//Lej 19.12.2018
+        ).draw(false).node();
+    }
+    return r;
+}

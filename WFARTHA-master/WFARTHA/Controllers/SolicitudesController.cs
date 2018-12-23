@@ -2554,7 +2554,6 @@ namespace WFARTHA.Controllers
         }
 
 
-
         // GET: Solicitudes/Edit/5
         public ActionResult Edit(decimal id, string pacc)
         {
@@ -3218,11 +3217,8 @@ namespace WFARTHA.Controllers
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string DETTA_USUARIOA_ID, string borr
 
             //MGC 11-12-2018 Agregar Contabilizador 0
-            , string VERSIONC1, string VERSIONC2
-            )
+            , string VERSIONC1, string VERSIONC2)
         {
-
-
             string errorString = "";
             var est = "";
             var filenull = false;  //FRT04122018
@@ -3230,9 +3226,6 @@ namespace WFARTHA.Controllers
             {
                 try
                 {
-
-
-
                     //Traigo los datos previamente registrados
                     var _doc = db.DOCUMENTOes.Where(n => n.NUM_DOC == dOCUMENTO.NUM_DOC).FirstOrDefault();
                     var _payid = _doc.PAYER_ID;
@@ -5258,8 +5251,6 @@ namespace WFARTHA.Controllers
         }
 
 
-
-
         //Lejgg 11-10-2018
         [HttpPost]
         public ActionResult Borrador([Bind(Include = "NUM_DOC,NUM_PRE,TSOL_ID,TALL_ID,SOCIEDAD_ID,CANTIDAD_EV,USUARIOC_ID," +
@@ -6155,6 +6146,78 @@ namespace WFARTHA.Controllers
             JsonResult jc = Json(retlt, JsonRequestBehavior.AllowGet);
             return jc;
         }
+
+        //LEJGG 22-12-2018-----------------I
+        [HttpPost]
+        public JsonResult getDocumentoPs(decimal id)
+        {
+            List<DOCUMENTOP_MOD> lstdp = new List<DOCUMENTOP_MOD>();
+            var dp = db.DOCUMENTOPs.Where(co => co.NUM_DOC == id && co.ACCION != "H").ToList();
+            for (int i = 0; i < dp.Count; i++)
+            {
+                DOCUMENTOP_MOD dpm = new DOCUMENTOP_MOD();
+                dpm.POS = dp[i].POS;
+                dpm.TCONCEPTO = dp[i].TCONCEPTO;
+                dpm.GRUPO = dp[i].GRUPO;
+                dpm.CUENTA = dp[i].CUENTA;
+                dpm.TIPOIMP = dp[i].TIPOIMP;
+                dpm.CCOSTO = dp[i].CCOSTO;
+                dpm.MONTO = dp[i].MONTO;
+                dpm.MWSKZ = dp[i].MWSKZ;
+                dpm.IVA = dp[i].IVA;
+                dpm.TOTAL= dp[i].TOTAL;
+                dpm.TEXTO = dp[i].TEXTO;
+                lstdp.Add(dpm);
+            }
+            JsonResult jc = Json(lstdp, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult getDocumentoCOC(decimal id)
+        {
+            List<DOCUMENTOCOC_MOD> lstdoc = new List<DOCUMENTOCOC_MOD>();
+            var dococ = db.DOCUMENTOCOCs.Where(co => co.NUM_DOC == id).ToList();
+            for (int i = 0; i < dococ.Count; i++)
+            {
+                DOCUMENTOCOC_MOD dcoc = new DOCUMENTOCOC_MOD();
+                dcoc.POSD = dococ[i].POSD;
+                dcoc.POS = dococ[i].POS;
+                dcoc.MATNR = dococ[i].MATNR;
+                dcoc.PS_PSP_PNR = dococ[i].PS_PSP_PNR;
+                dcoc.WAERS = dococ[i].WAERS;
+                dcoc.MENGE_BIL = dococ[i].MENGE_BIL;
+                dcoc.MEINS = dococ[i].MEINS;
+                lstdoc.Add(dcoc);
+            }
+            JsonResult jc = Json(lstdoc, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
+        [HttpPost]
+        public JsonResult getAmorAntTable(decimal id)
+        {
+            List<AMORANT_MOD> lstam = new List<AMORANT_MOD>();
+            var amant = db.AMOR_ANT.Where(co => co.NUM_DOC == id).ToList();
+            for (int i = 0; i < amant.Count; i++)
+            {
+                AMORANT_MOD ama = new AMORANT_MOD();
+                ama.EBELN = amant[i].EBELN;
+                ama.EBELP = amant[i].EBELP;
+                ama.BELNR = amant[i].BELNR;
+                ama.GJAHR = amant[i].GJAHR;
+                ama.BUZEI = amant[i].BUZEI;
+                ama.ANTAMOR = amant[i].ANTAMOR;
+                ama.TANT = amant[i].TANT;
+                ama.WAERS = amant[i].WAERS;
+                ama.ANTTRANS = amant[i].ANTTRANS;
+                ama.ANTXAMORT = amant[i].ANTXAMORT;
+                lstam.Add(ama);
+            }
+            JsonResult jc = Json(lstam, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+        //LEJGG 22-12-2018-----------------T
 
         [HttpPost]
         public JsonResult getConcepto(string id, string tipo, string bukrs)
@@ -8891,7 +8954,7 @@ namespace WFARTHA.Controllers
                 string file = sa.generarArchivo(d.NUM_DOC, 0, "A", fechacon);//MGC-14-12-2018 Modificación fechacon
 
                 if (file == "")
-                {                 
+                {
                     //d.ESTATUS = "A";//MGC 29-10-2018 El nuevo estatus es C              
 
                     DOCUMENTO dcc = db.DOCUMENTOes.Find(d.NUM_DOC);
@@ -8900,7 +8963,7 @@ namespace WFARTHA.Controllers
                     dcc.ESTATUS = "C";//MGC 29-10-2018 El nuevo estatus es C
                     dcc.ESTATUS_PRE = "G";//MGC 29-10-2018 El nuevo estatus es C
                     db.Entry(dcc).State = EntityState.Modified;
-                 
+
                     db.SaveChanges();
 
                     //MGC 04 - 10 - 2018 Botones para acciones WF
@@ -8926,7 +8989,7 @@ namespace WFARTHA.Controllers
                     {
                         FlujosController fc = new FlujosController();
                         var moneda = d.MONEDA_ID;
-                        var restipo = fc.TipoCambio( moneda, d.NUM_DOC, txt_fechaconta);
+                        var restipo = fc.TipoCambio(moneda, d.NUM_DOC, txt_fechaconta);
                     }
 
                 }
@@ -8940,7 +9003,7 @@ namespace WFARTHA.Controllers
                     db.Entry(dcc).State = EntityState.Modified;
                     db.SaveChanges();
 
-        
+
                 }
             }
 

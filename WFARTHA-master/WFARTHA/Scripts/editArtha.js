@@ -12,160 +12,6 @@ $(document).ready(function () {
     var instance = M.Select.init(elem, []);
 
     //--LEJGG 21-12-2018
-    $('#table_infoP').DataTable({
-
-        language: {
-            //"url": "../Scripts/lang/@Session["spras"].ToString()" + ".json"
-            "url": "../Scripts/lang/ES.json"
-        },
-        "paging": false,
-        "info": false,
-        "ordering": false,
-        "searching": false,
-        columnDefs: [
-            {
-                targets: [0, 6, 7, 11, 19, 21],
-                className: 'mdl-data-table__cell--non-numeric'
-            }
-        ],
-        "columns": [
-            {
-                "name": 'Fila',
-                "className": 'POS',
-                "orderable": false
-            },
-            {
-                "name": 'A1',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo',
-                "orderable": false
-            },
-            {
-                "name": 'A2',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo2',
-                "orderable": false
-            },
-            {
-                "name": 'A3',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo3',
-                "orderable": false
-            },
-            {
-                "name": 'A4',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo4',
-                "orderable": false
-            },
-            {
-                "name": 'A5',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo5',
-                "orderable": false
-            },
-            {
-                "name": 'MATERIAL',
-                "className": 'MATERIAL',
-                "orderable": false
-            },
-            {
-                "name": 'TXTPOS',
-                "className": 'TXTPOS',
-                "orderable": false
-            },
-            {
-                "name": 'CA',
-                "className": 'CA',
-                "orderable": false,
-                "visible": false
-            },
-            {
-                "name": 'FACTURA',
-                "className": 'FACTURA',
-                "orderable": false,
-                "visible": false
-            },
-            {
-                "name": 'TCONCEPTO',
-                "className": 'TCONCEPTO',
-                "orderable": false,
-                "visible": false//MGC 22-10-2018 Etiquetas
-            },
-            {
-                "name": 'CONCEPTO',
-                "className": 'GRUPO',
-                "orderable": false
-            },
-            {
-                "name": 'CCOSTO',
-                "className": 'CCOSTO',
-                "orderable": false
-            },
-            {
-                "name": 'PEP',
-                "className": 'PEP',
-                "orderable": false
-            },
-            {
-                "name": 'CUENTA',
-                "className": 'CUENTA',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'CUENTANOM',
-                "className": 'CUENTANOM',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'TIPOIMP',
-                "className": 'TIPOIMP',
-                "orderable": false,
-                "visible": false//MGC 22-10-2018 Etiquetas
-            },
-            {
-                "name": 'IMPUTACION',
-                "className": 'IMPUTACION',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'MONTO',
-                "className": 'MONTO',
-                "orderable": false
-            },
-            {
-                "name": 'MONEDA',
-                "className": 'MONEDA',
-                "orderable": false
-
-            },
-            {
-                "name": 'CANTIDAD',
-                "className": 'CANTIDAD',
-                "orderable": false
-            },
-            {
-                "name": 'UNIDAD',
-                "className": 'UNIDAD',
-                "orderable": false
-            },
-            {
-                "name": 'IMPUESTOP',
-                "className": 'IMPUESTOP',
-                "orderable": false,
-                "visible": false
-            },
-            {
-                "name": 'IVA',
-                "className": 'IVA',
-                "orderable": false
-            },
-            {
-                "name": 'TOTAL',
-                "className": 'TOTAL',
-                "orderable": false,
-                "visible": false //
-            }
-        ]
-    });
 
     $('#tableOC').DataTable({
         language: {
@@ -1578,7 +1424,10 @@ $(window).on('load', function () {
     mostrarTabla(tsolid());//lejgg 21-12-2018
     //lejgg 21-12-2018
     if (tsolid() === "SCO") {
-        llenarCOC();       
+        llenarCOC();
+        //LEJGG 22-12-2018
+        Tabla2oc();
+        tablaDet();
     }
     //lejgg 21-12-2018
     $('.materialize-textarea').css("height", "0px");
@@ -4364,4 +4213,343 @@ function tsolid() {
     val3 = val3.replace(/\ /g, "");
     var jsval = $.parseJSON(val3);
     return jsval[0].ID;
+}
+
+function armarTablaDet(d1, d2) {
+    if (d1.length == d2.length) {
+        $('#table_infoP').DataTable().destroy();
+        $('#table_infoP').empty();
+        var arrCols = [
+            {
+                "name": 'Fila',
+                "className": 'POS',
+                "orderable": false
+            },
+            {
+                "name": 'A1',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo',
+                "orderable": false
+            },
+            {
+                "name": 'A2',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo2',
+                "orderable": false
+            },
+            {
+                "name": 'A3',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo3',
+                "orderable": false
+            },
+            {
+                "name": 'A4',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo4',
+                "orderable": false
+            },
+            {
+                "name": 'A5',//MGC 22-10-2018 Etiquetas
+                "className": 'NumAnexo5',
+                "orderable": false
+            },
+            {
+                "name": 'MATERIAL',
+                "className": 'MATERIAL',
+                "orderable": false
+            },
+            {
+                "name": 'TXTPOS',
+                "className": 'TXTPOS',
+                "orderable": false
+            },
+            {
+                "name": 'CA',
+                "className": 'CA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'FACTURA',
+                "className": 'FACTURA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'TCONCEPTO',
+                "className": 'TCONCEPTO',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'CONCEPTO',
+                "className": 'GRUPO',
+                "orderable": false
+            },
+            {
+                "name": 'CCOSTO',
+                "className": 'CCOSTO',
+                "orderable": false
+            },
+            {
+                "name": 'PEP',
+                "className": 'PEP',
+                "orderable": false
+            },
+            {
+                "name": 'CUENTA',
+                "className": 'CUENTA',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CUENTANOM',
+                "className": 'CUENTANOM',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'TIPOIMP',
+                "className": 'TIPOIMP',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'IMPUTACION',
+                "className": 'IMPUTACION',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'MONTO',
+                "className": 'MONTO',
+                "orderable": false
+            },
+            {
+                "name": 'MONEDA',
+                "className": 'MONEDA',
+                "orderable": false
+
+            },
+            {
+                "name": 'CANTIDAD',
+                "className": 'CANTIDAD',
+                "orderable": false
+            },
+            {
+                "name": 'UNIDAD',
+                "className": 'UNIDAD',
+                "orderable": false
+            },
+            {
+                "name": 'IMPUESTOP',
+                "className": 'IMPUESTOP',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'IVA',
+                "className": 'IVA',
+                "orderable": false
+            },
+            {
+                "name": 'TOTAL',
+                "className": 'TOTAL',
+                "orderable": false,
+                "visible": false //
+            }
+        ];
+        //Se rearmara la tabla en HTML
+        var taInf = $("#table_infoP");
+        taInf.append($("<thead />"));
+        taInf.append($("<tbody />"));
+        taInf.append($("<tfoot />"));
+        var thead = $("#table_infoP thead");
+        thead.append($("<tr />"));
+        //Theads        
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_pos\">Fila</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_NmAnexo\">A1</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_NmAnexo\">A2</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_NmAnexo\">A3</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_NmAnexo\">A4</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_NmAnexo\">A5</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_mat\">Material</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_Texto\">Texto</th>");//FRT08112018
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_cargoAbono\">D/H</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_factura\">Factura</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_tconcepto\">TIPO CONCEPTO</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_grupo\">Grupo</th>");//FRT08112018
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_ccosto\">Centro de Costo</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_pep\">PEP</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_cuenta\">Cuenta</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_cuentaNom\">Nombre de cuenta</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_tipoimp\">Tipo Imp.</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_imputacion\">Imputación</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_monto\">Monto</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_moneda\">Moneda</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lblcantidad\">Cantidad</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_Unidad\">Unidad</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_impuesto\">Impuesto  </th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_iva\">IVA</th>");
+        $("#table_infoP>thead>tr").append("<th class=\"lbl_total\">Total</th>");
+        var res = null;
+        //----------------------
+        //Hare un ajax para traer las columnas extras
+        var _ref = $('#NUM_DOC').val();
+        $.ajax({
+            type: "POST",
+            url: '../traerColsExtras',
+            dataType: "json",
+            data: { 'id': _ref },
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    if (data !== "Null") {
+                        //
+                        res = data;
+                    }
+                    else {
+                        //
+                    }
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+        var tRet = [];
+        for (x = 0; x < res.length; x++) {
+            tRet.push(res[x].WITHT);
+        }
+        tRet2 = tRet;
+        for (i = 0; i < tRet.length; i++) {//Revisare las retenciones que tienes ligadas
+            $.ajax({
+                type: "POST",
+                url: '../getRetLigadas',
+                data: { 'id': tRet[i] },
+                dataType: "json",
+                success: function (data) {
+                    if (data !== null || data !== "") {
+                        if (data !== "Null") {
+                            tRet2 = jQuery.grep(tRet2, function (value) {
+                                return value !== data;
+                            });
+                        }
+                        else {
+                            //
+                        }
+                    }
+                },
+                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                    M.toast({ html: httpStatusMessage });
+                },
+                async: false
+            });
+        }
+        for (i = 0; i < tRet2.length; i++) {//Agregare las columnas extras
+            $("#table_info>thead>tr").append("<th class=\"bi" + tRet2[i] + "\">" + tRet2[i] + "B. I.</th>");
+            $("#table_info>thead>tr").append("<th class=\"ir" + tRet2[i] + "\">" + tRet2[i] + "I. R.</th>");
+            colspan++;
+            colspan++;
+        }
+        for (i = 0; i < tRet2.length; i++) {
+            arrCols.push({
+                "name": tRet2[i] + " B.Imp.",
+                "orderable": false
+            }, {
+                    "name": tRet2[i] + " I. Ret.",
+                    "orderable": false
+                });
+        }
+
+        $('#table_infoP').DataTable({
+            language: {
+                "url": "../../Scripts/lang/ES.json"
+            },
+            "paging": false,
+            "info": false,
+            "ordering": false,
+            "searching": false,
+            columnDefs: [
+                {
+                    targets: [0, 6, 7, 11, 19, 21],
+                    className: 'mdl-data-table__cell--non-numeric'
+                }
+            ],
+            "columns": arrCols
+        });
+        var _infoBIIR = [];
+        var _infoAnex = [];
+        //Recupero los anexos
+        $.ajax({
+            type: "POST",
+            url: '../getAnexos',
+            dataType: "json",
+            data: { 'id': _ref },
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    _infoAnex = data;
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+        var arrColExTA = [];
+
+        for (var i = 0; i < d1.length; i++) {
+            if (_infoAnex.length > 0) {
+                //FRT05122018 Para quitar los ceros en los vacios
+                if (_infoAnex[i].a1 == 0) {
+                    _infoAnex[i].a1 = "";
+                } else {
+                    _infoAnex[i].a1;
+                }
+
+                if (_infoAnex[i].a2 == 0) {
+                    _infoAnex[i].a2 = "";
+                } else {
+                    _infoAnex[i].a2;
+                }
+
+                if (_infoAnex[i].a3 == 0) {
+                    _infoAnex[i].a3 = "";
+                } else {
+                    _infoAnex[i].a3;
+                }
+
+                if (_infoAnex[i].a4 == 0) {
+                    _infoAnex[i].a4 = "";
+                } else {
+                    _infoAnex[i].a4;
+                }
+
+                if (_infoAnex[i].a5 == 0) {
+                    _infoAnex[i].a5 = "";
+                } else {
+                    _infoAnex[i].a5;
+                }
+                if (d1[i].IMPUTACION == null) {
+                    d1[i].IMPUTACION = "";
+                }
+                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, _infoAnex[i].a1, _infoAnex[i].a2, _infoAnex[i].a3, _infoAnex[i].a4, _infoAnex[i].a5, d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+
+                //Obtener el select de impuestos en la cabecera
+                var idselect = "infoSel" + i;  //FRT08112018 Para mostrar todos los impuestos
+
+                //Obtener el valor 
+                var imp = $('#IMPUESTO').val();
+                //Crear el nuevo select con los valores de impuestos
+                addSelectImpuestoP(ar, imp, idselect, "", "X");
+            }
+            else {
+                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+                //Obtener el select de impuestos en la cabecera
+                var idselect = "infoSel" + i;
+                //Obtener el valor 
+                var imp = $('#IMPUESTO').val();
+                //Crear el nuevo select con los valores de impuestos
+                addSelectImpuestoP(ar, imp, idselect, "", "X");
+            }
+        }
+    }
 }

@@ -24,13 +24,7 @@ namespace WFARTHA.Models
         public string Usuario { get; set; }
         public string Wf { get; set; }
         public string Estatus { get; set; }
-        public decimal Totald { get; set; }
-        public string Pagado { get; set; }
-        public DateTime Pagadod { get; set; }
-        public string Pagadol { get; set; }
-        public string Epagado { get; set; }
-        public DateTime Epagadod { get; set; }
-        public string Epagadol { get; set; }
-        public string Viapago { get; set; }
+        public string Totald { get; set; }
+        public string EstPago { get; set; }
     }
 }

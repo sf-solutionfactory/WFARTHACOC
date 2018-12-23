@@ -8,103 +8,99 @@
 }
 <!DOCTYPE html>
 
-@using (Html.BeginForm("Reporte", "Report", FormMethod.Post))
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+<link href="~/Content/dataTable.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+@using (Html.BeginForm("ReportTemplate2", "Report", FormMethod.Post))
 {
-<div class="row">
-    <div class="col s12 right-align">
-        <button id="btnDownload" class="btn" type="submit">Generar</button>
+    <div class="row">
+        <div class="col s12 right-align">
+            <button id="btnGenerar" class="btn" type="submit">Generar</button>
+        </div>
     </div>
-    @*<div class="row right-align" id="div_caratula">
-        <a id="ReportUrl_Performance" class="btn-small" href="@Url.Action("ReportTemplate2", "Report", new { id = @Model.D.NUM_DOC })"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</a>
-    </div>*@
-</div>
     <div class="card-panel">
         <div class="row">
             <div class="row" style="margin-bottom:0">
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Tsol, "Tipo de Solicitud", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_sol" })
+                    @Html.LabelFor(model => model.Tsol, "Tipo de Solicitud", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_sol" })
                     <div class="col-md-4">
-                        @Html.DropDownList("sol", null, htmlAttributes: new { @class = "form-control dd1", @id = "tsol" })
-                        @Html.EditorFor(model => model.Tsol, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "sol2" } })
+                        @Html.ListBox("tsol", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "tsol" })
+                        @Html.EditorFor(model => model.Tsol, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "tsol2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Bukrs, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_soc" })
+                    @Html.LabelFor(model => model.Bukrs, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_soc" })
                     <div class="col-md-4">
-                        @Html.ListBox("soc", null, htmlAttributes: new { @class = "form-control dd1", @id = "soc" })
-                        @Html.EditorFor(model => model.Bukrs, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "soc2" } })
+                        @Html.ListBox("bukrs", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "bukrs" })
+                        @Html.EditorFor(model => model.Bukrs, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "bukrs2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_fec" })
+                    @Html.LabelFor(model => model.Fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_fec" })
                     <div class="col-md-4">
-                        @Html.ListBox("fec", null, htmlAttributes: new { @class = "form-control dd1", @id = "fec" })
-                        @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "fec2" } })
+                        @Html.ListBox("fecha", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "fecha" })
+                        @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "fecha2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Payer, "Proveedor", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_prov" })
+                    @Html.LabelFor(model => model.Payer, "Proveedor", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_prov" })
                     <div class="col-md-4">
-                        @Html.ListBox("prov", null, htmlAttributes: new { @class = "form-control dd1", @id = "prov" })
-                        @Html.EditorFor(model => model.Payer, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "prov2" } })
+                        @Html.ListBox("payer", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "payer" })
+                        @Html.EditorFor(model => model.Payer, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "payer2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Num_pre, "No. SAP", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_sap" })
+                    @Html.LabelFor(model => model.Num_pre, "No. SAP", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_sap" })
                     <div class="col-md-4">
-                        @Html.ListBox("sap", null, htmlAttributes: new { @class = "form-control dd1", @id = "sap" })
-                        @Html.EditorFor(model => model.Num_pre, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "sap2" } })
+                        @Html.ListBox("num_pre", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "num_pre" })
+                        @Html.EditorFor(model => model.Num_pre, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "num_pre2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Usuario, "Solicitante", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_user" })
+                    @Html.LabelFor(model => model.User, "Solicitante", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_user" })
                     <div class="col-md-4">
-                        @Html.ListBox("usu", null, htmlAttributes: new { @class = "form-control dd1", @id = "user" })
-                        @Html.EditorFor(model => model.Usuario, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "user2" } })
+                        @Html.ListBox("User", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "user" })
+                        @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "user2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Num_doc, "No. Portal", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_portal" })
+                    @Html.LabelFor(model => model.Num_doc, "No. Portal", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_portal" })
                     <div class="col-md-4">
-                        @Html.ListBox("portal", null, htmlAttributes: new { @class = "form-control dd1", @id = "portal" })
-                        @Html.EditorFor(model => model.Num_doc, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "portal2" } })
+                        @Html.ListBox("num_doc", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "num_doc" })
+                        @Html.EditorFor(model => model.Num_doc, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "num_doc2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Monto, "Monto", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_monto" })
+                    @Html.LabelFor(model => model.Monto, "Monto", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_monto" })
                     <div class="col-md-4">
-                        @Html.ListBox("monto", null, htmlAttributes: new { @class = "form-control dd1", @id = "monto" })
+                        @Html.ListBox("monto", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "monto" })
                         @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "monto2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Moneda, "Moneda", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_moneda" })
+                    @Html.LabelFor(model => model.Moneda, "Moneda", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_moneda" })
                     <div class="col-md-4">
-                        @Html.DropDownList("moneda", null, htmlAttributes: new { @class = "form-control dd1", @id = "moneda" })
-                        @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "moneda2" } })
+                        @Html.ListBox("moneda", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "moneda" })
+                        @Html.EditorFor(model => model.Moneda, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "moneda2" } })
                     </div>
                 </div>
                 <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Estatus, "Estatus", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_status" })
+                    @Html.LabelFor(model => model.Estatus, "Estatus", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_estatus" })
                     <div class="col-md-4">
-                        @Html.DropDownList("status", null, htmlAttributes: new { @class = "form-control dd1", @id = "status" })
-                        @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "status2" } })
+                        @Html.ListBox("estatus", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "estatus" })
+                        @Html.EditorFor(model => model.Estatus, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "estatus2" } })
                     </div>
                 </div>
-                @*<div class="form-group col s4">
-                    @Html.LabelFor(model => model.Pagado, "Pagado", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_pagado" })
+                <div class="form-group col s4">
+                    @Html.LabelFor(model => model.Pagado, "Estatus de Pago", htmlAttributes: new { @class = "control-label col-md-2", @id = "label_pagado" })
                     <div class="col-md-4">
-                        @Html.DropDownList("pagado", null, htmlAttributes: new { @class = "form-control dd1", @id = "pagado" })
+                        @Html.ListBox("pagado", null, htmlAttributes: new { @class = "form-control dd1 comcode select_all", @id = "pagado" })
                         @Html.EditorFor(model => model.Pagado, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "pagado2" } })
                     </div>
                 </div>
-                <div class="form-group col s4">
-                    @Html.LabelFor(model => model.Epagado, "Epagado", htmlAttributes: new { @class = "control-label col-md-2", @id= "label_epagado" })
-                    <div class="col-md-4">
-                        @Html.DropDownList("epagado", null, htmlAttributes: new { @class = "form-control dd1", @id = "epagado" })
-                        @Html.EditorFor(model => model.Epagado, new { htmlAttributes = new { @class = "form-control fechaVal", @hidden = "hidden", @id = "epagado2" } })
-                    </div>
-                </div>*@
             </div>
         </div>
         <script>
@@ -126,11 +122,5 @@
 
             });
         </script>
-        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
-        <link href="~/Content/dataTable.css" rel="stylesheet" />
-        <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
     </div>
 }

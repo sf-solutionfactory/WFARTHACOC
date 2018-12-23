@@ -563,6 +563,7 @@
     <Compile Include="Models\ReportDetalle.cs" />
     <Compile Include="Models\ReportEsqueleto2.cs" />
     <Compile Include="Models\ReportEsqueleto.cs" />
+    <Compile Include="Models\ReportFirmasResult.cs" />
     <Compile Include="Models\REPORT_MOD.cs" />
     <Compile Include="Models\ReportSols.cs" />
     <Compile Include="Models\ReportFirmas.cs" />

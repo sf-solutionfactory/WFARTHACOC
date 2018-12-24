@@ -1248,6 +1248,9 @@ function copiarTableInfoPControl() {
                 anttr = anttr.replace('$', '').replace(',', '');
             }
             var antxamor = $(this).find("td.AntXAMOR input").val().replace('$', '');
+            if (antxamor == "") {
+                antxamor = 0;
+            }
             while (antxamor.indexOf(',') > -1) {
                 antxamor = antxamor.replace('$', '').replace(',', '');
             }

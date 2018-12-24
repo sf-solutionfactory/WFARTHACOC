@@ -3212,16 +3212,17 @@ namespace WFARTHA.Controllers
             "MONTO_BASE_GS_PCT_ML2,MONTO_BASE_NS_PCT_ML2,PORC_ADICIONAL,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,PAYER_NOMBRE,PAYER_EMAIL,GRUPO_CTE_ID," +
             "CANAL_ID,MONEDA_ID,MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIO,TIPO_CAMBIOL,TIPO_CAMBIOL2,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL," +
             "FECHA_PASO_ACTUAL,VKORG,VTWEG,SPART,PUESTO_ID,GALL_ID,CONCEPTO_ID,DOCUMENTO_SAP,PORC_APOYO,LIGADA,OBJETIVOQ,FRECUENCIA_LIQ,OBJQ_PORC,FECHACON,FECHA_BASE,REFERENCIA," +
-            "TEXTO_POS,ASIGNACION_POS,CLAVE_CTA,MONTO_DOC_IMP, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,Anexo,DOCUMENTOA_TAB")] Models.DOCUMENTO_MOD dOCUMENTO, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc, string FECHADO, string mtTot, string Uuid,
+            "TEXTO_POS,ASIGNACION_POS,CLAVE_CTA,MONTO_DOC_IMP, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,Anexo,DOCUMENTOA_TAB,Anexo,"+
+            "DOCUMENTOCOC,EBELN,AMOR_ANT,RETPC,DPPCT,TOAD,ANTR,AMORANT")] Models.DOCUMENTO_MOD dOCUMENTO, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc, string FECHADO, string mtTot, string Uuid,
             //MGC 02-10-2018 Cadenas de autorización
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string DETTA_USUARIOA_ID, string borr
-
             //MGC 11-12-2018 Agregar Contabilizador 0
             , string VERSIONC1, string VERSIONC2)
         {
             string errorString = "";
             var est = "";
             var filenull = false;  //FRT04122018
+            var er = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
             if (ModelState.IsValid)
             {
                 try
@@ -3293,11 +3294,7 @@ namespace WFARTHA.Controllers
                     var doct = db.DET_TIPODOC.Where(dt => dt.TIPO_SOL == dOCUMENTO.TSOL_ID).FirstOrDefault();
                     _doc.DOCUMENTO_SAP = doct.BLART.ToString();
 
-
-
-
                     //FRT03122018 para poder realizar el guardado de borrador sin afectar estatus
-
                     if (borr != "B")
                     {
                         //Si es B signfica que ya pasa a ser N
@@ -3317,14 +3314,18 @@ namespace WFARTHA.Controllers
 
                     //ENDFRT03122018 para poder realizar el guardado de borrador sin afectar estatus
 
+                    //LEJGG 12-12-2018
+                    _doc.EBELN = dOCUMENTO.EBELN;
+                    _doc.AMOR_ANT = dOCUMENTO.AMOR_ANT;
+                    _doc.RETPC = dOCUMENTO.RETPC;
+                    _doc.DPPCT = dOCUMENTO.DPPCT;
+                    _doc.TOAD = dOCUMENTO.TOAD;
+                    _doc.ANTR = dOCUMENTO.ANTR;
+                    //LEJGG 12-12-2018
+
                     //db.DOCUMENTOes.Add(_doc);
                     db.Entry(_doc).State = EntityState.Modified;
                     db.SaveChanges();//LEJGG 29-10-2018
-
-
-
-
-
 
                     //Guardar número de documento creado
                     Session["NUM_DOC"] = _doc.NUM_DOC;
@@ -3527,9 +3528,6 @@ namespace WFARTHA.Controllers
                                     //    }
                                     //}
                                 }
-
-
-
                             }
                             catch (Exception e)
                             {
@@ -3545,7 +3543,6 @@ namespace WFARTHA.Controllers
                     {
 
                     }
-
                     //FRT16112018 SE PONE LO DE CREATE
 
                     if (filenull)
@@ -3554,11 +3551,7 @@ namespace WFARTHA.Controllers
                         List<string> listaNombreArchivos2 = listaNombreArchivos;
                         List<string> listaDescArchivos2 = listaDescArchivos;
 
-
-
                         var listafiles = listaNombreArchivos.Count;//FRT16112018
-
-
                         var _name = "";//FRT20112018 NOMBRE PAERA QUIATR DE LA LISTA
                                        //DOCUMENTOA
                                        //Misma cantidad de archivos y nombres, osea todo bien
@@ -4063,11 +4056,6 @@ namespace WFARTHA.Controllers
                         }
 
                     }
-
-
-
-
-
                     if (filenull)
                     {
                         var listaDA = db.DOCUMENTOAs.Where(x => x.NUM_DOC == _ndoc && x.ACTIVO == true).ToList();
@@ -4138,10 +4126,6 @@ namespace WFARTHA.Controllers
                         //ENDFRT25112018
                     }
 
-
-
-
-
                     //FRT22112018 FUNCIONALIDAD PARA DETALLES AGREGAR Y ELIMINAR
 
                     var addDocumentoA = db.DOCUMENTOAs.Where(x => x.NUM_DOC == _ndoc).ToList(); //FRT04122018 para anexos despues de editar
@@ -4154,8 +4138,16 @@ namespace WFARTHA.Controllers
                         db.SaveChanges();
                     }
 
+                    //Si es con ordende compra, buscamos y borramos lo que exista en documentcoc
+                    var deldococ= db.DOCUMENTOCOCs.Where(x => x.NUM_DOC == _ndoc).ToList();
+                    for (int i = 0; i < deldococ.Count; i++)
+                    {
+                        db.DOCUMENTOCOCs.Remove(deldococ[i]);
+                        db.SaveChanges();
+                    }
 
                     var delDP = db.DOCUMENTOPs.Where(x => x.NUM_DOC == _ndoc).ToList();
+
                     for (int i = 0; i < delDP.Count; i++)
                     {
                         try
@@ -4168,10 +4160,7 @@ namespace WFARTHA.Controllers
                         {
 
                         }
-
                     }
-
-
 
                     decimal _monto = 0;
                     decimal _iva = 0;
@@ -4179,49 +4168,113 @@ namespace WFARTHA.Controllers
                     var _mwskz = "";
 
                     var _pos_err_imputacion = "";
-                    for (int i = 0; i < dOCUMENTO.DOCUMENTOP.Count; i++)
+                    try
                     {
-                        DOCUMENTOP dp = new DOCUMENTOP();
+                        for (int i = 0; i < dOCUMENTO.DOCUMENTOP.Count; i++)
+                        {
+                            DOCUMENTOP dp = new DOCUMENTOP();
 
-                        dp.NUM_DOC = dOCUMENTO.NUM_DOC;
-                        dp.POS = i + 1;
-                        dp.ACCION = dOCUMENTO.DOCUMENTOP[i].ACCION;
-                        dp.FACTURA = dOCUMENTO.DOCUMENTOP[i].FACTURA;
-                        dp.TCONCEPTO = dOCUMENTO.DOCUMENTOP[i].TCONCEPTO;
-                        dp.GRUPO = dOCUMENTO.DOCUMENTOP[i].GRUPO;
-                        dp.CUENTA = dOCUMENTO.DOCUMENTOP[i].CUENTA;//Modificación Cuenta de PEP
-                        dp.TIPOIMP = dOCUMENTO.DOCUMENTOP[i].TIPOIMP;
-                        dp.IMPUTACION = dOCUMENTO.DOCUMENTOP[i].IMPUTACION;
-                        dp.CCOSTO = dOCUMENTO.DOCUMENTOP[i].CCOSTO;
-                        dp.MONTO = dOCUMENTO.DOCUMENTOP[i].MONTO;
-                        _monto = _monto + dOCUMENTO.DOCUMENTOP[i].MONTO;//lejgg 10-10-2018
-                        var sp = dOCUMENTO.DOCUMENTOP[i].MWSKZ.Split('-');
-                        _mwskz = sp[0];//lejgg 10-10-2018
-                        dp.MWSKZ = sp[0];
-                        dp.IVA = dOCUMENTO.DOCUMENTOP[i].IVA;
-                        _iva = _iva + dOCUMENTO.DOCUMENTOP[i].IVA;//lejgg 10-10-2018
-                        dp.TOTAL = dOCUMENTO.DOCUMENTOP[i].TOTAL;
-                        _total = _total + dOCUMENTO.DOCUMENTOP[i].TOTAL;//lejgg 10-10-2018
-                        dp.TEXTO = dOCUMENTO.DOCUMENTOP[i].TEXTO;
-                        db.DOCUMENTOPs.Add(dp);
+                            dp.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            dp.POS = i + 1;
+                            dp.ACCION = dOCUMENTO.DOCUMENTOP[i].ACCION;
+                            dp.FACTURA = dOCUMENTO.DOCUMENTOP[i].FACTURA;
+                            dp.TCONCEPTO = dOCUMENTO.DOCUMENTOP[i].TCONCEPTO.Trim();
+                            dp.GRUPO = dOCUMENTO.DOCUMENTOP[i].GRUPO.Trim();
+                            dp.CUENTA = dOCUMENTO.DOCUMENTOP[i].CUENTA;//Modificación Cuenta de PEP
+                            dp.TIPOIMP = dOCUMENTO.DOCUMENTOP[i].TIPOIMP;
+                            dp.IMPUTACION = dOCUMENTO.DOCUMENTOP[i].IMPUTACION;
+                            dp.CCOSTO = dOCUMENTO.DOCUMENTOP[i].CCOSTO;
+                            dp.MONTO = dOCUMENTO.DOCUMENTOP[i].MONTO;
+                            _monto = _monto + dOCUMENTO.DOCUMENTOP[i].MONTO;//lejgg 10-10-2018
+                            var sp = dOCUMENTO.DOCUMENTOP[i].MWSKZ.Split('-');
+                            _mwskz = sp[0];//lejgg 10-10-2018
+                            dp.MWSKZ = sp[0];
+                            dp.IVA = dOCUMENTO.DOCUMENTOP[i].IVA;
+                            _iva = _iva + dOCUMENTO.DOCUMENTOP[i].IVA;//lejgg 10-10-2018
+                            dp.TOTAL = dOCUMENTO.DOCUMENTOP[i].TOTAL;
+                            _total = _total + dOCUMENTO.DOCUMENTOP[i].TOTAL;//lejgg 10-10-2018
+                            dp.TEXTO = dOCUMENTO.DOCUMENTOP[i].TEXTO;
+                            db.DOCUMENTOPs.Add(dp);
+                            db.SaveChanges();
+
+                        }
+                        var delDPH = db.DOCUMENTOPs.Where(x => x.NUM_DOC == _ndoc).ToList();
+
+                        DOCUMENTOP _dp = new DOCUMENTOP();
+                        _dp.NUM_DOC = dOCUMENTO.NUM_DOC;
+                        _dp.POS = delDPH.Count + 1;
+                        _dp.ACCION = "H";
+                        _dp.CUENTA = _payerid_;
+                        _dp.MONTO = _monto + _iva;//Obtener las retenciones relacionadas con las ya mostradas en la tabla
+                        _dp.MWSKZ = _mwskz;
+                        _dp.IVA = _iva;
+                        _dp.TOTAL = _total;
+                        db.DOCUMENTOPs.Add(_dp);
                         db.SaveChanges();
-
                     }
+                    catch (Exception e)
+                    { }
+                    //LEJGG 23-12-2018----------------------------------------I
+                    if (_doc.TSOL_ID == "SCO")
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dOCUMENTO.DOCUMENTOCOC.Count; i++)
+                            {
+                                try
+                                {
+                                    DOCUMENTOCOC dcom = new DOCUMENTOCOC();
+                                    dcom.NUM_DOC = _ndoc;
+                                    dcom.POSD = i + 1;
+                                    dcom.POS = dOCUMENTO.DOCUMENTOCOC[i].POS;
+                                    dcom.MATNR = dOCUMENTO.DOCUMENTOCOC[i].MATNR;
+                                    dcom.PS_PSP_PNR = dOCUMENTO.DOCUMENTOCOC[i].PS_PSP_PNR;
+                                    dcom.WAERS = dOCUMENTO.DOCUMENTOCOC[i].WAERS;
+                                    dcom.MENGE_BIL = dOCUMENTO.DOCUMENTOCOC[i].MENGE_BIL;
+                                    dcom.MEINS = dOCUMENTO.DOCUMENTOCOC[i].MEINS;
+                                    db.DOCUMENTOCOCs.Add(dcom);
+                                    db.SaveChanges();
+                                }
+                                catch (Exception e)
+                                {
+                                    //
+                                }
+                            }
 
-                    var delDPH = db.DOCUMENTOPs.Where(x => x.NUM_DOC == _ndoc).ToList();
+                            //Borrar tabla amortant y volverla a llenar
+                            var tamant = db.AMOR_ANT.Where(x => x.NUM_DOC == _ndoc).ToList();
+                            for (int i = 0; i < tamant.Count; i++)
+                            {
+                                db.AMOR_ANT.Remove(tamant[i]);
+                                db.SaveChanges();
+                            }
 
-                    DOCUMENTOP _dp = new DOCUMENTOP();
-                    _dp.NUM_DOC = dOCUMENTO.NUM_DOC;
-                    _dp.POS = delDPH.Count + 1;
-                    _dp.ACCION = "H";
-                    _dp.CUENTA = _payerid_;
-                    _dp.MONTO = _monto + _iva;//Obtener las retenciones relacionadas con las ya mostradas en la tabla
-                    _dp.MWSKZ = _mwskz;
-                    _dp.IVA = _iva;
-                    _dp.TOTAL = _total;
-                    db.DOCUMENTOPs.Add(_dp);
-                    db.SaveChanges();
-
+                            for (int i = 0; i < dOCUMENTO.AMORANT.Count; i++)
+                            {
+                                var ej = dOCUMENTO.AMORANT[i].GJAHR.ToString().Split('.');
+                                AMOR_ANT amant = new AMOR_ANT();
+                                amant.POS = db.AMOR_ANT.ToList().Count() + 1;
+                                amant.NUM_DOC = _ndoc;
+                                amant.EBELN = dOCUMENTO.EBELN;
+                                amant.EBELP = dOCUMENTO.AMORANT[i].EBELP;
+                                amant.BELNR = dOCUMENTO.AMORANT[i].BELNR;
+                                amant.GJAHR = decimal.Parse(ej[0]);//
+                                amant.BUZEI = dOCUMENTO.AMORANT[i].BUZEI;
+                                amant.ANTAMOR = dOCUMENTO.AMORANT[i].ANTAMOR;
+                                amant.TANT = dOCUMENTO.AMORANT[i].TANT;
+                                amant.WAERS = dOCUMENTO.AMORANT[i].WAERS;
+                                amant.ANTTRANS = dOCUMENTO.AMORANT[i].ANTTRANS;
+                                amant.ANTXAMORT = dOCUMENTO.AMORANT[i].ANTXAMORT;
+                                db.AMOR_ANT.Add(amant);
+                                db.SaveChanges();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //
+                        }
+                    }
+                    //LEJGG 23-12-2018----------------------------------------T
 
                     if (dOCUMENTO.DOCUMENTORP != null)
                     {
@@ -4243,8 +4296,6 @@ namespace WFARTHA.Controllers
 
                         }
                     }
-
-
 
                     try
                     {
@@ -6165,7 +6216,7 @@ namespace WFARTHA.Controllers
                 dpm.MONTO = dp[i].MONTO;
                 dpm.MWSKZ = dp[i].MWSKZ;
                 dpm.IVA = dp[i].IVA;
-                dpm.TOTAL= dp[i].TOTAL;
+                dpm.TOTAL = dp[i].TOTAL;
                 dpm.TEXTO = dp[i].TEXTO;
                 lstdp.Add(dpm);
             }

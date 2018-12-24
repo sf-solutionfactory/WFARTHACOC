@@ -478,3 +478,311 @@ function addRowlP(t, nA, nA2, nA3, nA4, nA5, pos, mtr, txt, ca, factura, tc, gru
     }
     return r;
 }
+
+function copiarTableInfoPControl() {
+
+    //Tambien pasar los datos de la tabla "tableoc"
+    var ebeln = $("#norden_compra").val();
+    $("#tableOC tbody tr[role='row']").each(function () {
+        var _t = $(this);
+        var brtwr = _t.find("td.BRTWR").val();
+        var retpc = _t.find("td.FondoGarantia").text();
+        var porant = _t.find("td.PorAnt").text();
+        //
+        $('#EBELN').val(ebeln.toString());
+        /*$('#AMOR_ANT').val(parseFloat(toNum(amor_ant)));
+        $('#RETPC').val(parseFloat(toNum(retpc)));*/
+    });
+    var lengthT = $("table#table_infoP tbody tr[role='row']").length;
+    var docsenviar = {};
+    var docsenviar2 = {};
+    var docsenviar3 = {};//lej01.10.2018
+    var docsenviar4 = {};//lejgg 12.12-2018
+    var docsenviar5 = {};//lejgg 15-12-2018
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        jsonObjDocs = [];
+        jsonObjDocs2 = [];
+        jsonObjDocs3 = [];//lej01.10.2018
+        jsonObjDocs4 = [];//lejgg 12.12-2018
+        jsonObjDocs5 = [];//lejgg 15-12-2018
+        var i = 1;
+        var t = $('#table_infoP').DataTable();
+        var toc = $('#tableOC2').DataTable();
+        //Lej 14.09.18---------------------
+        //Aqui armo la tabla oculta de acuerdo a los valores y columnas ingresados de retencion
+        var taInf = $("#table_inforeth");
+        taInf.append($("<thead />"));
+        taInf.append($("<tbody />"));
+        var thead = $("#table_inforeth thead");
+        thead.append($("<tr />"));
+        $("#table_inforeth>thead>tr").append("<th>WITHT</th>");
+        $("#table_inforeth>thead>tr").append("<th>WT_WITHCD</th>");
+        $("#table_inforeth>thead>tr").append("<th>I. Ret.</th>");//Imp Ret
+        $("#table_inforeth>thead>tr").append("<th>B.Imp.</th>");//Base imponible
+        //Lej 14.09.18----------------
+        $("#table_infoP > tbody  > tr[role='row']").each(function () {
+            //Obtener el row para el plugin
+            var tr = $(this);
+            var indexopc = t.row(tr).index();
+            var tconcepto = "";
+
+            //LEJ 03-10-2018
+            //MGC 11-10-2018 Obtener valor de columnas ocultas --------------------------->
+            //Obtener la cuenta
+            var cuenta = t.row(indexopc).data()[14];
+            if (cuenta == "") {
+                cuenta = "S/I";
+            }
+            //Obtener la imputación
+            var imputacion = t.row(indexopc).data()[17];
+
+            //MGC 11-10-2018 Obtener valor de columnas ocultas <---------------------------
+            //Lej 14.08.2018-------------------------------------------------------------I
+            var colsAdded = tRet2.length;//Las retenciones que se agregaron a la tabla
+            var retTot = tRet.length;//Todas las retenciones
+            //Lej 14.08.2018-------------------------------------------------------------T
+            var pos = parseInt($(this).find("td.POS").text());
+            var ca = t.row(indexopc).data()[8];//lejgg 09-10-2018 Conceptos
+            if (ca == "") {
+                ca = "D";
+            }
+            var factura = t.row(indexopc).data()[9];//lejgg 12-12-2018
+            var grupo = $(this).find("td.GRUPO").text();
+            tconcepto = grupo;//13-12-2018
+            var cuentanom = t.row(indexopc).data()[15];
+            if (cuentanom == "") {
+                cuentanom = "S/I";
+            }
+            var tipoimp = t.row(indexopc).data()[16];
+            var ccosto = $(this).find("td.CCOSTO").text(); //MGC 11-10-2018 Obtener valor de columnas oculta
+            var impuesto = t.row(indexopc).data()[22];
+            var pep = $(this).find("td.PEP").text(); //lejgg 12-12-2018
+            var material = $(this).find("td.MATERIAL").text(); //lejgg 12-12-2018
+            var moneda = $(this).find("td.MONEDA").text(); //lejgg 12-12-2018
+            var unidad = $(this).find("td.UNIDAD").text(); //lejgg 12-12-2018
+            var cantidad = $(this).find("td.CANTIDAD input").val();
+            while (cantidad.indexOf(',') > -1) {
+                cantidad = cantidad.replace('$', '').replace(',', '');
+            }
+            var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
+            while (monto1.indexOf(',') > -1) {
+                monto1 = monto1.replace('$', '').replace(',', '');
+            }
+            monto1 = monto1.replace(/\s/g, '');
+            var monto = toNum(monto1);
+            var iva1 = $(this).find("td.IVA select").val();
+            iva1 = iva1.replace(/\s/g, '');
+            var total1 = t.row(indexopc).data()[24].toString().replace('$', '');
+            var texto = $(this).find("td.TXTPOS").text();//LEJ 14.09.2018
+            while (total1.indexOf(',') > -1) {
+                total1 = total1.replace('$', '').replace(',', '');
+            }
+            var total = parseFloat(total1);
+            //Para anexos
+            //-----------------------
+
+            var item3 = {};
+            var an1 = $(this).find("td.NumAnexo input").val();
+            var an2 = $(this).find("td.NumAnexo2 input").val();
+            var an3 = $(this).find("td.NumAnexo3 input").val();
+            var an4 = $(this).find("td.NumAnexo4 input").val();
+            var an5 = $(this).find("td.NumAnexo5 input").val();
+            item3["a1"] = an1;
+            item3["a2"] = an2;
+            item3["a3"] = an3;
+            item3["a4"] = an4;
+            item3["a5"] = an5;
+            jsonObjDocs3.push(item3);
+            item3 = "";
+
+            //LEJGG-12-12-2018-----------------------
+            var item4 = {};
+            item4["POS"] = pos;
+            item4["MATNR"] = material;
+            item4["PS_PSP_PNR"] = pep;
+            item4["WAERS"] = moneda;
+            item4["MEINS"] = unidad;
+            item4["MENGE_BIL"] = cantidad;
+            item4["TOTAL"] = total;
+            jsonObjDocs4.push(item4);
+            item4 = "";
+            //LEJGG-12-12-2018-----------------------
+            //-----------------------
+            for (j = 0; j < tRet2.length; j++) {
+                //llenare mis documentorp's
+                var item2 = {};
+                item2["NUM_DOC"] = 0;
+                item2["POS"] = pos;
+                item2["WITHT"] = tRet2[j];
+                item2["WT_WITHCD"] = "01";
+                item2["BIMPONIBLE"] = parseFloat($(this).find("td.BaseImp" + tRet2[j] + " input").val().replace('$', '').replace(',', ''));
+                item2["IMPORTE_RET"] = parseFloat($(this).find("td.ImpRet" + tRet2[j] + " input").val().replace('$', '').replace(',', ''));
+                jsonObjDocs2.push(item2);
+                item2 = "";
+            }
+
+            var item = {};
+
+            item["NUM_DOC"] = 0;
+            item["POS"] = "";
+            item["ACCION"] = ca;
+            item["FACTURA"] = factura;
+            item["TCONCEPTO"] = tconcepto;
+            item["GRUPO"] = grupo;
+            item["CUENTA"] = cuenta;
+            item["NOMCUENTA"] = cuentanom;
+            item["TIPOIMP"] = tipoimp;
+            item["IMPUTACION"] = pep;
+            item["CCOSTO"] = ccosto;
+            item["MONTO"] = monto;
+            item["MWSKZ"] = iva1;
+            item["IVA"] = "";//porcentaje del iva
+            item["TEXTO"] = texto;
+            item["TOTAL"] = total;
+
+            jsonObjDocs.push(item);
+            i++;
+            item = "";
+
+        });
+
+        //LEJGG 15-12-2018
+        $("#tableOC2 > tbody  > tr[role='row']").each(function () {
+            //Obtener el row para el plugin
+            var tr = $(this);
+            var indexopc = toc.row(tr).index();
+
+            var posc = $(this).find("td.POSC").text(); //MGC 11-10-2018 Obtener valor de columnas oculta
+            //var pos = $(this).find("td.POS").text(); //lejgg 12-12-2018
+            var pos = toc.row(indexopc).data()[1]; //lejgg 12-12-2018
+            var ndoc = $(this).find("td.NDOC").text(); //lejgg 12-12-2018
+            var ejercicio = $(this).find("td.EJERCICIO").text(); //lejgg 12-12-2018
+            var antamor = $(this).find("td.ANTAMOR").text().replace('$', ''); //lejgg 12-12-2018
+            while (antamor.indexOf(',') > -1) {
+                antamor = antamor.replace('$', '').replace(',', '');
+            }
+            var toant = $(this).find("td.TOANT").text().replace('$', '');
+            while (toant.indexOf(',') > -1) {
+                toant = toant.replace('$', '').replace(',', '');
+            }
+            var moneda = tr.find("td.MONEDA").text();
+            //var anttr = $(this).find("td.AntTr").text().replace('$', '');
+            //while (anttr.indexOf(',') > -1) {
+            //    anttr = anttr.replace('$', '').replace(',', '');
+            //}
+            var anttr = toc.row(indexopc).data()[7];
+            anttr = anttr.toString().replace('$', '');
+            while (anttr.indexOf(',') > -1) {
+                anttr = anttr.replace('$', '').replace(',', '');
+            }
+            var antxamor = $(this).find("td.AntXAMOR input").val().replace('$', '');
+            while (antxamor.indexOf(',') > -1) {
+                antxamor = antxamor.replace('$', '').replace(',', '');
+            }
+            //-----------------------
+
+            var item5 = {};
+            item5["EBELN"] = $('#norden_compra').val();
+            item5["EBELP"] = posc;
+            item5["BUZEI"] = parseFloat(pos);
+            item5["BELNR"] = ndoc;
+            item5["GJAHR"] = parseFloat(ejercicio);
+            item5["ANTAMOR"] = parseFloat(antamor);
+            item5["TANT"] = parseFloat(toant);
+            item5["WAERS"] = moneda;
+            item5["ANTTRANS"] = parseFloat(anttr);
+            item5["ANTXAMORT"] = parseFloat(antxamor);
+            jsonObjDocs5.push(item5);
+            item5 = "";
+        });
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+        $.ajax({
+            type: "POST",
+            url: '../getPartialCon',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $("table#table_infoh tbody").append(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+        docsenviar2 = JSON.stringify({ 'docs': jsonObjDocs2 });
+        //Ajax para las retenciones en la tabla de info
+        $.ajax({
+            type: "POST",
+            url: '../getPartialCon2',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar2,
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $("table#table_inforeth tbody").append(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+        docsenviar3 = JSON.stringify({ 'docs': jsonObjDocs3 });
+        $.ajax({
+            type: "POST",
+            url: '../getPartialCon3',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar3,
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $("table#table_infoAnex tbody").append(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+        docsenviar4 = JSON.stringify({ 'docs': jsonObjDocs4 });
+        $.ajax({
+            type: "POST",
+            url: '../getPartialCon5',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar4,
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $("table#table_infoPh tbody").append(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+        //Tabla co2
+        docsenviar5 = JSON.stringify({ 'docs': jsonObjDocs5 });
+        $.ajax({
+            type: "POST",
+            url: '../getPartialConOC',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar5,
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $("table#tableOC2H tbody").append(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+}

@@ -1236,7 +1236,7 @@ $(document).ready(function () {
         val3 = val3.replace(/\=/g, "\" : \"");
         val3 = val3.replace(/\ /g, "");
         var jsval = $.parseJSON(val3);
-        if (jsval[0].ID === "SSO") {
+        if (jsval[0].ID === "SSO" || jsval[0].ID === "SCO" || jsval[0].ID === "NCS") {
             var length = $(this).get(0).files.length;
             var tdata = "";
             var _tab = $('#table_anexa').DataTable();
@@ -1973,7 +1973,7 @@ function ocultarCampos(opc, load) {
 //FRT2011218 Para Validacion individual de RFCs
 function validarRFCEmisor(rfc_pro) {
     var _rfc_pro = $('#rfc_proveedor').val();
-    if (_rfc_pro.trim() === rfc_pro) {
+    if (_rfc_pro.trim() === rfc_pro.trim()) {
         return true;
     }
     else {

@@ -266,6 +266,20 @@
 @using (Html.BeginForm("Edit", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
 {
     @Html.AntiForgeryToken()
+    //LEJGG 12-12-2018
+    @*<input id="EBELN" name="EBELN" type="hidden" value="">*@
+    @Html.Hidden("EBELN", "")
+    @*<input id="AMOR_ANT" name="AMOR_ANT" type="hidden" value="">*@
+    @Html.Hidden("AMOR_ANT", "")
+    @*<input id="RETPC" name="RETPC" type="hidden" value="">*@
+    @Html.Hidden("RETPC", "")
+    @*<input id="DPPCT" name="DPPCT" type="hidden" value="">*@
+    @Html.Hidden("DPPCT", "")
+    @*<input id="TOAD" name="TOAD" type="hidden" value="">*@
+    @Html.Hidden("TOAD", "")
+    @*<input id="ANTR" name="ANTR" type="hidden" value="">*@
+    @Html.Hidden("ANTR", "")
+    //LEJGG 12-12-2018
     <input id="borr" name="borr" type="hidden" value=""> @*FRT03122018 PARA PODER SABER SI PRESIONAMOS BORRADOR*@
     <input id="Uuid" name="Uuid" type="hidden" value="">
     <div class="form-horizontal">
@@ -406,9 +420,9 @@
                                 @*MGC 03-10-2018 solicitud con orden de compra -->*@
                                 @*<div class="form-group col s3">*@
                                 @*<div id="div_norden_compra" class="input-field col s3" style="display:none">
-                                    <input type="text" id="norden_compra" value="" />
-                                    <label for="norden_compra" id="lbl_norden_compra">Orden de Compra</label>
-                                </div>*@
+                                        <input type="text" id="norden_compra" value="" />
+                                        <label for="norden_compra" id="lbl_norden_compra">Orden de Compra</label>
+                                    </div>*@
                                 @*MGC 03-10-2018 solicitud con orden de compra <--*@
                             </div>
                             <div class="row" style="margin-bottom:0">

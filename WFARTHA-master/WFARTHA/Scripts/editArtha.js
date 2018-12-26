@@ -1449,6 +1449,7 @@ $(document).ready(function () {
 
     tamanoTextArea();
     alinearEstilo();
+    updateTotalesOC2();
 });
 
 //MGC 03-11-2018 Cadena de autorización
@@ -4405,8 +4406,8 @@ function armarTablaDet(d1, d2) {
             {
                 "name": 'TOTAL',
                 "className": 'TOTAL',
-                "orderable": false,
-                "visible": false //
+                "orderable": false
+                //"visible": false //
             }
         ];
         //Se rearmara la tabla en HTML

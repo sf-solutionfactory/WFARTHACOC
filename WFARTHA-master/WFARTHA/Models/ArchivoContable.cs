@@ -167,6 +167,7 @@ namespace WFARTHA.Models
                     user = getUserPrel();
                     pass = getPassPrel();
                     dom = getDomPrel();
+
                     using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
                     {
                         try

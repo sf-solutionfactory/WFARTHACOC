@@ -736,20 +736,10 @@
     <Content Include="Entities\WFARTHA.edmx.diagram">
       <DependentUpon>WFARTHA.edmx</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile2.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile3.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile4.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile3.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile4.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile5.pubxml" />
+    <None Include="Properties\PublishProfiles\ARTHA DEVPAGOS.pubxml" />
+    <None Include="Properties\PublishProfiles\ARTHAPAGOS.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile6.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile7.pubxml" />
-    <None Include="Properties\PublishProfiles\FTP ARTHA.pubxml" />
-    <None Include="Properties\PublishProfiles\SERVER.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\descargar.js" />
     <Content Include="Scripts\editArtha.js" />
@@ -874,7 +864,6 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\materialize.min.js" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\autocomplete1.10.2.js" />
     <Content Include="Views\Shared\_LayoutMail.cshtml" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />

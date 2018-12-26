@@ -103,8 +103,8 @@ namespace WFARTHA.Models
                     user = getUserPrel();
                     pass = getPassPrel();
                     dom = getDomPrel();
-                    using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
-                    {
+                    //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
+                    //{
                         try
                         {
                             FileStream fs = null;
@@ -403,7 +403,7 @@ namespace WFARTHA.Models
                         {
                             errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
                         }
-                    }
+                    //}
 
                 }
                 else
@@ -906,8 +906,8 @@ namespace WFARTHA.Models
             dom = getDomPrel();
             try
             {
-                using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
-                {
+                //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
+                //{
 
                     try
                     {
@@ -925,7 +925,7 @@ namespace WFARTHA.Models
                     {
                         return false;
                     }
-                }
+                //}
             }
             catch (Exception e)
             {

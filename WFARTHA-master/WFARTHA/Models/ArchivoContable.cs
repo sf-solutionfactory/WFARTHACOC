@@ -167,8 +167,8 @@ namespace WFARTHA.Models
                     user = getUserPrel();
                     pass = getPassPrel();
                     dom = getDomPrel();
-                    using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
-                    {
+                    //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
+                    //{
                         try
                         {
                             FileStream fs = null;
@@ -603,6 +603,24 @@ namespace WFARTHA.Models
                                 }
                                 //MGC 11-10-2018 Acciones para el encabezado RETENCIONES <--
 
+                                //MGC 26-12-2018.2 UUID -->
+                                if (accion.Equals("A"))
+                                {
+                                    List<DOCUMENTOUUID> ldocuuid = new List<DOCUMENTOUUID>();
+
+                                    ldocuuid = db.DOCUMENTOUUIDs.Where(du => du.NUM_DOC == doc.NUM_DOC && du.ESTATUS == true).ToList();
+
+
+                                    for (int i = 0; i < ldocuuid.Count; i++)
+                                    {
+                                        sw.WriteLine(
+                                        "5" + "|" +
+                                        ldocuuid[i].UUID
+                                        );
+                                    }
+                                }
+                                //MGC 26-12-2018.2 UUID -->
+
                                 //sw.Close();
                                 sw.Close();
 
@@ -619,7 +637,7 @@ namespace WFARTHA.Models
                         {
                             errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
                         }
-                    }
+                    //}
 
                 }
                 else
@@ -1749,26 +1767,26 @@ namespace WFARTHA.Models
             dom = getDomPrel();
             try
             {
-                using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
-                {
+                //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
+                //{
 
-                try
-                {
-                    if (Directory.Exists(path))
-                        return true;
-
-                    else
+                    try
                     {
-                        Directory.CreateDirectory(path);
-                        return true;
-                    }
-                }
+                        if (Directory.Exists(path))
+                            return true;
 
-                catch (Exception ex)
-                {
-                    return false;
-                }
-                }
+                        else
+                        {
+                            Directory.CreateDirectory(path);
+                            return true;
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                //}
             }
             catch (Exception e)
             {

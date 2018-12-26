@@ -73,6 +73,7 @@ function tablaDet() {
                 success: function (data2) {
                     var d2 = data2;
                     armarTablaDet(d1, d2);
+                    updateFooterP();
                 }
             });
         }
@@ -109,6 +110,7 @@ function llenarTablaOc2(val) {
             "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"" + toShow(axam) + "\">"
         ]).draw(false).node();
     }
+    updateTotalesOC2();
 }
 //LEJGG 22-12-2018----------------------------------------T
 
@@ -119,12 +121,14 @@ function mostrarTabla(ban) {
         $("#div_conPedido").removeClass("hide");
         $("#div_garantia").removeClass("hide");
         $("#divTot").addClass("hide");
+        $("#divTotCO").removeClass("hide");
         $("#conOrden").val("X");
     } else {
         $("#div_conPedido").addClass("hide");
         $("#div_sinPedido").removeClass("hide");
         $("#div_garantia").addClass("hide");
         $("#divTot").removeClass("hide");
+        $("#divTotCO").addClass("hide");
         $("#conOrden").val("");
     }
 }
@@ -292,7 +296,6 @@ function armarTabla(info) {
         //Crear el nuevo select con los valores de impuestos
         addSelectImpuestoP(ari, imp, idselect, "", "X");
     }
-    updateFooterP();//lejgg-18-12-2018
     //$('#MONTO_DOC_MD').val(toShow(totl));
     //alinear a la izq
     $("#table_infoP tbody tr[role='row']").each(function () {
@@ -306,6 +309,7 @@ function armarTabla(info) {
         U.css("text-align", "left");
     });
     $('#mtTot').val($('#MONTO_DOC_MD').val());//Lej 12.12.2018
+    updateFooterP();//lejgg-18-12-2018
 }
 
 function addSelectImpuestoP(addedRowInfo, imp, idselect, disabled, clase) {
@@ -574,7 +578,7 @@ function copiarTableInfoPControl() {
             var monto = toNum(monto1);
             var iva1 = $(this).find("td.IVA select").val();
             iva1 = iva1.replace(/\s/g, '');
-            var total1 = t.row(indexopc).data()[24].toString().replace('$', '');
+            var total1 = $(this).find("td.TOTAL").text().replace('$', '');
             var texto = $(this).find("td.TXTPOS").text();//LEJ 14.09.2018
             while (total1.indexOf(',') > -1) {
                 total1 = total1.replace('$', '').replace(',', '');
@@ -678,6 +682,9 @@ function copiarTableInfoPControl() {
                 anttr = anttr.replace('$', '').replace(',', '');
             }
             var antxamor = $(this).find("td.AntXAMOR input").val().replace('$', '');
+            if (antxamor == "") {
+                antxamor = "0";
+            }
             while (antxamor.indexOf(',') > -1) {
                 antxamor = antxamor.replace('$', '').replace(',', '');
             }
@@ -785,4 +792,125 @@ function copiarTableInfoPControl() {
             async: false
         });
     }
+}
+
+//26-12-2018
+$('body').on('focusout', '.ANTXAMORT', function (e) {
+
+    var t = $('#tableOC2').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+    var amorant = $(this).val().replace('$', '');
+    while (amorant.indexOf(',') > -1) {
+        amorant = amorant.replace('$', '').replace(',', '');
+    }
+    if (amorant == "") {
+        amorant = 0;
+    }
+    amorant = parseFloat(amorant);
+    var famant = toShow(amorant);
+    tr.find("td.AntXAMOR input").val();
+    tr.find("td.AntXAMOR input").val(famant);
+    updateTotalesOC2();
+});
+
+$('body').on('focusout', '.MONTOP', function (e) {
+    var t = $('#table_infoP').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+    var indexopc = t.row(tr).index();
+
+    //recupero el iva para buscar su porcentaje y hacer la operacion
+    var porc = "";
+    var iva1 = tr.find("td.IVA select").val();
+    iva1 = iva1.replace(/\s/g, '');
+    $.ajax({
+        type: "POST",
+        url: '../getPorMult',
+        data: { "id": iva1 },
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            porc = data;
+        }
+    });
+
+
+    //
+    var monto = $(this).val().replace('$', '').replace(',', ''); //Obtener el row 
+    if (monto != "") {
+        while (monto.indexOf(',') > -1) {
+            monto = monto.replace('$', '').replace(',', '');
+        }
+    }
+    else {
+        monto = "0";
+    }
+    monto = parseFloat(monto);
+    //Agrego el nuevo total escondido
+    var op = (monto * porc) / 100;
+    var _tot = monto + op;
+    t.cell(indexopc, 24).data("").draw();//Limpiar las celdas
+    t.cell(indexopc, 24).data(toShow(_tot)).draw();//clavar el nuevo valor del total
+
+    var _mt = toShow(monto);
+    tr.find("td.MONTO input").val();
+    tr.find("td.MONTO input").val(_mt);
+    updateFooterP();
+});
+
+function updateTotalesOC2() {
+    var t_antamor = 0;
+    var t_toant = 0;
+    var t_antxamor = 0;
+    $("#tableOC2 > tbody > tr[role = 'row']").each(function (index) {
+        var _this = $(this);
+        var tr = $(this).closest('tr'); //Obtener el row 
+        var antamor = tr.find("td.ANTAMOR").text().replace('$', '');//Anticipo amortizado
+        while (antamor.indexOf(',') > -1) {
+            antamor = antamor.replace('$', '').replace(',', '');
+        }
+        t_antamor = t_antamor + parseFloat(antamor);//realizo la sumatoria
+        var toant = tr.find("td.TOANT").text().replace('$', '');//Anticipo total
+        while (toant.indexOf(',') > -1) {
+            toant = toant.replace('$', '').replace(',', '');
+        }
+        t_toant = t_toant + parseFloat(toant);//realizo la sumatoria
+        var antxamor = tr.find("td.AntXAMOR input").val().replace('$', '');//Anticipo por amortizar
+        if (antxamor == "") {//si esta vacia darle un 0 x default
+            antxamor = "0";
+        }
+        while (antxamor.indexOf(',') > -1) {
+            antxamor = antxamor.replace('$', '').replace(',', '');
+        }
+        t_antxamor = t_antxamor + parseFloat(antxamor);
+    });
+    //pinto los datos
+    $("#totalAA").text(toShow(t_antamor));
+    $("#totalAnt").text(toShow(t_toant));
+    $("#totalAntxAm").text(toShow(t_antxamor));
+}
+//lejgg 26-12-2018
+
+function updateFooterP() {
+    var t = $('#table_infoP').DataTable();
+    var total = 0;
+    $("#table_infoP > tbody > tr[role = 'row']").each(function (index) {
+        /*var mt = $(this).find("td.MONTO input").val().replace('$', '');
+        while (mt.indexOf(',') > -1) {
+            mt = mt.replace('$', '').replace(',', '');
+        }*/
+        //Saber si el renglón se va a sumar
+        var tr = $(this);
+        var indexopc = t.row(tr).index();
+        var mt = $(this).find("td.TOTAL").text().replace('$', '');
+        mt = mt.toString().replace('$', '');
+        while (mt.indexOf(',') > -1) {
+            mt = mt.replace('$', '').replace(',', '');
+        }
+        total = total + parseFloat(mt);
+    });
+
+    total = total.toFixed(2);
+    $('#MONTO_DOC_MD').val(toShow(total));//Lej 12.12.2018
+    $('#mtTot').val($('#MONTO_DOC_MD').val());//Lej 12.12.2018
+    $('#total_infoP').text(toShow(total));//LEJGG 26-12-2018
 }

@@ -477,6 +477,7 @@ $('body').on('change', '#norden_compra', function (event, param1) {
         success: function (data) {
             llenarTablaOc2(data, eb);
             updateTotalesOC2();
+            formatoOC2();
         }
     });
 
@@ -2065,5 +2066,47 @@ function llenarRetencionesBImpP() {
     for (x = 0; x < tRet2.length; x++) {
         $('#table_ret tbody tr').eq(x).find('td').eq(3).text('$' + parseFloat(_t[x]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     }
+}
 
+function formatoOC2() {
+    //--------
+    //Para los titulos
+    var tpo = $("#tableOC2>thead>tr").find('th.POSC');
+    tpo.css("text-align", "left");
+    var ts = $("#tableOC2>thead>tr").find('th.NDOC');
+    ts.css("text-align", "left");
+    var tn = $("#tableOC2>thead>tr").find('th.EJERCICIO');
+    tn.css("text-align", "left");
+    var mt = $("#tableOC2>thead>tr").find('th.ANTAMOR');
+    mt.css("text-align", "left");
+    var ct = $("#tableOC2>thead>tr").find('th.TOANT');
+    ct.css("text-align", "left");
+    var tt = $("#tableOC2>thead>tr").find('th.MONEDA');
+    tt.css("text-align", "left");
+    var tde = $("#tableOC2>thead>tr").find('th.AntXAMOR');
+    tde.css("text-align", "left");
+    //--------
+    $("#tableOC2 > tbody > tr[role = 'row']").each(function (index) {
+        //1
+        var R1 = $(this).find("td.POSC");
+        R1.css("text-align", "left");
+        //2
+        var R2 = $(this).find("td.NDOC");
+        R2.css("text-align", "left");
+        //3
+        var R3 = $(this).find("td.EJERCICIO");
+        R3.css("text-align", "left");
+        //4
+        var R4 = $(this).find("td.ANTAMOR");
+        R4.css("text-align", "left");
+        //5
+        var R5 = $(this).find("td.TOANT");
+        R5.css("text-align", "left");
+        //6
+        var R6 = $(this).find("td.MONEDA");
+        R6.css("text-align", "left");
+        //7
+        var R7 = $(this).find("td.AntXAMOR");
+        R7.css("text-align", "left");
+    });
 }

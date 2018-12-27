@@ -2,6 +2,7 @@
 var posinfo = 0;
 var proveedorValC = "";
 var conceptoValC = "";
+var FacturaValC = false;//MGC 26-12-2018 Factura y cuenta de pago
 var extraCols = 0;
 var tRet = [];//Agrego a un array los tipos de retenciones
 var tRet2 = [];//Agrego a un array los tipos de retenciones que no tienen ligadas
@@ -1798,7 +1799,64 @@ $('body').on('change', '#tsol', function (event, param1) {
         ocultarCampos(dataj.EDITDET, param1);
         mostrarTabla(dataj.EDITDET);
     });
+
+    //MGC 26-12-2018 Factura y cuenta de pago---------->
+    //Mostrar u ocultar el campo de no_factura
+    var idtsol = jsval[0].ID;
+
+    //Obtener si es factura o no
+    var factura = isFactura(idtsol);
+
+    //Limpiar el campo de factura
+    $('#NO_FACTURA').val("");
+
+    if (factura) {
+        $('#div_factura').css("display", "inherit");
+    } else {
+        $('#div_factura').css("display", "none");
+    }
+
+    //MGC 26-12-2018 Factura y cuenta de pago----------<
 });
+
+
+//MGC 26-12-2018 Factura y cuenta de pago---------->
+
+function isFactura(idtsol) {
+    FacturaValC = false;
+    var res = false;
+    if (idtsol != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getTsolFactura',
+            dataType: "json",
+            data: { "tsol": idtsol},//MGC 19-10-2018 Condiciones
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarValFactura(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                if (message == "X") {
+                    M.toast({ html: "Valor no encontrado" });
+                }
+            },
+            async: false
+        });
+    }
+
+    res = FacturaValC;
+    return res;
+}
+
+function asignarValFactura(val) {
+    FacturaValC = val;
+}
+
+//MGC 26-12-2018 Factura y cuenta de pago----------<
 
 //MGC 14-11-2018 Cadena de autorización----------------------------------------------------------------------------->
 //Al seleccionar un solicitante, obtener la cadena para mostrar
@@ -2002,13 +2060,17 @@ function ocultarColumnas(opc) {
     var columnindex = column.index();
     columnindex = parseInt(columnindex);
 
-    if (opc == "true") {
-        //Ocultar
-        t.column(columnindex).visible(false);
-    } else {
-        t.column(columnindex).visible(true);
-    }
+    try {
+        if (opc == "true") {
+            //Ocultar
+            t.column(columnindex).visible(false);
+        } else {
+            t.column(columnindex).visible(true);
+        }
 
+    } catch (Error) {
+        var e = "";
+    }
 }
 
 function loadExcelSop(file) {

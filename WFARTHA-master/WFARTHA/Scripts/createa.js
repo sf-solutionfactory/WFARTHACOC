@@ -27,6 +27,13 @@
         change: function (e, ui) {
             if (!(ui.item)) {
                 e.target.value = "";
+                //MGC 26-12-2018 Factura y cuenta de pago---------->
+
+                $("#CUENTA_ID").empty();
+                var eleml = document.getElementById('CUENTA_ID');
+                var instance = M.Select.init(eleml, []);
+
+                //MGC 26-12-2018 Factura y cuenta de pago----------<
             }
         },
         select: function (event, ui) {
@@ -213,6 +220,13 @@ function selectProveedor(val) {
             obtenerRetenciones(false);//LEJ 05.09.2018
         else
             obtenerRetencionesP(false);//LEJ 05.09.2018
+
+
+        //MGC 26-12-2018 Factura y cuenta de pago---------->
+        //Obtener las cuentas de pago
+        obtenerCuentaPago(prov.LIFNR);
+        //MGC 26-12-2018 Factura y cuenta de pago----------<
+
     }
 }
 
@@ -402,3 +416,41 @@ function selectCeco(val, tr) {
 }
 
 //MGC 19-10-2018 CECOS---------------------------------------------------<
+
+//MGC 26-12-2018 Factura y cuenta de pago---------->
+//Obtener las cuentas de pago
+function obtenerCuentaPago(prov) {
+    $("#CUENTA_ID").empty();
+    if (prov != null && prov != "") {
+
+        $.ajax({
+            type: "POST",
+            url: 'obtenerCuentas',
+            dataType: "json",
+            data: { "prov": prov },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    //LLenar el DropDownList
+                    var $dropdown = $("#CUENTA_ID");
+                    $.each(data, function (i, dataj) {
+                        var _val = dataj.Value;
+
+                        $dropdown.append($("<option />").val(_val).text(dataj.Text));
+                    }); //Fin de for
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+            },
+            async: false
+        });
+
+        var eleml = document.getElementById('CUENTA_ID');
+        var instance = M.Select.init(eleml, []);
+    }
+
+}
+//MGC 26-12-2018 Factura y cuenta de pago----------<

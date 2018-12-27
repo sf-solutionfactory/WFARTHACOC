@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -49,16 +49,6 @@
           <Property Name="BANKL" Type="nchar" MaxLength="15" Nullable="false" />
           <Property Name="BANKA" Type="nvarchar" MaxLength="60" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.CADENAS M2$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="CADENAS M2$">
-          <Property Name="VERSION" Type="float" />
-          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="255" />
-          <Property Name="ID_RUTA_AGENTE" Type="nchar" MaxLength="10" />
-          <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="255" />
-          <Property Name="A1" Type="nvarchar" MaxLength="255" />
-          <Property Name="A2" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
         <EntityType Name="CAMPOS">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -122,17 +112,6 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.CADENAS M2$' no tiene definida un
           <Property Name="CUENTA" Type="nchar" MaxLength="10" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.CONCEPTO$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="CONCEPTO$">
-          <Property Name="ID_CONCEPTO" Type="nchar" MaxLength="10" />
-          <Property Name="DESC_CONCEPTO" Type="nvarchar" MaxLength="80" />
-          <Property Name="TIPO_CONCEPTO" Type="nchar" MaxLength="2" />
-          <Property Name="TIPO_IMPUTACION" Type="nchar" MaxLength="1" />
-          <Property Name="ID_PRESUPUESTO" Type="nchar" MaxLength="2" />
-          <Property Name="TIPO_PRESUPUESTO" Type="nchar" MaxLength="1" />
-          <Property Name="CUENTA" Type="nchar" MaxLength="10" />
-        </EntityType>-->
         <EntityType Name="CONDICIONES_PAGO">
           <Key>
             <PropertyRef Name="COND_PAGO" />
@@ -261,13 +240,6 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.CONCEPTO$' no tiene definida una 
           <Property Name="ID_BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
           <Property Name="COND_PAGO" Type="nchar" MaxLength="4" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.DET_PROVEEDOR$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="DET_PROVEEDOR$">
-          <Property Name="ID_LIFNR" Type="nchar" MaxLength="10" />
-          <Property Name="ID_BURKS" Type="nchar" MaxLength="4" />
-          <Property Name="COND_PAGO" Type="nchar" MaxLength="4" />
-        </EntityType>-->
         <EntityType Name="DET_PROYECTO">
           <Key>
             <PropertyRef Name="ID_PSPNR" />
@@ -376,6 +348,7 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.DET_PROVEEDOR$' no tiene definida
           <Property Name="DPPCT" Type="decimal" Precision="13" Scale="2" />
           <Property Name="TOAD" Type="decimal" Precision="13" Scale="2" />
           <Property Name="ANTR" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="CUENTA_ID" Type="nchar" MaxLength="4" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -750,8 +723,8 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.DET_PROVEEDOR$' no tiene definida
           <Property Name="COMENTARIO" Type="varchar" MaxLength="200" />
           <Property Name="MAIL" Type="bit" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.IIMPUESTO' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.IIMPUESTO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="IIMPUESTO">
           <Key>
             <PropertyRef Name="MWSKZ" />
@@ -870,14 +843,6 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.IIMPUESTO' no tiene definida ning
           <Property Name="KOINH" Type="nvarchar" MaxLength="60" />
           <Property Name="BKEXT" Type="nchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.PROVEEDORES$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="PROVEEDORES$">
-          <Property Name="LIFNR" Type="nchar" MaxLength="10" />
-          <Property Name="LAND1" Type="nchar" MaxLength="3" />
-          <Property Name="NAME1" Type="nchar" MaxLength="35" />
-          <Property Name="RFC" Type="nchar" MaxLength="16" />
-        </EntityType>-->
         <EntityType Name="PROYECTO">
           <Key>
             <PropertyRef Name="ID_PSPNR" />
@@ -946,14 +911,6 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.PROVEEDORES$' no tiene definida u
           <Property Name="WITHT" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="WT_WITHCD" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.RETENCION_PROV$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="RETENCION_PROV$">
-          <Property Name="LIFNR" Type="nchar" MaxLength="10" />
-          <Property Name="BURKS" Type="nchar" MaxLength="4" />
-          <Property Name="WITH" Type="nchar" MaxLength="2" />
-          <Property Name="WT_WITHCD" Type="nchar" MaxLength="2" />
-        </EntityType>-->
         <EntityType Name="RETENCIONT">
           <Key>
             <PropertyRef Name="SPRAS_ID" />
@@ -999,27 +956,8 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.RETENCION_PROV$' no tiene definid
           <Property Name="REGION" Type="nchar" MaxLength="10" />
           <Property Name="STCD1" Type="nchar" MaxLength="16" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.SOCIEDAD$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="SOCIEDAD$">
-          <Property Name="BURKS" Type="nchar" MaxLength="4" />
-          <Property Name="BUTXT" Type="nvarchar" MaxLength="100" />
-          <Property Name="RFC" Type="nchar" MaxLength="16" />
-        </EntityType>-->
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.SOCIEDADESP$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="SOCIEDADESP$">
-          <Property Name="BURKS" Type="nchar" MaxLength="4" />
-          <Property Name="F2" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.SOCIEDADESPP$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="SOCIEDADESPP$">
-          <Property Name="BURKS" Type="nchar" MaxLength="4" />
-          <Property Name="BUTXT" Type="nvarchar" MaxLength="100" />
-        </EntityType>-->
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.SPFIRMA' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'PAGOSDEV.dbo.SPFIRMA' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="SPFIRMA">
           <Property Name="fasen" Type="int" />
           <Property Name="num_doc" Type="numeric" Precision="10" Scale="0" />
@@ -1093,6 +1031,7 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.SPFIRMA' no tiene definida una cl
           <Property Name="DEFAULT" Type="bit" />
           <Property Name="TIPO_DOCFILE" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
+          <Property Name="FACTURA" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -1139,15 +1078,6 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.SPFIRMA' no tiene definida una cl
           <Property Name="BUNIT" Type="nchar" MaxLength="4" />
           <Property Name="FIRMA" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAGOSI.dbo.USUARIOS$' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="USUARIOS$">
-          <Property Name="ID_USUARIO" Type="nvarchar" MaxLength="16" />
-          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
-          <Property Name="APELLIDO_P" Type="nvarchar" MaxLength="50" />
-          <Property Name="APELLIDO_M" Type="nvarchar" MaxLength="50" />
-          <Property Name="EMAIL" Type="nvarchar" MaxLength="256" />
-        </EntityType>-->
         <EntityType Name="WARNING">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -1222,8 +1152,8 @@ advertencia 6013: La tabla o vista 'PAGOSI.dbo.USUARIOS$' no tiene definida una 
           <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="FECHAC" Type="datetime" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.ASIGN_PROY_SOC' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.ASIGN_PROY_SOC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ASIGN_PROY_SOC">
           <Key>
             <PropertyRef Name="ID_PSPNR" />
@@ -1232,8 +1162,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.ASIGN_PROY_SOC' no tiene definida
           <Property Name="ID_PSPNR" Type="nvarchar" MaxLength="8" Nullable="false" />
           <Property Name="ID_BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CARPETAV">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1245,8 +1175,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.CARPETAV' no tiene definida ningu
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
           <Property Name="ICON" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_AGENTECAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_AGENTECAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_AGENTECAV">
           <Key>
             <PropertyRef Name="ID_RUTA_AGENTE" />
@@ -1266,8 +1196,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_AGENTECAV' no tiene definida 
           <Property Name="USUARIO" Type="nvarchar" MaxLength="171" Nullable="false" />
           <Property Name="OVERRIDE" Type="bit" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_AGENTECCV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_AGENTECCV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_AGENTECCV">
           <Key>
             <PropertyRef Name="VERSION" />
@@ -1287,8 +1217,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_AGENTECCV' no tiene definida 
           <Property Name="USUARIOCA" Type="nvarchar" MaxLength="171" Nullable="false" />
           <Property Name="FECHAC" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_APROB0V' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_APROB0V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_APROB0V">
           <Key>
             <PropertyRef Name="VERSION" />
@@ -1305,8 +1235,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_APROB0V' no tiene definida ni
           <Property Name="USUARIO" Type="nvarchar" MaxLength="171" Nullable="false" />
           <Property Name="STEP_FASE" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_APROBV">
           <Key>
             <PropertyRef Name="VERSION" />
@@ -1323,8 +1253,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_APROBV' no tiene definida nin
           <Property Name="USUARIO" Type="nvarchar" MaxLength="171" Nullable="false" />
           <Property Name="STEP_FASE" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROVEEDORV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_PROVEEDORV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_PROVEEDORV">
           <Key>
             <PropertyRef Name="ID_LIFNR" />
@@ -1334,8 +1264,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROVEEDORV' no tiene definida
           <Property Name="ID_BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
           <Property Name="COND_PAGO" Type="nchar" MaxLength="4" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROYECTO_DEC_V' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_PROYECTO_DEC_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_PROYECTO_DEC_V">
           <Key>
             <PropertyRef Name="ID_PSPNR" />
@@ -1348,8 +1278,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROYECTO_DEC_V' no tiene defi
           <Property Name="ID_BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
           <Property Name="BUTXT" Type="nvarchar" MaxLength="107" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROYECTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_PROYECTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_PROYECTOV">
           <Key>
             <PropertyRef Name="ID_PSPNR" />
@@ -1358,8 +1288,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_PROYECTOV' no tiene definida 
           <Property Name="ID_PSPNR" Type="nvarchar" MaxLength="8" Nullable="false" />
           <Property Name="ID_BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_TIPOPRESUPUESTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DET_TIPOPRESUPUESTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_TIPOPRESUPUESTOV">
           <Key>
             <PropertyRef Name="BUKRS" />
@@ -1375,8 +1305,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DET_TIPOPRESUPUESTOV' no tiene de
           <Property Name="TIPOPRE" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="DESC" Type="nvarchar" MaxLength="30" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DOCUMENTOV">
           <Key>
             <PropertyRef Name="POS" />
@@ -1436,8 +1366,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.DOCUMENTOV' no tiene definida nin
           <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="EXPR2" Type="nchar" MaxLength="1" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PAGINAV">
           <Key>
             <PropertyRef Name="ID" />
@@ -1457,8 +1387,8 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.PAGINAV' no tiene definida ningun
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="WARNINGV">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -3093,8 +3023,7 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WFARTHAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3468,6 +3397,7 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DOCUMENTOUUIDs" Relationship="Self.FK_DOCUMENTOUUID_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOUUID" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
           <NavigationProperty Name="FOROes" Relationship="Self.FK_FORO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FORO" />
+          <Property Name="CUENTA_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -4216,6 +4146,7 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
           <NavigationProperty Name="WORKFHs" Relationship="Self.FK_WORKFP_TSOL" FromRole="TSOL" ToRole="WORKFH" />
+          <Property Name="FACTURA" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -6019,13 +5950,13 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
           </AssociationSet>
           <FunctionImport Name="SP_CABECERA" ReturnType="Collection(WFARTHAModel.SP_CABECERA_Result)">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_DETALLE" ReturnType="Collection(WFARTHAModel.SP_DETALLE_Result)">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_FIRMAS">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_REPORTESOLS">
             <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
@@ -6345,6 +6276,7 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOes">
             <EntityTypeMapping TypeName="WFARTHAModel.DOCUMENTO">
               <MappingFragment StoreEntitySet="DOCUMENTO">
+                <ScalarProperty Name="CUENTA_ID" ColumnName="CUENTA_ID" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="NUM_PRE" ColumnName="NUM_PRE" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
@@ -7057,6 +6989,7 @@ advertencia 6002: La tabla o vista 'PAGOSI.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="WFARTHAModel.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="RANGO_ID" ColumnName="RANGO_ID" />

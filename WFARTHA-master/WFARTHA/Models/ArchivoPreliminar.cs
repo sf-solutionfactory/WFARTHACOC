@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.DirectoryServices.Protocols;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -49,6 +50,16 @@ namespace WFARTHA.Models
 
                 //MGC 22-10-2018 Archivo local en servidor
                 //Verificar si el directorio existe y si hay permiso
+                //OCG
+                string user = "";
+                string pass = "";
+                string dom = "";
+
+                user = getUserPrel();
+                pass = getPassPrel();
+                dom = getDomPrel();
+                bool existe = Credenciales(user, pass, dom, dirFile);
+                //Fin OCG
                 bool existd = ValidateIOPermission(dirFile);
 
                 //El direcorio existe
@@ -96,9 +107,9 @@ namespace WFARTHA.Models
                     List<DetalleContab> det = new List<DetalleContab>();
 
                     //MemoryStream stIn = new MemoryStream();
-                    string user = "";
-                    string pass = "";
-                    string dom = "";
+                    //string user = "";
+                    //string pass = "";
+                    //string dom = "";
 
                     user = getUserPrel();
                     pass = getPassPrel();
@@ -1001,5 +1012,49 @@ namespace WFARTHA.Models
             return dir;
 
         }
+        /// OCG
+        private const int ERROR_LOGON_FAILURE = 0x31;
+        private static bool Credenciales(string user, string pass, string dominio, string path)
+        {
+            NetworkCredential Credencial = new NetworkCredential(user, pass, dominio);
+
+            LdapDirectoryIdentifier id = new LdapDirectoryIdentifier(dominio);
+
+            using (LdapConnection conexion = new LdapConnection(id, Credencial, AuthType.Kerberos))
+            {
+                conexion.SessionOptions.Sealing = true;
+                conexion.SessionOptions.Signing = true;
+
+                try
+                {
+                    conexion.Bind();
+                    try
+                    {
+                        if (Directory.Exists(path))
+                            return true;
+
+                        else
+                        {
+                            Directory.CreateDirectory(path);
+                            return true;
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                catch (LdapException lEx)
+                {
+                    if (ERROR_LOGON_FAILURE == lEx.ErrorCode)
+                    {
+                        return false;
+                    }
+                    throw;
+                }
+            }
+        }
+        /// Fin OCG
     }
 }

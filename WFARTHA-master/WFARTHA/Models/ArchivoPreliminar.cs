@@ -116,6 +116,12 @@ namespace WFARTHA.Models
                     dom = getDomPrel();
                     //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
                     //{
+                    NetworkCredential Credencial = new NetworkCredential(user, pass, dom);
+
+                    LdapDirectoryIdentifier id = new LdapDirectoryIdentifier(dom);
+
+                    using (LdapConnection conexion = new LdapConnection(id, Credencial, AuthType.Kerberos))
+                    {
                         try
                         {
                             FileStream fs = null;
@@ -414,7 +420,7 @@ namespace WFARTHA.Models
                         {
                             errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
                         }
-                    //}
+                    }
 
                 }
                 else

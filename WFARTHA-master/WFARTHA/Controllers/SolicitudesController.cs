@@ -1156,6 +1156,12 @@ namespace WFARTHA.Controllers
             //LEJGG03-12-2018-----------------------------F
             ViewBag.DETAA2 = JsonConvert.SerializeObject(db.DET_AGENTECC.Where(dt => dt.USUARIOC_ID == user_id).ToList(), Newtonsoft.Json.Formatting.Indented);
 
+            //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+            List<PROVEEDOR_BANCO> lpb = new List<PROVEEDOR_BANCO>();
+
+            ViewBag.CUENTA_ID = new SelectList(lpb, "BKVID", "BKEXT");
+            //MGC 26-12-2018.4 Factura y cuenta de pago----------<
+
             return View(d);
         }
 
@@ -1172,7 +1178,7 @@ namespace WFARTHA.Controllers
             "TIPO_CAMBIO,TIPO_CAMBIOL,TIPO_CAMBIOL2,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL," +
             "AGENTE_ACTUAL,FECHA_PASO_ACTUAL,PUESTO_ID,GALL_ID,CONCEPTO_ID,DOCUMENTO_SAP,FECHACON,FECHA_BASE,REFERENCIA," +
             "CONDICIONES,TEXTO_POS,ASIGNACION_POS,CLAVE_CTA, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,DOCUMENTOA_TAB,Anexo,"+
-            "DOCUMENTOCOC,EBELN,AMOR_ANT,RETPC,DPPCT,TOAD,ANTR,AMORANT")] Models.DOCUMENTO_MOD doc, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc,
+            "DOCUMENTOCOC,EBELN,AMOR_ANT,RETPC,DPPCT,TOAD,ANTR,AMORANT, CUENTA_ID")] Models.DOCUMENTO_MOD doc, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc,//MGC 26-12-2018.4 Factura y cuenta de pago
             //MGC 02-10-2018 Cadenas de autorización
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string mtTot, string DETTA_USUARIOA_ID, string borr, string FECHADO, string Uuid
             //MGC 11-12-2018 Agregar Contabilizador 0
@@ -1302,6 +1308,9 @@ namespace WFARTHA.Controllers
                     dOCUMENTO.TOAD = doc.TOAD;
                     dOCUMENTO.ANTR = doc.ANTR;
                     //LEJGG 12-12-2018
+
+                    dOCUMENTO.NO_FACTURA = doc.NO_FACTURA;//MGC 26-12-2018 Factura y cuenta de pago
+                    dOCUMENTO.CUENTA_ID = doc.CUENTA_ID;//MGC 26-12-2018 Factura y cuenta de pago
 
                     db.DOCUMENTOes.Add(dOCUMENTO);
                     db.SaveChanges();//Codigolej
@@ -9061,6 +9070,83 @@ namespace WFARTHA.Controllers
             return RedirectToAction("Index", "Home");
         }
         //MGC 20-12-2018 Archivo contable--------------------------------------------------------------------------<
+
+        //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+        [HttpPost]
+        public JsonResult getTsolFactura(string tsol)
+        {
+
+            if (tsol == null)
+                tsol = "";
+
+            WFARTHAEntities db = new WFARTHAEntities();
+            bool res = false;
+
+            try
+            {
+                res = db.TSOLs.Where(ts => ts.ID == tsol).FirstOrDefault().FACTURA;
+            }
+            catch (Exception)
+            {
+                res = false;
+            }
+
+            JsonResult cc = Json(res, JsonRequestBehavior.AllowGet);
+            return cc;
+
+        }
+
+        [HttpPost]
+        public JsonResult obtenerCuentas(string prov)
+        {
+
+            if (prov == null)
+                prov = "";
+
+            int cuentai = 0;
+            try
+            {
+                cuentai = Convert.ToInt32(prov);
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+            try
+            {
+                if (!prov.Equals("") && cuentai > 0)
+                {
+                    prov = "";
+                    string provformat = cuentai.ToString("0000000000");
+                    prov = provformat;
+                }
+            }
+            catch (Exception)
+            {
+                prov = "";
+            }
+
+
+            WFARTHAEntities db = new WFARTHAEntities();
+            //List<PROVEEDOR_BANCO> lpb = new List<PROVEEDOR_BANCO>();            
+            var lpb = (dynamic)null;
+
+            try
+            {
+                lpb = db.PROVEEDOR_BANCO.Where(pb => pb.LIFNR == prov).Select(pb => new { Value = pb.BKVID, Text = pb.BKVID + " - " + pb.BANKN.Trim() }).ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+
+            JsonResult cc = Json(lpb, JsonRequestBehavior.AllowGet);
+            return cc;
+
+        }
+        //MGC 26-12-2018.4 Factura y cuenta de pago----------<
 
     }
     public class TXTImp

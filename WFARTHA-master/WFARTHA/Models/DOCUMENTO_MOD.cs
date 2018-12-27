@@ -92,6 +92,7 @@ namespace WFARTHA.Models
         public List<AMORANT_MOD> AMORANT { get; set; }//Agregado LEJGG-12.12.2018
         public string DESC_CONDICION { get; set; }   //aGERGADO frt 06112018
         public string ESTATUS_PRE { get; set; } //MGC 17-12-2018 Reprocesar Archivo preliminar
+        public string CUENTA_ID { get; set; } //MGC 26-12-2018 Factura y cuenta de pago
 
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TSOL TSOL { get; set; }

@@ -122,8 +122,20 @@ namespace WFARTHA.Models
                                     bukrs = doc.SOCIEDAD_PRE + "";
                                 }
 
-                                //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado -->
-                                sw.WriteLine(
+                                //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+                                string factura = "";
+                                if (ts.TIPO_DOCFILE.Trim().Equals("REEMBOLSO"))
+                                {
+                                    factura = "Reembolso";
+                                }
+                                else
+                                {
+                                    factura = doc.NO_FACTURA.Trim();
+                                }
+                                //MGC 26-12-2018.4 Factura y cuenta de pago----------<
+
+                            //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado -->
+                            sw.WriteLine(
                                     "1" + "|" +
                                     ts.TIPO_DOCFILE.Trim() + "|" +
                                     doc.NUM_DOC + "|" +
@@ -144,12 +156,15 @@ namespace WFARTHA.Models
                                     String.Format("{0:dd.MM.yyyy}", doc.FECHAC).Replace(".", "") + "|" + //Formato MGC
                                     doc.MONEDA_ID.Trim() + "|" +
                                     //+ "|" + //MGC 11-10-2018 Acciones para el encabezado
-                                    doc.REFERENCIA.Trim() + "|" +
+                                    //doc.REFERENCIA.Trim() + "|" +//MGC 26-12-2018.4 Factura y cuenta de pago
+                                    factura + "|" + //MGC 26-12-2018.4 Factura y cuenta de pago
                                     doc.CONCEPTO + "|" + //MGC 11-10-2018 Acciones para el encabezado
                                     "" + "|" +
                                     "" + "|" +
                                     doc.TIPO_CAMBIO  //MGC 11-10-2018 Acciones para el encabezado
                                     +"|" + fechacon //MGC-14-12-2018 Modificación fechacon//MGC 13-10-2018 Modificaión fecha
+                                    + "|" //+ doc.CUENTA_ID.Trim() //MGC 26-12-2018.4 Factura y cuenta de pago
+                                    + "P-" + doc.NUM_DOC//MGC 26-12-2018.4 Factura y cuenta de pago
                                     );
                                 //sw.WriteLine("");//MGC 17-10-2018.2 Adaptación a archivo
                                 //for (int i = 0; i < det.Count; i++)

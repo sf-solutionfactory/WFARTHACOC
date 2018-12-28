@@ -176,7 +176,7 @@ namespace WFARTHA.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ReportTemplate(int id)
+        public ActionResult ReportTemplate(decimal id)
         {
             int pagina = 1101; //ID EN BASE DE DATOS
             using (WFARTHAEntities db = new WFARTHAEntities())

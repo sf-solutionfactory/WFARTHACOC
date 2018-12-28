@@ -539,6 +539,7 @@
     <Compile Include="Models\ArchivoContable.cs" />
     <Compile Include="Models\ArchivoPreliminar.cs" />
     <Compile Include="Models\CadenaAutorizadores.cs" />
+    <Compile Include="Models\clsDisctint.cs" />
     <Compile Include="Models\Conmail.cs" />
     <Compile Include="Models\ConmailNuevo.cs" />
     <Compile Include="Models\ContabilizarRes.cs" />

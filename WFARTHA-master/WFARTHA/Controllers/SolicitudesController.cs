@@ -1179,7 +1179,7 @@ namespace WFARTHA.Controllers
             "AGENTE_ACTUAL,FECHA_PASO_ACTUAL,PUESTO_ID,GALL_ID,CONCEPTO_ID,DOCUMENTO_SAP,FECHACON,FECHA_BASE,REFERENCIA," +
             "CONDICIONES,TEXTO_POS,ASIGNACION_POS,CLAVE_CTA, DOCUMENTOP,DOCUMENTOR,DOCUMENTORP,DOCUMENTOA_TAB,Anexo,"+
             "DOCUMENTOCOC,EBELN,AMOR_ANT,RETPC,DPPCT,TOAD,ANTR,AMORANT, CUENTA_ID")] Models.DOCUMENTO_MOD doc, IEnumerable<HttpPostedFileBase> file_sopAnexar, string[] labels_desc,//MGC 26-12-2018.4 Factura y cuenta de pago
-            //MGC 02-10-2018 Cadenas de autorización
+                                                                                                                                                                                    //MGC 02-10-2018 Cadenas de autorización
             string DETTA_VERSION, string DETTA_USUARIOC_ID, string DETTA_ID_RUTA_AGENTE, string mtTot, string DETTA_USUARIOA_ID, string borr, string FECHADO, string Uuid
             //MGC 11-12-2018 Agregar Contabilizador 0
             , string VERSIONC1, string VERSIONC2)
@@ -2853,7 +2853,7 @@ namespace WFARTHA.Controllers
 
             //MGC 28-12-2018.2 Obtener la moneda seleccionada
             //ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT");
-            ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT",selectedValue:dOCUMENTO.MONEDA_ID);
+            ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT", selectedValue: dOCUMENTO.MONEDA_ID);
             //MGC 28-12-2018.2 Obtener la moneda seleccionada
 
             //LEJ 04 10 2018------------------------------
@@ -4158,7 +4158,7 @@ namespace WFARTHA.Controllers
                     }
 
                     //Si es con ordende compra, buscamos y borramos lo que exista en documentcoc
-                    var deldococ= db.DOCUMENTOCOCs.Where(x => x.NUM_DOC == _ndoc).ToList();
+                    var deldococ = db.DOCUMENTOCOCs.Where(x => x.NUM_DOC == _ndoc).ToList();
                     for (int i = 0; i < deldococ.Count; i++)
                     {
                         db.DOCUMENTOCOCs.Remove(deldococ[i]);
@@ -7952,9 +7952,40 @@ namespace WFARTHA.Controllers
                 List<string> lstebeln = new List<string>();
                 //LEJGG 10-12-2018
                 var c = db.EKKOes.Where(x => x.LIFNR == lifnr && x.BUKRS == bukrs).ToList();
+                var lstd = db.DOCUMENTOes.Where(x => x.EBELN != null).ToList();
                 for (int i = 0; i < c.Count; i++)
                 {
-                    lstebeln.Add(c[i].EBELN);
+                    var _b = false;
+                    for (int y = 0; y < lstd.Count; y++)
+                    {
+                        //si encuentra coincidencia en ebeln
+                        if (lstd[y].EBELN == c[i].EBELN)
+                        {
+                            //si hay coincidencia se comparara el estatus
+                            if (lstd[y].ESTATUS_C == "C")//signfica que esta eliminada, por lo tanto se puede agregar a la lista
+                            {
+                                _b = true;
+                                break;
+                            }
+                            else if (lstd[y].ESTATUS == "A")//signfica que esta contabilizado, por lo tanto se puede agregar a la lista
+                            {
+                                _b = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (!lstebeln.Contains(c[i].EBELN))
+                            {
+                                _b = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (_b)
+                    {
+                        lstebeln.Add(c[i].EBELN);
+                    }
                 }
                 JsonResult jc = Json(lstebeln, JsonRequestBehavior.AllowGet);
                 return jc;

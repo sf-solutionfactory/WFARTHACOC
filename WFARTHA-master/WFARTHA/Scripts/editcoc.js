@@ -990,3 +990,11 @@ function formatoTcoc() {
         U.css("text-align", "left");
     });
 }
+
+function ocultarddl() {
+    $("#table_infoP tbody tr[role='row']").each(function () {
+        //1
+        var R1 = $(this).find("td.IVA input");
+        R1.css("display", "none");
+    });
+}

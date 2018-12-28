@@ -139,16 +139,35 @@ namespace WFARTHA.Models
                                     bukrs = doc.SOCIEDAD_PRE + "";
                                 }
 
+                                //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+                                string factura = "";
+                                if (ts.TIPO_DOCFILE.Trim().Equals("REEMBOLSO"))
+                                {
+                                    factura = "Reembolso";
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        factura = doc.NO_FACTURA.Trim();
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+                                }
+                                //MGC 26-12-2018.4 Factura y cuenta de pago----------<
+
                                 //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado -->
                                 sw.WriteLine(
-                                    "1" + "|" +
-                                    ts.TIPO_DOCFILE.Trim() + "|" +
-                                    doc.NUM_DOC + "|" +
-                                    accionhead.Trim() + "|" +
-                                    belnr + "|" +
-                                    bjahr + "|" +
-                                    bukrs //MGC 19-10-2018 Cambio en archivo
-                                    );
+                                        "1" + "|" +
+                                        ts.TIPO_DOCFILE.Trim() + "|" +
+                                        doc.NUM_DOC + "|" +
+                                        accionhead.Trim() + "|" +
+                                        belnr + "|" +
+                                        bjahr + "|" +
+                                        bukrs //MGC 19-10-2018 Cambio en archivo
+                                        );
                                 //sw.WriteLine(""); //MGC 17-10-2018.2 Adaptación a archivo
 
                                 //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado <--
@@ -161,12 +180,15 @@ namespace WFARTHA.Models
                                     String.Format("{0:dd.MM.yyyy}", doc.FECHAC).Replace(".", "") + "|" + //Formato MGC
                                     doc.MONEDA_ID.Trim() + "|" +
                                     //+ "|" + //MGC 11-10-2018 Acciones para el encabezado
-                                    doc.REFERENCIA.Trim() + "|" +
+                                    //doc.REFERENCIA.Trim() + "|" +//MGC 26-12-2018.4 Factura y cuenta de pago
+                                    factura + "|" + //MGC 26-12-2018.4 Factura y cuenta de pago
                                     doc.CONCEPTO + "|" + //MGC 11-10-2018 Acciones para el encabezado
                                     "" + "|" +
                                     "" + "|" +
                                     doc.TIPO_CAMBIO  //MGC 11-10-2018 Acciones para el encabezado
-                                    +"|" + fechacon //MGC-14-12-2018 Modificación fechacon//MGC 13-10-2018 Modificaión fecha
+                                    + "|" + fechacon //MGC-14-12-2018 Modificación fechacon//MGC 13-10-2018 Modificaión fecha
+                                    + "|" + "|"//+ doc.CUENTA_ID.Trim() //MGC 26-12-2018.4 Factura y cuenta de pago
+                                    + "P-" + doc.NUM_DOC//MGC 26-12-2018.4 Factura y cuenta de pago
                                     );
                                 //sw.WriteLine("");//MGC 17-10-2018.2 Adaptación a archivo
                                 //for (int i = 0; i < det.Count; i++)
@@ -416,12 +438,13 @@ namespace WFARTHA.Models
 
                             }
                         }
+
                         catch (Exception e)
                         {
                             errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
                         }
+                        //}
                     }
-
                 }
                 else
                 {
@@ -926,22 +949,22 @@ namespace WFARTHA.Models
                 //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
                 //{
 
-                    try
-                    {
-                        if (Directory.Exists(path))
-                            return true;
+                try
+                {
+                    if (Directory.Exists(path))
+                        return true;
 
-                        else
-                        {
-                            Directory.CreateDirectory(path);
-                            return true;
-                        }
-                    }
-
-                    catch (Exception ex)
+                    else
                     {
-                        return false;
+                        Directory.CreateDirectory(path);
+                        return true;
                     }
+                }
+
+                catch (Exception ex)
+                {
+                    return false;
+                }
                 //}
             }
             catch (Exception e)

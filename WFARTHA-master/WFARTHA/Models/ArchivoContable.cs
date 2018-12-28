@@ -24,7 +24,7 @@ namespace WFARTHA.Models
             {
                 string dirFile = "";
                 DOCUMENTO doc = db.DOCUMENTOes.Where(x => x.NUM_DOC == docum).Single();
-                TSOL ts = db.TSOLs.Where(tsi => tsi.ID == doc.TSOL_ID).FirstOrDefault(); 
+                TSOL ts = db.TSOLs.Where(tsi => tsi.ID == doc.TSOL_ID).FirstOrDefault();
                 //CONPOSAPH tab;
                 //CLIENTE clien = new CLIENTE();
                 //List<DOCUMENTOF> docf = new List<DOCUMENTOF>();
@@ -169,25 +169,60 @@ namespace WFARTHA.Models
                     dom = getDomPrel();
                     //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
                     //{
-                        try
+                    try
+                    {
+                        FileStream fs = null;
+                        fs = new FileStream(docname, FileMode.CreateNew);
+                        using (StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.ASCII))
                         {
-                            FileStream fs = null;
-                            fs = new FileStream(docname, FileMode.CreateNew);
-                            using (StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.ASCII))
+                            string belnr = "";
+                            string bjahr = "";
+                            string bukrs = "";
+
+                            if (accion == "R" || accion == "A")//MGC 
                             {
-                                string belnr = "";
-                                string bjahr = "";
-                                string bukrs = "";
+                                belnr = doc.NUM_PRE + "";
+                                bjahr = doc.EJERCICIO_PRE + "";
+                                bukrs = doc.SOCIEDAD_PRE + "";
+                            }
 
-                                if (accion == "R" || accion == "A")//MGC 
+                            //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+                            string factura = "";
+                            if (ts.TIPO_DOCFILE.Trim().Equals("REEMBOLSO"))
+                            {
+                                factura = "Reembolso";
+                            }
+                            else
+                            {
+                                try
                                 {
-                                    belnr = doc.NUM_PRE + "";
-                                    bjahr = doc.EJERCICIO_PRE + "";
-                                    bukrs = doc.SOCIEDAD_PRE + "";
+                                    factura = doc.NO_FACTURA.Trim();
                                 }
+                                catch (Exception e)
+                                {
 
-                                //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado -->
-                                sw.WriteLine(
+                                }
+                            }
+
+                            //MGC 26-12-2018.4 Factura y cuenta de pago----------<
+
+                            //MGC 27-12-2018.3 Factura y cuenta de pago---------->
+                            string cuentah = "";
+
+                            try
+                            {
+                                cuentah = doc.CUENTA_ID.Trim();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
+
+                            //MGC 27-12-2018.3 Factura y cuenta de pago----------<
+
+                            //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado -->
+                            sw.WriteLine(
                                     "1" + "|" +
                                     ts.TIPO_DOCFILE.Trim() + "|" +
                                     doc.NUM_DOC + "|" +
@@ -196,447 +231,450 @@ namespace WFARTHA.Models
                                     bjahr + "|" +
                                     bukrs //MGC 19-10-2018 Cambio en archivo
                                     );
-                                //sw.WriteLine(""); //MGC 17-10-2018.2 Adaptación a archivo
+                            //sw.WriteLine(""); //MGC 17-10-2018.2 Adaptación a archivo
 
-                                //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado <--
+                            //DETDOC	|TIPODOC|ACCION|BELNR|GJAHR|BUKRS DETDOC EJE	FACSINOC|CONTABILIZAR|10000000|2018|1010| //MGC 11-10-2018 Acciones para el encabezado <--
 
-                                //Formato a fecha mes, día, año
-                                sw.WriteLine(
-                                    "2" + "|" +
-                                    doc.DOCUMENTO_SAP + "|" +
-                                    doc.SOCIEDAD_ID.Trim() + "|" +
-                                    String.Format("{0:dd.MM.yyyy}", doc.FECHAC).Replace(".", "") + "|" + //Formato MGC
-                                    doc.MONEDA_ID.Trim() + "|" +
-                                    //+ "|" + //MGC 11-10-2018 Acciones para el encabezado
-                                    doc.REFERENCIA.Trim() + "|" +
-                                    doc.CONCEPTO + "|" + //MGC 11-10-2018 Acciones para el encabezado
-                                    "" + "|" +
-                                    "" + "|" +
-                                    doc.TIPO_CAMBIO  //MGC 11-10-2018 Acciones para el encabezado
-                                    + "|" + fechacon //MGC-14-12-2018 Modificación fechacon
-                                    );
-                                //sw.WriteLine("");//MGC 17-10-2018.2 Adaptación a archivo
-                                //for (int i = 0; i < det.Count; i++)
+                            //Formato a fecha mes, día, año
+                            sw.WriteLine(
+                                "2" + "|" +
+                                doc.DOCUMENTO_SAP + "|" +
+                                doc.SOCIEDAD_ID.Trim() + "|" +
+                                String.Format("{0:dd.MM.yyyy}", doc.FECHAC).Replace(".", "") + "|" + //Formato MGC
+                                doc.MONEDA_ID.Trim() + "|" +
+                                //+ "|" + //MGC 11-10-2018 Acciones para el encabezado
+                                //doc.REFERENCIA.Trim() + "|" +//MGC 26-12-2018 Factura y cuenta de pago
+                                factura + "|" + //MGC 26-12-2018.4 Factura y cuenta de pago
+                                doc.CONCEPTO + "|" + //MGC 11-10-2018 Acciones para el encabezado
+                                "" + "|" +
+                                "" + "|" +
+                                doc.TIPO_CAMBIO  //MGC 11-10-2018 Acciones para el encabezado
+                                + "|" + fechacon //MGC-14-12-2018 Modificación fechacon
+                                + "|" + cuentah + "|"//MGC 26-12-2018.4 Factura y cuenta de pago //MGC 27-12-2018.3 Factura y cuenta de pago
+                                + "P-" + doc.NUM_DOC//MGC 26-12-2018.4 Factura y cuenta de pago
+                                );
+                            //sw.WriteLine("");//MGC 17-10-2018.2 Adaptación a archivo
+                            //for (int i = 0; i < det.Count; i++)
 
-                                //Obtener los rows H
-                                List<DOCUMENTOP> lh = doc.DOCUMENTOPs.Where(docl => docl.ACCION == "H").ToList();
-                                List<DOCUMENTOP> ld = doc.DOCUMENTOPs.Where(docl => docl.ACCION == "D").ToList();
+                            //Obtener los rows H
+                            List<DOCUMENTOP> lh = doc.DOCUMENTOPs.Where(docl => docl.ACCION == "H").ToList();
+                            List<DOCUMENTOP> ld = doc.DOCUMENTOPs.Where(docl => docl.ACCION == "D").ToList();
 
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
-                                List<CLAVES_CONTA> cls = new List<CLAVES_CONTA>();
+                            //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
+                            List<CLAVES_CONTA> cls = new List<CLAVES_CONTA>();
 
-                                //MGC 30-10-2018 Obtener las claves a partir del tipo de solicitud
-                                cls = db.CLAVES_CONTA.Where(clsi => clsi.TSOL == doc.TSOL_ID).ToList();
+                            //MGC 30-10-2018 Obtener las claves a partir del tipo de solicitud
+                            cls = db.CLAVES_CONTA.Where(clsi => clsi.TSOL == doc.TSOL_ID).ToList();
 
-                                //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+                            //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
 
-                                //MGC COC 16-12-2018 numero de renglones-->
-                                if (doc.TSOL_ID == "SCO")
+                            //MGC COC 16-12-2018 numero de renglones-->
+                            if (doc.TSOL_ID == "SCO")
+                            {
+                                //Obtener las amortizaciones
+                                List<AMOR_ANT> amoral = new List<AMOR_ANT>();
+
+                                amoral = db.AMOR_ANT.Where(am => am.NUM_DOC == doc.NUM_DOC).ToList();
+
+                                //Obtener las amortizaciones por posición
+                                AMOR_ANT amora = new AMOR_ANT();
+
+                                if (amoral != null && amoral.Count > 0)
                                 {
-                                    //Obtener las amortizaciones
-                                    List<AMOR_ANT> amoral = new List<AMOR_ANT>();
+                                    amora = amoral.Where(am => am.NUM_DOC == doc.NUM_DOC).FirstOrDefault();
+                                }
 
-                                    amoral = db.AMOR_ANT.Where(am => am.NUM_DOC == doc.NUM_DOC).ToList();
+                                string antamor = "";
+                                decimal retcp = 0;
+                                string retcps = "";
 
-                                    //Obtener las amortizaciones por posición
-                                    AMOR_ANT amora = new AMOR_ANT();
+                                retcp = Convert.ToDecimal(doc.RETPC);
+                                retcps = retcp + "";
 
-                                    if (amoral != null && amoral.Count > 0)
+                                if (amora != null)
+                                {
+                                    antamor = amora.ANTAMOR + "";
+                                }
+
+                                //Documentos P --> H
+                                for (int i = 0; i < lh.Count; i++)
+                                {
+                                    string post = "P";
+
+                                    string cuenta = lh[i].CUENTA + "";
+
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------>
+                                    int cuentai = 0;
+
+                                    try
                                     {
-                                        amora = amoral.Where(am => am.NUM_DOC == doc.NUM_DOC).FirstOrDefault();
+                                        cuentai = Convert.ToInt32(lh[i].CUENTA);
+                                    }
+                                    catch (Exception)
+                                    {
+
                                     }
 
-                                    string antamor = "";
-                                    decimal retcp = 0;
-                                    string retcps = "";
-
-                                    retcp = Convert.ToDecimal(doc.RETPC);
-                                    retcps = retcp + "";
-
-                                    if (amora != null)
+                                    try
                                     {
-                                        antamor = amora.ANTAMOR + "";
-                                    }
-
-                                    //Documentos P --> H
-                                    for (int i = 0; i < lh.Count; i++)
-                                    {
-                                        string post = "P";
-
-                                        string cuenta = lh[i].CUENTA + "";
-
-                                        //MGC 20 - 12 - 2018 Archivo contable------------------------>
-                                        int cuentai = 0;
-
-                                        try
-                                        {
-                                            cuentai = Convert.ToInt32(lh[i].CUENTA);
-                                        }
-                                        catch (Exception)
-                                        {
-
-                                        }
-
-                                        try
-                                        {
-                                            if (!cuenta.Equals("") && cuentai > 0)
-                                            {
-                                                cuenta = "";
-                                                string cuentaformat = cuentai.ToString("0000000000");
-                                                cuenta = cuentaformat;
-                                            }
-                                        }
-                                        catch (Exception)
+                                        if (!cuenta.Equals("") && cuentai > 0)
                                         {
                                             cuenta = "";
+                                            string cuentaformat = cuentai.ToString("0000000000");
+                                            cuenta = cuentaformat;
                                         }
-                                        //MGC 20 - 12 - 2018 Archivo contable------------------------<
+                                    }
+                                    catch (Exception)
+                                    {
+                                        cuenta = "";
+                                    }
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------<
 
+                                    sw.WriteLine(
+                                        "6" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" +
+                                        cuenta.Trim() + "|" +
+                                        lh[i].TOTAL + "|" + "|"
+                                        //retcps.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                        //antamor.Trim()//MGC 18-12-2018 Archivo de contabilización
+                                        );
+                                }
+
+                                //Documentos G --> D
+                                for (int i = 0; i < ld.Count; i++)
+                                {
+
+                                    //Obtener el documento coc
+                                    DOCUMENTOCOC dcoc = new DOCUMENTOCOC();
+
+                                    decimal numdocl = ld[i].NUM_DOC;//MGC 18-12-2018 Archivo de contabilización
+                                    decimal posdl = ld[i].POS;//MGC 18-12-2018 Archivo de contabilización
+
+                                    //dcoc = db.DOCUMENTOCOCs.Where(dc => dc.NUM_DOC == ld[i].NUM_DOC && dc.POSD == ld[i].POS).FirstOrDefault();
+
+                                    try//MGC 18-12-2018 Archivo de contabilización
+                                    {
+                                        dcoc = db.DOCUMENTOCOCs.Where(dco => dco.NUM_DOC == numdocl && dco.POSD == posdl).FirstOrDefault();
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                    }
+
+                                    string ebelp = "";
+                                    string post = "G";
+                                    string meins = "";
+                                    decimal menge = 0;
+
+                                    if (dcoc != null)
+                                    {
+                                        ebelp = dcoc.POS + "";
+                                        meins = dcoc.MEINS + "";
+                                        menge = Convert.ToDecimal(dcoc.MENGE_BIL);
+                                    }
+
+
+
+                                    string cuenta = ld[i].CUENTA + "";
+                                    string ccosto = ld[i].CCOSTO + "";
+                                    string imputacion = ld[i].IMPUTACION + "";
+
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------>
+                                    if (menge > 0 && ld[i].MONTO > 0)
+                                    {
                                         sw.WriteLine(
-                                            "6" + "|" +
+                                            "7" + "|" +
                                             post + "|" +
                                             doc.SOCIEDAD_ID.Trim() + "|" +
-                                            cuenta.Trim() + "|" +
-                                            lh[i].TOTAL + "|" + "|"
-                                            //retcps.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                            //antamor.Trim()//MGC 18-12-2018 Archivo de contabilización
+                                            //cuenta.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            doc.EBELN + "|" +
+                                            ebelp + "|" +
+                                            //ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            menge + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            meins + "|" +
+                                            //ld[i].TOTAL + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
+                                            ld[i].TEXTO + "|" +
+                                            ld[i].MWSKZ + "|"
                                             );
                                     }
 
-                                    //Documentos G --> D
-                                    for (int i = 0; i < ld.Count; i++)
-                                    {
-
-                                        //Obtener el documento coc
-                                        DOCUMENTOCOC dcoc = new DOCUMENTOCOC();
-
-                                        decimal numdocl = ld[i].NUM_DOC;//MGC 18-12-2018 Archivo de contabilización
-                                        decimal posdl = ld[i].POS;//MGC 18-12-2018 Archivo de contabilización
-
-                                        //dcoc = db.DOCUMENTOCOCs.Where(dc => dc.NUM_DOC == ld[i].NUM_DOC && dc.POSD == ld[i].POS).FirstOrDefault();
-
-                                        try//MGC 18-12-2018 Archivo de contabilización
-                                        {
-                                            dcoc = db.DOCUMENTOCOCs.Where(dco => dco.NUM_DOC == numdocl && dco.POSD == posdl).FirstOrDefault();
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-
-                                        string ebelp = "";
-                                        string post = "G";
-                                        string meins = "";
-                                        decimal menge = 0;
-
-                                        if (dcoc != null)
-                                        {
-                                            ebelp = dcoc.POS + "";
-                                            meins = dcoc.MEINS + "";
-                                            menge = Convert.ToDecimal(dcoc.MENGE_BIL);
-                                        }
-
-
-
-                                        string cuenta = ld[i].CUENTA + "";
-                                        string ccosto = ld[i].CCOSTO + "";
-                                        string imputacion = ld[i].IMPUTACION + "";
-
-                                        //MGC 20 - 12 - 2018 Archivo contable------------------------>
-                                        if (menge > 0 && ld[i].MONTO > 0)
-                                        {
-                                            sw.WriteLine(
-                                                "7" + "|" +
-                                                post + "|" +
-                                                doc.SOCIEDAD_ID.Trim() + "|" +
-                                                //cuenta.Trim() + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                                doc.EBELN + "|" +
-                                                ebelp + "|" +
-                                                //ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                                menge + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                                meins + "|" +
-                                                //ld[i].TOTAL + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                                ld[i].MONTO + "|" +//MGC 18-12-2018 Archivo de contabilización
-                                                ld[i].TEXTO + "|" +
-                                                ld[i].MWSKZ + "|"
-                                                );
-                                        }
-
-                                        //MGC 20 - 12 - 2018 Archivo contable------------------------<
-                                    }
-
-                                    //Agregar las amortizaciones amoral
-                                    for (int i = 0; i < amoral.Count; i++)
-                                    {
-                                        sw.WriteLine(
-                                            "8" + "|" +
-                                            amoral[i].EBELN + "|" +
-                                            amoral[i].EBELP + "|" +
-                                            amoral[i].GJAHR + "|" +
-                                            amoral[i].BELNR + "|" +
-                                            amoral[i].BUZEI + "|" +
-                                            amoral[i].ANTXAMORT
-                                            );
-                                    }
+                                    //MGC 20 - 12 - 2018 Archivo contable------------------------<
                                 }
-                                else
-                                {
 
-                                    for (int i = 0; i < lh.Count; i++)
-                                    {
-                                        string post = "";
-                                        string postk = "";
-
-                                        //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
-                                        CLAVES_CONTA clsi = cls.Where(c => c.DH == lh[i].ACCION).FirstOrDefault();
-
-                                        if (clsi != null)
-                                        {
-                                            post = clsi.BSCHLL;
-                                            postk = clsi.BSCHL;
-                                        }
-
-                                        //if (lh[i].ACCION == "H")
-                                        //{
-                                        //    post = "P";
-                                        //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                        //    {
-                                        //        postk = "50";
-                                        //    }
-                                        //    else
-                                        //    {
-                                        //        postk = "31";
-                                        //    }
-                                        //}
-                                        //else if (lh[i].ACCION == "D")
-                                        //{
-                                        //    post = "G";
-                                        //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                        //    {
-                                        //        postk = "21";
-                                        //    }
-                                        //    else
-                                        //    {
-                                        //        postk = "40";
-                                        //    }
-
-                                        //}
-
-                                        //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
-
-                                        string cuenta = lh[i].CUENTA + "";
-                                        string ccosto = lh[i].CCOSTO + "";
-                                        string imputacion = lh[i].IMPUTACION + "";
-
-                                        sw.WriteLine(
-                                            //det[i].POS_TYPE + "|" +
-                                            "3" + "|" +
-                                            post + "|" +
-                                            doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
-                                                                           //det[i].BUS_AREA + "|" +
-                                            "|" +
-                                            //det[i].POST_KEY + "|" +
-                                            postk + "|" +
-                                            cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
-                                            ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
-                                            imputacion.Trim() + "|" +
-                                            lh[i].MONTO + "|" +//det[i].BALANCE + "|" +
-                                            lh[i].TEXTO + "|" + //det[i].TEXT + "|" +
-                                                                //det[i].SALES_ORG + "|" +
-                                                                //det[i].DIST_CHANEL + "|" +
-                                            "|" +
-                                            "|" +
-                                            //det[i].DIVISION + "|" +
-                                            "|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //det[i].INV_REF + "|" +
-                                            //det[i].PAY_TERM + "|" +
-                                            //det[i].JURIS_CODE + "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            //"|" +
-                                            //det[i].CUSTOMER + "|" +
-                                            //det[i].PRODUCT + "|" +
-                                            "|" +
-                                            "|" +
-                                            lh[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
-                                                               //det[i].PLANT + "|" +
-                                                               //det[i].REF_KEY1 + "|" +
-                                                               //det[i].REF_KEY3 + "|" +
-                                                               //det[i].ASSIGNMENT + "|" +
-                                                               //det[i].QTY + "|" +
-                                                               //det[i].BASE_UNIT + "|" +
-                                                               //det[i].AMOUNT_LC + "|" +
-                                                               //det[i].RETENCION_ID + "|"
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|"
-                                            );
-                                    }
-
-                                    for (int i = 0; i < ld.Count; i++)
-                                    {
-                                        string post = "";
-                                        string postk = "";
-
-                                        //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
-                                        CLAVES_CONTA clsi = cls.Where(c => c.DH == ld[i].ACCION).FirstOrDefault();
-
-                                        if (clsi != null)
-                                        {
-                                            post = clsi.BSCHLL;
-                                            postk = clsi.BSCHL;
-                                        }
-
-                                        //if (ld[i].ACCION == "H")
-                                        //{
-                                        //    post = "P";
-                                        //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                        //    {
-                                        //        postk = "50";
-                                        //    }
-                                        //    else
-                                        //    {
-                                        //        postk = "31";
-                                        //    }
-                                        //}
-                                        //else if (ld[i].ACCION == "D")
-                                        //{
-                                        //    post = "G";
-                                        //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
-                                        //    {
-                                        //        postk = "21";
-                                        //    }
-                                        //    else
-                                        //    {
-                                        //        postk = "40";
-                                        //    }
-
-                                        //}
-
-                                        //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
-
-                                        string cuenta = ld[i].CUENTA + "";
-                                        string ccosto = ld[i].CCOSTO + "";
-                                        string imputacion = ld[i].IMPUTACION + "";
-
-                                        sw.WriteLine(
-                                            //det[i].POS_TYPE + "|" +
-                                            "3" + "|" +
-                                            post + "|" +
-                                            doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
-                                                                           //det[i].BUS_AREA + "|" +
-                                            "|" +
-                                            //det[i].POST_KEY + "|" +
-                                            postk + "|" +
-                                            cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
-                                            ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
-                                            imputacion.Trim() + "|" +
-                                            ld[i].MONTO + "|" +//det[i].BALANCE + "|" +
-                                            ld[i].TEXTO + "|" + //det[i].TEXT + "|" +
-                                                                //det[i].SALES_ORG + "|" +
-                                                                //det[i].DIST_CHANEL + "|" +
-                                            "|" +
-                                            "|" +
-                                            //det[i].DIVISION + "|" +
-                                            "|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //"|" +
-                                            //det[i].INV_REF + "|" +
-                                            //det[i].PAY_TERM + "|" +
-                                            //det[i].JURIS_CODE + "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            //"|" +
-                                            //det[i].CUSTOMER + "|" +
-                                            //det[i].PRODUCT + "|" +
-                                            "|" +
-                                            "|" +
-                                            ld[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
-                                                               //det[i].PLANT + "|" +
-                                                               //det[i].REF_KEY1 + "|" +
-                                                               //det[i].REF_KEY3 + "|" +
-                                                               //det[i].ASSIGNMENT + "|" +
-                                                               //det[i].QTY + "|" +
-                                                               //det[i].BASE_UNIT + "|" +
-                                                               //det[i].AMOUNT_LC + "|" +
-                                                               //det[i].RETENCION_ID + "|"
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|" +
-                                            "|"
-                                            );
-                                    }
-
-                                }
-                                //MGC COC 16-12-2018 numero de renglones--<
-                                //MGC 11-10-2018 Acciones para el encabezado RETENCIONES -->
-                                for (int i = 0; i < doc.DOCUMENTORs.Count; i++)
+                                //Agregar las amortizaciones amoral
+                                for (int i = 0; i < amoral.Count; i++)
                                 {
                                     sw.WriteLine(
-                                    "4" + "|" +
-                                    "W" + "|" +
-                                    doc.DOCUMENTORs.ElementAt(i).WITHT + "|" +
-                                    doc.DOCUMENTORs.ElementAt(i).WT_WITHCD + "|" +
-                                    doc.DOCUMENTORs.ElementAt(i).BIMPONIBLE + "|" +
-                                    doc.DOCUMENTORs.ElementAt(i).IMPORTE_RET //+ "|" //MGC 17-10-2018.2 Adaptación a archivo
-
-                                    );
-                                }
-                                //MGC 11-10-2018 Acciones para el encabezado RETENCIONES <--
-
-                                //MGC 26-12-2018.3 UUID -->
-                                if (accion.Equals("A"))
-                                {
-                                    List<DOCUMENTOUUID> ldocuuid = new List<DOCUMENTOUUID>();
-
-                                    ldocuuid = db.DOCUMENTOUUIDs.Where(du => du.NUM_DOC == doc.NUM_DOC && du.ESTATUS == true).ToList();
-
-
-                                    for (int i = 0; i < ldocuuid.Count; i++)
-                                    {
-                                        sw.WriteLine(
-                                        "5" + "|" +
-                                        ldocuuid[i].UUID
+                                        "8" + "|" +
+                                        amoral[i].EBELN + "|" +
+                                        amoral[i].EBELP + "|" +
+                                        amoral[i].GJAHR + "|" +
+                                        amoral[i].BELNR + "|" +
+                                        amoral[i].BUZEI + "|" +
+                                        amoral[i].ANTXAMORT
                                         );
-                                    }
                                 }
-                                //MGC 26-12-2018.3 UUID -->
+                            }
+                            else
+                            {
 
-                                //sw.Close();
-                                sw.Close();
+                                for (int i = 0; i < lh.Count; i++)
+                                {
+                                    string post = "";
+                                    string postk = "";
 
-                                //using (Stream stOut = reqFTP.GetRequestStream())
-                                //{
-                                //    stOut.Write(stIn.GetBuffer(), 0, (int)stIn.Length);
-                                //}
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
+                                    CLAVES_CONTA clsi = cls.Where(c => c.DH == lh[i].ACCION).FirstOrDefault();
 
+                                    if (clsi != null)
+                                    {
+                                        post = clsi.BSCHLL;
+                                        postk = clsi.BSCHL;
+                                    }
 
+                                    //if (lh[i].ACCION == "H")
+                                    //{
+                                    //    post = "P";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "50";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "31";
+                                    //    }
+                                    //}
+                                    //else if (lh[i].ACCION == "D")
+                                    //{
+                                    //    post = "G";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "21";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "40";
+                                    //    }
+
+                                    //}
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+
+                                    string cuenta = lh[i].CUENTA + "";
+                                    string ccosto = lh[i].CCOSTO + "";
+                                    string imputacion = lh[i].IMPUTACION + "";
+
+                                    sw.WriteLine(
+                                        //det[i].POS_TYPE + "|" +
+                                        "3" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
+                                                                       //det[i].BUS_AREA + "|" +
+                                        "|" +
+                                        //det[i].POST_KEY + "|" +
+                                        postk + "|" +
+                                        cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
+                                        ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
+                                        imputacion.Trim() + "|" +
+                                        lh[i].MONTO + "|" +//det[i].BALANCE + "|" +
+                                        lh[i].TEXTO + "|" + //det[i].TEXT + "|" +
+                                                            //det[i].SALES_ORG + "|" +
+                                                            //det[i].DIST_CHANEL + "|" +
+                                        "|" +
+                                        "|" +
+                                        //det[i].DIVISION + "|" +
+                                        "|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //det[i].INV_REF + "|" +
+                                        //det[i].PAY_TERM + "|" +
+                                        //det[i].JURIS_CODE + "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        //"|" +
+                                        //det[i].CUSTOMER + "|" +
+                                        //det[i].PRODUCT + "|" +
+                                        "|" +
+                                        "|" +
+                                        lh[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
+                                                           //det[i].PLANT + "|" +
+                                                           //det[i].REF_KEY1 + "|" +
+                                                           //det[i].REF_KEY3 + "|" +
+                                                           //det[i].ASSIGNMENT + "|" +
+                                                           //det[i].QTY + "|" +
+                                                           //det[i].BASE_UNIT + "|" +
+                                                           //det[i].AMOUNT_LC + "|" +
+                                                           //det[i].RETENCION_ID + "|"
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|"
+                                        );
+                                }
+
+                                for (int i = 0; i < ld.Count; i++)
+                                {
+                                    string post = "";
+                                    string postk = "";
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------>
+                                    CLAVES_CONTA clsi = cls.Where(c => c.DH == ld[i].ACCION).FirstOrDefault();
+
+                                    if (clsi != null)
+                                    {
+                                        post = clsi.BSCHLL;
+                                        postk = clsi.BSCHL;
+                                    }
+
+                                    //if (ld[i].ACCION == "H")
+                                    //{
+                                    //    post = "P";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "50";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "31";
+                                    //    }
+                                    //}
+                                    //else if (ld[i].ACCION == "D")
+                                    //{
+                                    //    post = "G";
+                                    //    if (doc.TSOL_ID == "NCC" | doc.TSOL_ID == "NCS")
+                                    //    {
+                                    //        postk = "21";
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        postk = "40";
+                                    //    }
+
+                                    //}
+
+                                    //MGC 30-10-2018 Obtener las claves de contabilización ------------------------------------------------<
+
+                                    string cuenta = ld[i].CUENTA + "";
+                                    string ccosto = ld[i].CCOSTO + "";
+                                    string imputacion = ld[i].IMPUTACION + "";
+
+                                    sw.WriteLine(
+                                        //det[i].POS_TYPE + "|" +
+                                        "3" + "|" +
+                                        post + "|" +
+                                        doc.SOCIEDAD_ID.Trim() + "|" + //det[i].COMP_CODE + "|" + //
+                                                                       //det[i].BUS_AREA + "|" +
+                                        "|" +
+                                        //det[i].POST_KEY + "|" +
+                                        postk + "|" +
+                                        cuenta.Trim() + "|" +//det[i].ACCOUNT + "|" +
+                                        ccosto.Trim() + "|" +//det[i].COST_CENTER + "|" +
+                                        imputacion.Trim() + "|" +
+                                        ld[i].MONTO + "|" +//det[i].BALANCE + "|" +
+                                        ld[i].TEXTO + "|" + //det[i].TEXT + "|" +
+                                                            //det[i].SALES_ORG + "|" +
+                                                            //det[i].DIST_CHANEL + "|" +
+                                        "|" +
+                                        "|" +
+                                        //det[i].DIVISION + "|" +
+                                        "|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //"|" +
+                                        //det[i].INV_REF + "|" +
+                                        //det[i].PAY_TERM + "|" +
+                                        //det[i].JURIS_CODE + "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        //"|" +
+                                        //det[i].CUSTOMER + "|" +
+                                        //det[i].PRODUCT + "|" +
+                                        "|" +
+                                        "|" +
+                                        ld[i].MWSKZ + "|" +//det[i].TAX_CODE + "|" +
+                                                           //det[i].PLANT + "|" +
+                                                           //det[i].REF_KEY1 + "|" +
+                                                           //det[i].REF_KEY3 + "|" +
+                                                           //det[i].ASSIGNMENT + "|" +
+                                                           //det[i].QTY + "|" +
+                                                           //det[i].BASE_UNIT + "|" +
+                                                           //det[i].AMOUNT_LC + "|" +
+                                                           //det[i].RETENCION_ID + "|"
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|" +
+                                        "|"
+                                        );
+                                }
 
                             }
+                            //MGC COC 16-12-2018 numero de renglones--<
+                            //MGC 11-10-2018 Acciones para el encabezado RETENCIONES -->
+                            for (int i = 0; i < doc.DOCUMENTORs.Count; i++)
+                            {
+                                sw.WriteLine(
+                                "4" + "|" +
+                                "W" + "|" +
+                                doc.DOCUMENTORs.ElementAt(i).WITHT + "|" +
+                                doc.DOCUMENTORs.ElementAt(i).WT_WITHCD + "|" +
+                                doc.DOCUMENTORs.ElementAt(i).BIMPONIBLE + "|" +
+                                doc.DOCUMENTORs.ElementAt(i).IMPORTE_RET //+ "|" //MGC 17-10-2018.2 Adaptación a archivo
+
+                                );
+                            }
+                            //MGC 11-10-2018 Acciones para el encabezado RETENCIONES <--
+
+                            //MGC 26-12-2018.3 UUID -->
+                            if (accion.Equals("A"))
+                            {
+                                List<DOCUMENTOUUID> ldocuuid = new List<DOCUMENTOUUID>();
+
+                                ldocuuid = db.DOCUMENTOUUIDs.Where(du => du.NUM_DOC == doc.NUM_DOC && du.ESTATUS == true).ToList();
+
+
+                                for (int i = 0; i < ldocuuid.Count; i++)
+                                {
+                                    sw.WriteLine(
+                                    "5" + "|" +
+                                    ldocuuid[i].UUID
+                                    );
+                                }
+                            }
+                            //MGC 26-12-2018.3 UUID -->
+
+                            //sw.Close();
+                            sw.Close();
+
+                            //using (Stream stOut = reqFTP.GetRequestStream())
+                            //{
+                            //    stOut.Write(stIn.GetBuffer(), 0, (int)stIn.Length);
+                            //}
+
+
+
                         }
-                        catch (Exception e)
-                        {
-                            errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        errorMessage = "Error al generar el archivo txt preliminar " + e.Message;
+                    }
                     //}
 
                 }
@@ -782,7 +820,7 @@ namespace WFARTHA.Models
                 ////            doc.CONCEPTO + "|" + //MGC 11-10-2018 Acciones para el encabezado
                 ////            "X" + "|" +
                 ////            doc.TIPO_CAMBIO + "|" //MGC 11-10-2018 Acciones para el encabezado
-                 
+
                 ////            + ""
                 ////            );
                 ////        sw.WriteLine("");
@@ -791,7 +829,7 @@ namespace WFARTHA.Models
                 ////        {
                 ////            string post = "";
                 ////            string postk = "";
-                            
+
                 ////            if(doc.DOCUMENTOPs.ElementAt(i).ACCION == "H")
                 ////            {
                 ////                post = "P";
@@ -801,7 +839,7 @@ namespace WFARTHA.Models
                 ////            {
                 ////                post = "G";
                 ////                postk = "40";
-                                
+
                 ////            }
                 ////            sw.WriteLine(
                 ////                //det[i].POS_TYPE + "|" +
@@ -1770,22 +1808,22 @@ namespace WFARTHA.Models
                 //using (Impersonation.LogonUser(dom, user, pass, LogonType.NewCredentials))
                 //{
 
-                    try
-                    {
-                        if (Directory.Exists(path))
-                            return true;
+                try
+                {
+                    if (Directory.Exists(path))
+                        return true;
 
-                        else
-                        {
-                            Directory.CreateDirectory(path);
-                            return true;
-                        }
-                    }
-
-                    catch (Exception ex)
+                    else
                     {
-                        return false;
+                        Directory.CreateDirectory(path);
+                        return true;
                     }
+                }
+
+                catch (Exception ex)
+                {
+                    return false;
+                }
                 //}
             }
             catch (Exception e)

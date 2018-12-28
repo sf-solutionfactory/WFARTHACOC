@@ -2,6 +2,7 @@
 var posinfo = 0;
 var proveedorValC = "";
 var conceptoValC = "";
+var FacturaValC = false;//MGC 26-12-2018.4 Factura y cuenta de pago
 var extraCols = 0;
 var tRet = [];//Agrego a un array los tipos de retenciones
 var tRet2 = [];//Agrego a un array los tipos de retenciones que no tienen ligadas
@@ -652,7 +653,7 @@ $(document).ready(function () {
                     }
 
                 }
-                
+
                 //$("#table_info > tbody  > tr[role='row']").each(function () { //MGC 24-10-2018 Conflicto Enrique-Rogelio
                 var t = $('#table_info').DataTable();
                 var tabble = "table_info";
@@ -1789,6 +1790,7 @@ $('body').on('change', '#tsol', function (event, param1) {
     }
     else {
         $(".conOC").css("display", "none");
+        obtenerRetenciones(false);
     }
     //LEJGG 09-12-2018---------------------->
 
@@ -1798,7 +1800,63 @@ $('body').on('change', '#tsol', function (event, param1) {
         ocultarCampos(dataj.EDITDET, param1);
         mostrarTabla(dataj.EDITDET);
     });
+
+    //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+    //Mostrar u ocultar el campo de no_factura
+    var idtsol = jsval[0].ID;
+
+    //Obtener si es factura o no
+    var factura = isFactura(idtsol);
+
+    //Limpiar el campo de factura
+    $('#NO_FACTURA').val("");
+
+    if (factura) {
+        $('#div_factura').css("display", "inherit");
+    } else {
+        $('#div_factura').css("display", "none");
+    }
+    //lejgg-27-12-2018
+
+    //lejgg-27-12-2018
+    //MGC 26-12-2018.4 Factura y cuenta de pago----------<
 });
+
+//MGC 26-12-2018.4 Factura y cuenta de pago---------->
+
+function isFactura(idtsol) {
+    FacturaValC = false;
+    var res = false;
+    if (idtsol != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getTsolFactura',
+            dataType: "json",
+            data: { "tsol": idtsol },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarValFactura(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+            },
+            async: false
+        });
+    }
+
+    res = FacturaValC;
+    return res;
+}
+
+function asignarValFactura(val) {
+    FacturaValC = val;
+}
+
+//MGC 26-12-2018.4 Factura y cuenta de pago----------<
 
 //MGC 14-11-2018 Cadena de autorización----------------------------------------------------------------------------->
 //Al seleccionar un solicitante, obtener la cadena para mostrar
@@ -2002,12 +2060,21 @@ function ocultarColumnas(opc) {
     var columnindex = column.index();
     columnindex = parseInt(columnindex);
 
-    if (opc == "true") {
-        //Ocultar
-        t.column(columnindex).visible(false);
-    } else {
-        t.column(columnindex).visible(true);
+    //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+
+    try {
+
+        if (opc == "true") {
+            //Ocultar
+            t.column(columnindex).visible(false);
+        } else {
+            t.column(columnindex).visible(true);
+        }
+
+    } catch (Error) {
+        var e = "";
     }
+    //MGC 26-12-2018.4 Factura y cuenta de pago----------<
 
 }
 
@@ -2177,118 +2244,245 @@ function obtenerRetenciones(flag) {
             $('#table_info').DataTable().destroy();
             $('#table_info').empty();
         }
-        var arrCols = [
-            {
-                "className": 'select_row',
-                "data": null,
-                "defaultContent": '',
-                "orderable": false
-            },
-            {
-                "name": 'Fila',
-                "className": 'POS',
-                "orderable": false,
-                "visible": true //MGC 04092018 Conceptos FRT 041223018
-            },
-            {
-                "name": 'A1',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo',
-                "orderable": false,
-                "width": "1px"
-            },
-            {
-                "name": 'A2',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo2',
-                "orderable": false
-            },
-            {
-                "name": 'A3',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo3',
-                "orderable": false
-            },
-            {
-                "name": 'A4',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo4',
-                "orderable": false
-            },
-            {
-                "name": 'A5',//MGC 22-10-2018 Etiquetas
-                "className": 'NumAnexo5',
-                "orderable": false
-            },
-            {
-                "name": 'TEXTO',
-                "className": 'TEXTO',
-                "orderable": false
-            },
-            {
-                "name": 'CA',
-                "className": 'CA',
-                "orderable": false,
-                "visible": false
-            },
-            {
-                "name": 'FACTURA',
-                "className": 'FACTURA',
-                "orderable": false
-            },
-            {
-                "name": 'TCONCEPTO',
-                "className": 'TCONCEPTO',
-                "orderable": false,
-                "visible": false//MGC 22-10-2018 Etiquetas
-            },
-            {
-                "name": 'CONCEPTO',
-                "className": 'GRUPO',
-                "orderable": false
-            },
-            {
-                "name": 'CUENTA',
-                "className": 'CUENTA',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'CUENTANOM',
-                "className": 'CUENTANOM',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'TIPOIMP',
-                "className": 'TIPOIMP',
-                "orderable": false,
-                "visible": false//MGC 22-10-2018 Etiquetas
-            },
-            {
-                "name": 'IMPUTACION',
-                "className": 'IMPUTACION',
-                "orderable": false,
-                "visible": false//lej 11.09.2018
-            },
-            {
-                "name": 'CCOSTO',
-                "className": 'CCOSTO',
-                "orderable": false
+        var arrCols = [];
+        //busco el tipo de solicitud, y de acuerdo  a si tiene o no factura, le escondo el campo
+        var val3 = $('#tsol').val();
+        val3 = "[" + val3 + "]";
+        val3 = val3.replace("{", "{ \"");
+        val3 = val3.replace("}", "\" }");
+        val3 = val3.replace(/\,/g, "\" , \"");
+        val3 = val3.replace(/\=/g, "\" : \"");
+        val3 = val3.replace(/\ /g, "");
+        var jsval = $.parseJSON(val3);
+        if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+            arrCols = [
+                {
+                    "className": 'select_row',
+                    "data": null,
+                    "defaultContent": '',
+                    "orderable": false
+                },
+                {
+                    "name": 'Fila',
+                    "className": 'POS',
+                    "orderable": false,
+                    "visible": true //MGC 04092018 Conceptos FRT 041223018
+                },
+                {
+                    "name": 'A1',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo',
+                    "orderable": false,
+                    "width": "1px"
+                },
+                {
+                    "name": 'A2',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo2',
+                    "orderable": false
+                },
+                {
+                    "name": 'A3',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo3',
+                    "orderable": false
+                },
+                {
+                    "name": 'A4',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo4',
+                    "orderable": false
+                },
+                {
+                    "name": 'A5',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo5',
+                    "orderable": false
+                },
+                {
+                    "name": 'TEXTO',
+                    "className": 'TEXTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'CA',
+                    "className": 'CA',
+                    "orderable": false,
+                    "visible": false
+                },
+                {
+                    "name": 'FACTURA',
+                    "className": 'FACTURA',
+                    "orderable": false
+                },
+                {
+                    "name": 'TCONCEPTO',
+                    "className": 'TCONCEPTO',
+                    "orderable": false,
+                    "visible": false//MGC 22-10-2018 Etiquetas
+                },
+                {
+                    "name": 'CONCEPTO',
+                    "className": 'GRUPO',
+                    "orderable": false
+                },
+                {
+                    "name": 'CUENTA',
+                    "className": 'CUENTA',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'CUENTANOM',
+                    "className": 'CUENTANOM',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'TIPOIMP',
+                    "className": 'TIPOIMP',
+                    "orderable": false,
+                    "visible": false//MGC 22-10-2018 Etiquetas
+                },
+                {
+                    "name": 'IMPUTACION',
+                    "className": 'IMPUTACION',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'CCOSTO',
+                    "className": 'CCOSTO',
+                    "orderable": false
 
-            },
-            {
-                "name": 'MONTO',
-                "className": 'MONTO',
-                "orderable": false
-            },
-            {
-                "name": 'IMPUESTO',
-                "className": 'IMPUESTO',
-                "orderable": false
-            },
-            {
-                "name": 'IVA',
-                "className": 'IVA',
-                "orderable": false
-            }
-        ];
+                },
+                {
+                    "name": 'MONTO',
+                    "className": 'MONTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'IMPUESTO',
+                    "className": 'IMPUESTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'IVA',
+                    "className": 'IVA',
+                    "orderable": false
+                }
+            ];
+        }
+        else {
+            arrCols = [
+                {
+                    "className": 'select_row',
+                    "data": null,
+                    "defaultContent": '',
+                    "orderable": false
+                },
+                {
+                    "name": 'Fila',
+                    "className": 'POS',
+                    "orderable": false,
+                    "visible": true //MGC 04092018 Conceptos FRT 041223018
+                },
+                {
+                    "name": 'A1',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo',
+                    "orderable": false,
+                    "width": "1px"
+                },
+                {
+                    "name": 'A2',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo2',
+                    "orderable": false
+                },
+                {
+                    "name": 'A3',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo3',
+                    "orderable": false
+                },
+                {
+                    "name": 'A4',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo4',
+                    "orderable": false
+                },
+                {
+                    "name": 'A5',//MGC 22-10-2018 Etiquetas
+                    "className": 'NumAnexo5',
+                    "orderable": false
+                },
+                {
+                    "name": 'TEXTO',
+                    "className": 'TEXTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'CA',
+                    "className": 'CA',
+                    "orderable": false,
+                    "visible": false
+                },
+                {
+                    "name": 'FACTURA',
+                    "className": 'FACTURA',
+                    "orderable": false,
+                    "visible": false
+                },
+                {
+                    "name": 'TCONCEPTO',
+                    "className": 'TCONCEPTO',
+                    "orderable": false,
+                    "visible": false//MGC 22-10-2018 Etiquetas
+                },
+                {
+                    "name": 'CONCEPTO',
+                    "className": 'GRUPO',
+                    "orderable": false
+                },
+                {
+                    "name": 'CUENTA',
+                    "className": 'CUENTA',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'CUENTANOM',
+                    "className": 'CUENTANOM',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'TIPOIMP',
+                    "className": 'TIPOIMP',
+                    "orderable": false,
+                    "visible": false//MGC 22-10-2018 Etiquetas
+                },
+                {
+                    "name": 'IMPUTACION',
+                    "className": 'IMPUTACION',
+                    "orderable": false,
+                    "visible": false//lej 11.09.2018
+                },
+                {
+                    "name": 'CCOSTO',
+                    "className": 'CCOSTO',
+                    "orderable": false
+
+                },
+                {
+                    "name": 'MONTO',
+                    "className": 'MONTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'IMPUESTO',
+                    "className": 'IMPUESTO',
+                    "orderable": false
+                },
+                {
+                    "name": 'IVA',
+                    "className": 'IVA',
+                    "orderable": false
+                }
+            ];
+        }
         //Se rearmara la tabla en HTML
         var taInf = $("#table_info");
         taInf.append($("<thead />"));
@@ -4322,4 +4516,3 @@ function activarmensaje() {
 }
 
 //END FRT14112018
-

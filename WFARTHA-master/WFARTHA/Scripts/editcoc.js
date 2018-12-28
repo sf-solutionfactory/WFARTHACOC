@@ -50,6 +50,7 @@ function Tabla2oc() {
         async: false,
         success: function (data) {
             llenarTablaOc2(data);
+            formatoOC2();
         }
     });
 }
@@ -74,6 +75,7 @@ function tablaDet() {
                     var d2 = data2;
                     armarTablaDet(d1, d2);
                     updateFooterP();
+                    formatoTcoc();
                 }
             });
         }
@@ -913,4 +915,78 @@ function updateFooterP() {
     $('#MONTO_DOC_MD').val(toShow(total));//Lej 12.12.2018
     $('#mtTot').val($('#MONTO_DOC_MD').val());//Lej 12.12.2018
     $('#total_infoP').text(toShow(total));//LEJGG 26-12-2018
+}
+function formatoOC2() {
+    //--------
+    //Para los titulos
+    var tpo = $("#tableOC2>thead>tr").find('th.POSC');
+    tpo.css("text-align", "left");
+    var ts = $("#tableOC2>thead>tr").find('th.NDOC');
+    ts.css("text-align", "left");
+    var tn = $("#tableOC2>thead>tr").find('th.EJERCICIO');
+    tn.css("text-align", "left");
+    var mt = $("#tableOC2>thead>tr").find('th.ANTAMOR');
+    mt.css("text-align", "left");
+    var ct = $("#tableOC2>thead>tr").find('th.TOANT');
+    ct.css("text-align", "left");
+    var tt = $("#tableOC2>thead>tr").find('th.MONEDA');
+    tt.css("text-align", "left");
+    var tde = $("#tableOC2>thead>tr").find('th.AntXAMOR');
+    tde.css("text-align", "left");
+    //--------
+    $("#tableOC2 > tbody > tr[role = 'row']").each(function (index) {
+        //1
+        var R1 = $(this).find("td.POSC");
+        R1.css("text-align", "left");
+        //2
+        var R2 = $(this).find("td.NDOC");
+        R2.css("text-align", "left");
+        //3
+        var R3 = $(this).find("td.EJERCICIO");
+        R3.css("text-align", "left");
+        //4
+        var R4 = $(this).find("td.ANTAMOR");
+        R4.css("text-align", "left");
+        //5
+        var R5 = $(this).find("td.TOANT");
+        R5.css("text-align", "left");
+        //6
+        var R6 = $(this).find("td.MONEDA");
+        R6.css("text-align", "left");
+        //7
+        var R7 = $(this).find("td.AntXAMOR");
+        R7.css("text-align", "left");
+    });
+}
+
+function formatoTcoc() {
+    //--------
+    //Para los titulos
+    var tpo = $("#table_infoP>thead>tr").find('th.POS');
+    tpo.css("text-align", "left");
+    var ts = $("#table_infoP>thead>tr").find('th.TXTPOS');
+    ts.css("text-align", "center");
+    var tn = $("#table_infoP>thead>tr").find('th.GRUPO');
+    tn.css("text-align", "left");
+    var mt = $("#table_infoP>thead>tr").find('th.MONTO');
+    mt.css("text-align", "left");
+    var ct = $("#table_infoP>thead>tr").find('th.CANTIDAD');
+    ct.css("text-align", "left");
+    var tt = $("#table_infoP>thead>tr").find('th.PEP');
+    tt.css("text-align", "center");
+    var tde = $("#table_infoP>thead>tr").find('th.IVA');
+    tde.css("text-align", "left");
+    var tot = $("#table_infoP>thead>tr").find('th.TOTAL');
+    tot.css("text-align", "left");
+    //--------
+    $("#table_infoP tbody tr[role='row']").each(function () {
+        //1
+        var R1 = $(this).find("td.GRUPO");
+        R1.css("text-align", "left");
+        //2
+        var R2 = $(this).find("td.MONEDA");
+        R2.css("text-align", "left");
+        var U = $(this).find("td.UNIDAD");
+        U.css("text-align", "left");
+    });
 }

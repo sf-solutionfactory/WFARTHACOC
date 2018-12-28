@@ -4584,7 +4584,7 @@ function armarTablaDet(d1, d2) {
                 if (d1[i].IMPUTACION == null) {
                     d1[i].IMPUTACION = "";
                 }
-                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, _infoAnex[i].a1, _infoAnex[i].a2, _infoAnex[i].a3, _infoAnex[i].a4, _infoAnex[i].a5, d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+                var ar = addRowInfoP($("#table_infoP").DataTable(), d2[i].POS, _infoAnex[i].a1, _infoAnex[i].a2, _infoAnex[i].a3, _infoAnex[i].a4, _infoAnex[i].a5, d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
 
                 //Obtener el select de impuestos en la cabecera
                 var idselect = "infoSel" + i;  //FRT08112018 Para mostrar todos los impuestos
@@ -4595,8 +4595,8 @@ function armarTablaDet(d1, d2) {
                 addSelectImpuestoP(ar, imp, idselect, "", "X");
             }
             else {
-                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
-                var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+                var ar = addRowInfoP($("#table_infoP").DataTable(), d2[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
+                //var ar = addRowInfoP($("#table_infoP").DataTable(), d1[i].POS, "", "", "", "", "", d2[i].MATNR, "", "", d1[i].TCONCEPTO, d1[i].GRUPO, d1[i].CUENTA, d1[i].NOMCUENTA, d1[i].TIPOIMP, d1[i].IMPUTACION, d1[i].CCOSTO, d1[i].MONTO, d2[i].WAERS, d2[i].MENGE_BIL, d2[i].MEINS, "", d1[i].MWSKZ, d1[i].TEXTO, d1[i].TOTAL, d2[i].PS_PSP_PNR);
                 //Obtener el select de impuestos en la cabecera
                 var idselect = "infoSel" + i;
                 //Obtener el valor 

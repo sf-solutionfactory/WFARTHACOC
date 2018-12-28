@@ -675,10 +675,15 @@
         @Html.AntiForgeryToken()*@
 <div class="form-horizontal">
     @*//MGC 26-11-2018 Visualizar caratula --------------------------------------------------->*@
-    <div class="row right-align" id="div_caratula">
-        @*<a class="btn-small" href="#" onClick="fcaratula(this)" data-assigned-id="@Model.D.NUM_DOC"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</a>*@
-        <a id="ReportUrl_Performance" class="btn-small" href="@Url.Action("ReportTemplate", "Report", new { id = @Model.D.NUM_DOC })"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</a>
-    </div>
+    @using (Html.BeginForm("ReportTemplate", "Report", FormMethod.Post))
+    {
+        <div class="row right-align" id="div_caratula">
+            @*<a class="btn-small" href="#" onClick="fcaratula(this)" data-assigned-id="@Model.D.NUM_DOC"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</a>*@
+            @*<a id="ReportUrl_Performance" class="btn-small" href="@Url.Action("ReportTemplate", "Report", new { id = @Model.D.NUM_DOC })"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</a>*@
+            <button id="btnGenerar" class="btn" type="submit"><si style="cursor:pointer" class="material-icons right">print</si>Caratula</button>
+            <input type="hidden" id="id" name="id" value="@Model.D.NUM_DOC" />
+        </div>
+    }
     @*//MGC 26-11-2018 Visualizar caratula ---------------------------------------------------<*@
     @*Encabezado*@
     <div id="Encabezado_cont" class="col s12" style="font-size:12px;">

@@ -92,8 +92,10 @@ namespace WFARTHA.Controllers
                 List<SelectListItem> mont = new List<SelectListItem>();
                 foreach (DOCUMENTO dd in docs)
                 {
+                    string prob = (!string.IsNullOrEmpty(dd.PAYER_ID) ? dd.PAYER_ID : "").Trim();
+                    prob = Completa(prob, 10);
                     var u = db.USUARIOs.Where(x => x.ID == dd.USUARIOD_ID).FirstOrDefault();
-                    var p = db.PROVEEDORs.Where(x => x.LIFNR == (!string.IsNullOrEmpty(dd.PAYER_ID) ? dd.PAYER_ID : "1")).FirstOrDefault();
+                    var p = db.PROVEEDORs.Where(x => x.LIFNR == prob).FirstOrDefault();
 
                     if (dd.FECHAC_USER != null && !fechas1.Contains(dd.FECHAC_USER.ToString()))
                     {
@@ -101,10 +103,10 @@ namespace WFARTHA.Controllers
                         string fech = string.Format(DateTime.Parse(dd.FECHAC_USER.ToString()).ToString(@"dd/MM/yyyy"));
                         fechas.Add(new SelectListItem() { Text = fech, Value = dd.FECHAC_USER.ToString() });
                     }
-                    if (dd.PAYER_ID != null && !prov1.Contains(dd.PAYER_ID))
+                    if (p != null && !prov1.Contains(p.LIFNR))
                     {
-                        prov1.Add(dd.PAYER_ID);
-                        prov.Add(new SelectListItem() { Text = p.LIFNR + " - " + p.NAME1, Value = p.LIFNR });
+                        prov1.Add(p.LIFNR);
+                        prov.Add(new SelectListItem() { Text = p.LIFNR + " - " + p.NAME1, Value = dd.PAYER_ID });
                     }
                     if (dd.NUM_PRE != null && !nsap1.Contains(dd.NUM_PRE))
                     {
@@ -675,6 +677,25 @@ namespace WFARTHA.Controllers
 
                 return View();
             }
+        }
+        private string Completa(string s, int longitud)
+        {
+            string cadena = "";
+            try
+            {
+                long a = Int64.Parse(s);
+                int l = a.ToString().Length;
+                for (int i = l; i < longitud; i++)
+                {
+                    cadena += "0";
+                }
+                cadena += a.ToString();
+            }
+            catch
+            {
+                cadena = s;
+            }
+            return cadena;
         }
     }
 }

@@ -2842,10 +2842,20 @@ namespace WFARTHA.Controllers
                     postsolid = i;
                 }
             }
+
+            //MGC 28-12-2018.2 Obtener la moneda seleccionada
+
+            //MGC 28-12-2018.2 Obtener la moneda seleccionada
+
             ViewBag.SOCIEDAD_ID = new SelectList(sociedades, "BUKRS", "TEXT", dOCUMENTO.SOCIEDAD_ID);
             ViewBag.TSOL_IDL = new SelectList(tsoll, "ID", "TEXT", tsolldef);
             ViewBag.IMPUESTO = new SelectList(impuestol, "MWSKZ", "TEXT", "V3");
-            ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT");
+
+            //MGC 28-12-2018.2 Obtener la moneda seleccionada
+            //ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT");
+            ViewBag.MONEDA_ID = new SelectList(monedal, "WAERS", "TEXT",selectedValue:dOCUMENTO.MONEDA_ID);
+            //MGC 28-12-2018.2 Obtener la moneda seleccionada
+
             //LEJ 04 10 2018------------------------------
             doc.NUM_DOC = dOCUMENTO.NUM_DOC;
             doc.TSOL_ID = dOCUMENTO.TSOL_ID;

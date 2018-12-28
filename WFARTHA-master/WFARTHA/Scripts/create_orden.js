@@ -459,6 +459,7 @@ $('body').on('change', '#norden_compra', function (event, param1) {
         url: 'getEKKOInfo',
         dataType: "json",
         data: { "ebeln": $(this).val() },
+        async: false,
         success: function (data) {
             var ekko = data.ekmo;
             var cuentas = data.res;
@@ -521,6 +522,14 @@ function llenarTablaOc2(val, eb) {
                 mt = data;
                 //
                 var at = 0;
+                var inptAXA = "";
+                var opaxa = parseFloat(mt) + parseFloat(wt);
+                if (opaxa == 0 || opaxa < 0) {
+                    inptAXA = "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\" disabled>";
+                }
+                else {
+                    inptAXA = "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">";
+                }
                 tabl.row.add([
                     ebelp,//POSC
                     buzei,//POS
@@ -530,29 +539,8 @@ function llenarTablaOc2(val, eb) {
                     toShow(wt),//total anticipo
                     mon,//MONEDA,
                     toShow(at),//anticipo en transito
-                    "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
+                    inptAXA
                 ]).draw(false).node();
-                //calculo de anticipo en transito
-                //$.ajax({
-                //    type: "POST",
-                //    url: 'calculoAntTr',
-                //    dataType: "json",
-                //    success: function (datax) {
-                //        at = datax;
-                //        //
-                //        tabl.row.add([
-                //            ebelp,//POSC
-                //            buzei,//POS
-                //            belnr,//numdoc
-                //            gjar,//EJERCICIO
-                //            toShow(mt),//Anticipo amortizado
-                //            toShow(wt),//total anticipo
-                //            mon,//MONEDA,
-                //            toShow(at),//anticipo en transito
-                //            "<input class=\"ANTXAMORT\" style=\"font-size:12px;\" type=\"text\" id=\"antxamor\" name=\"\" value=\"\">"
-                //        ]).draw(false).node();
-                //    }
-                //});
             }
         });
     }

@@ -762,6 +762,7 @@ function llenaOrdenes(lifnr, bukrs) {
         type: "POST",
         url: 'getPedidos',
         dataType: "json",
+        async: false,
         data: { "lifnr": lifnr.trim(), "bukrs": bukrs },
         success: function (data) {
             $("#norden_compra").empty();

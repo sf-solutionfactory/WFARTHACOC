@@ -190,6 +190,7 @@ $(document).ready(function () {
 
     $('.tabDet').on('click', function () {
         tamanosRenglones();
+        ocultarddl();
     });
 
     ////FRT02122018 Para no dejar avanzar si no existe proveedor
@@ -1482,6 +1483,7 @@ $(window).on('load', function () {
         //LEJGG 22-12-2018
         Tabla2oc();
         tablaDet();
+        $("#btn_borradorh").css("display", "none");
     }
     //lejgg 21-12-2018
     $('.materialize-textarea').css("height", "0px");

@@ -564,7 +564,7 @@ $(document).ready(function () {
                     //
                     var cantidad = $(this).find("td.CANTIDAD input").val();
                     if (cantidad == "") {
-                        cantidad = 0;
+                        cantidad = "0";
                     }
                     while (cantidad.indexOf(',') > -1) {
                         cantidad = cantidad.replace('$', '').replace(',', '');
@@ -1787,10 +1787,12 @@ $('body').on('change', '#tsol', function (event, param1) {
     if (jsval[0].ID === "SCO") {
         $(".conOC").css("display", "block");
         llenarCOC();
+        $("#btn_borradorh").css("display", "none");
     }
     else {
         $(".conOC").css("display", "none");
         obtenerRetenciones(false);
+        $("#btn_borradorh").css("display", "inline-block");
     }
     //LEJGG 09-12-2018---------------------->
 

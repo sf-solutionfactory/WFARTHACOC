@@ -101,12 +101,12 @@ namespace WFARTHA.Models
                         PdfPCell Cuerpo1 = new PdfPCell(new Paragraph(det.CONCEPTO + "\n" + (!string.IsNullOrEmpty(det.TEXTO) ? det.TEXTO : null), letraTab)) { Border = 1, BackgroundColor = fondo, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Cuerpo1);
                         PdfPCell Cuerpo2 = new PdfPCell(new Paragraph(det.DESCRIPCION, letraTab)) { Border = 1, BackgroundColor = fondo, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Cuerpo2);
                         PdfPCell Cuerpo3 = new PdfPCell(new Paragraph(det.FACTURA, letraTab)) { Border = 1, BackgroundColor = fondo, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Cuerpo3);
-                        PdfPCell Cuerpo4 = new PdfPCell(new Paragraph("$" + det.IMPORTE, letraTab)) { Border = 1, BackgroundColor = fondo, HorizontalAlignment = Element.ALIGN_RIGHT, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Cuerpo4);
+                        PdfPCell Cuerpo4 = new PdfPCell(new Paragraph(det.IMPORTE, letraTab)) { Border = 1, BackgroundColor = fondo, HorizontalAlignment = Element.ALIGN_RIGHT, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Cuerpo4);
                     }
                     PdfPCell Total1 = new PdfPCell(new Paragraph("", letraTabNegrita)) { Border = 1, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Total1);
                     PdfPCell Total2 = new PdfPCell(new Paragraph("", letraTabNegrita)) { Border = 1, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Total2);
                     PdfPCell Total3 = new PdfPCell(new Paragraph("Total", letraTabNegrita)) { Border = 1, BackgroundColor = new BaseColor(0, 53, 100), BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Total3);
-                    PdfPCell Total4 = new PdfPCell(new Paragraph("$" + RC.MONTO_DOC_MD, letraTabNegrita)) { Border = 1, BackgroundColor = new BaseColor(0, 53, 100), HorizontalAlignment = Element.ALIGN_RIGHT, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Total4);
+                    PdfPCell Total4 = new PdfPCell(new Paragraph(RC.MONTO_DOC_MD, letraTabNegrita)) { Border = 1, BackgroundColor = new BaseColor(0, 53, 100), HorizontalAlignment = Element.ALIGN_RIGHT, BorderColor = new BaseColor(240, 240, 240) }; tablaDatos2.AddCell(Total4);
                     pdfDoc.Add(tablaDatos2);
                     pdfDoc.Add(new Chunk("\n"));
 

@@ -126,7 +126,7 @@ namespace WFARTHA.Controllers
                     if (dd.MONTO_DOC_MD != null && !mont1.Contains(dd.MONTO_DOC_MD.ToString()))
                     {
                         mont1.Add(dd.MONTO_DOC_MD.ToString());
-                        mont.Add(new SelectListItem() { Text = dd.MONTO_DOC_MD.ToString(), Value = dd.MONTO_DOC_MD.ToString() });
+                        mont.Add(new SelectListItem() { Text = Monedas(dd.MONTO_DOC_MD, dd.MONEDA_ID), Value = dd.MONTO_DOC_MD.ToString() });
                     }
                 }
                 var moneda = db.MONEDAs.Where(m => m.ACTIVO == true).Select(m => new { Value = m.WAERS, Text = m.WAERS + " - " + m.LTEXT }).ToList();
@@ -194,9 +194,9 @@ namespace WFARTHA.Controllers
                     NUM_PRE = c.NUM_PRE,
                     SOCIEDAD_ID = c.SOCIEDAD_ID,
                     SOCIEDAD_TEXT = c.SOCIEDAD_TEXT,
-                    PAYER_ID = c.PAYER_ID,
+                    PAYER_ID = (!string.IsNullOrEmpty(c.PAYER_ID) ? c.PAYER_ID : "").Trim(),
                     PAYER_NAME1 = c.PAYER_NAME1,
-                    MONTO_DOC_MD = c.MONTO_DOC_MD.ToString(),
+                    MONTO_DOC_MD = Monedas(c.MONTO_DOC_MD, c.MONEDA_ID),
                     CONDICIONES_ID = c.CONDICIONES_ID,
                     CONDICIONES_TEXT = c.CONDICIONES_TEXT,
                     CONCEPTO = (c.CONCEPTO ?? "")
@@ -209,7 +209,7 @@ namespace WFARTHA.Controllers
                         CONCEPTO = dd.CONCEPTO,
                         DESCRIPCION = dd.DESCRIPCION,
                         FACTURA = dd.FACTURA,
-                        IMPORTE = dd.IMPORTE.ToString(),
+                        IMPORTE = Monedas(dd.IMPORTE, c.MONEDA_ID),
                         TEXTO = (dd.TEXTO ?? "")
                     };
                     det.Add(rd);
@@ -637,19 +637,6 @@ namespace WFARTHA.Controllers
                             pag += "/";
                         }
                     }
-                    var mon = "";
-                    if (d.MONEDA_ID == "EUR")
-                    {
-                        mon = double.Parse(d.MONTO_DOC_MD.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ie"));
-                    }
-                    else if (d.MONEDA_ID == "USD")
-                    {
-                        mon = double.Parse(d.MONTO_DOC_MD.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-us"));
-                    }
-                    else
-                    {
-                        mon = double.Parse(d.MONTO_DOC_MD.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-mx"));
-                    }
                     ReportSols s = new ReportSols
                     {
                         Tsol = (from x in db.TSOLTs where x.TSOL_ID == d.TSOL_ID select x.TXT50).FirstOrDefault(),
@@ -659,7 +646,7 @@ namespace WFARTHA.Controllers
                         Pspnr = (from x in db.PROYECTOes where x.ID_PSPNR == d.ID_PSPNR select x.NOMBRE).FirstOrDefault(),
                         Bukrsn = (from x in db.SOCIEDADs where x.BUKRS == d.SOCIEDAD_ID select x.BUTXT).FirstOrDefault(),
                         Moneda = d.MONEDA_ID,
-                        Montol = mon,
+                        Montol = Monedas(d.MONTO_DOC_MD,d.MONEDA_ID),
                         Explicacion = d.CONCEPTO,
                         Usuarion = (from x in db.USUARIOs where x.ID == d.USUARIOD_ID select x.NOMBRE + " " + x.APELLIDO_P + " " + x.APELLIDO_M).FirstOrDefault(),
                         Usuario = d.USUARIOD_ID,
@@ -696,6 +683,23 @@ namespace WFARTHA.Controllers
                 cadena = s;
             }
             return cadena;
+        }
+        private string Monedas(decimal? monto, string moneda)
+        {
+            var mon = "";
+            if (moneda == "EUR")
+            {
+                mon = double.Parse(monto.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ie"));
+            }
+            else if (moneda == "USD")
+            {
+                mon = double.Parse(monto.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-us"));
+            }
+            else
+            {
+                mon = double.Parse(monto.ToString()).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("es-mx"));
+            }
+            return mon;
         }
     }
 }

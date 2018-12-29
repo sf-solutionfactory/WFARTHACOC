@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.SqlServer;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -72,9 +73,39 @@ namespace TAT001.Controllers.Catalogos
 
         public ActionResult Delete(String ID_PSPNR, String ID_BUKRS)
         {
-            DET_PROYECTOV dET_PROYECTOV = db.DET_PROYECTOV.Find(ID_PSPNR, ID_BUKRS);
-            db.DET_PROYECTOV.Remove(dET_PROYECTOV);
-            db.SaveChanges();
+            //MGC 29-12-2018 DET APROBADOR------------------------------------------->
+            try
+            {
+                DET_PROYECTOV dET_PROYECTOV = db.DET_PROYECTOV.Find(ID_PSPNR, ID_BUKRS);
+                //db.DET_PROYECTOV.Remove(dET_PROYECTOV);
+                //db.Entry(dET_PROYECTOV).State = EntityState.Deleted;
+                //db.SaveChanges();
+
+                //SqlParameter idParam1 = new SqlParameter
+                //{
+                //    ParameterName = "BUKRS",
+                //    Value = ID_BUKRS
+                //};
+
+                //SqlParameter idParam2 = new SqlParameter
+                //{
+                //    ParameterName = "PSPNR",
+                //    Value = ID_PSPNR
+                //};
+
+                if (dET_PROYECTOV != null)
+                {
+                    var res = db.SP_DELETE_DET_PROYECTO(dET_PROYECTOV.ID_BUKRS,dET_PROYECTOV.ID_PSPNR);
+                    //var res = db.Database.SqlQuery<db.SP_DELETE_DET_PROYECTO>("EXEC [dbo].[SP_DELETE_DET_PROYECTO] @BUKRS,@PSPNR", new SqlParameter("@BUKRS", dET_PROYECTOV.ID_BUKRS), new SqlParameter("@PSPNR", dET_PROYECTOV.ID_PSPNR));
+                    db.SaveChanges();
+                }
+                
+            }
+            catch(Exception e)
+            {
+
+            }
+            //MGC 29-12-2018 DET APROBADOR-------------------------------------------<
             return RedirectToAction("Index");
           
         }

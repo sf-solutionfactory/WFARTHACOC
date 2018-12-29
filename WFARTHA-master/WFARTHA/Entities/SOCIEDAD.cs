@@ -17,6 +17,8 @@ namespace WFARTHA.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SOCIEDAD()
         {
+            this.DET_APROB = new HashSet<DET_APROB>();
+            this.DET_APROB0 = new HashSet<DET_APROB0>();
             this.DET_PROVEEDOR = new HashSet<DET_PROVEEDOR>();
             this.DET_SOCIEDAD = new HashSet<DET_SOCIEDAD>();
             this.DET_TIPOPRESUPUESTO = new HashSet<DET_TIPOPRESUPUESTO>();
@@ -37,6 +39,10 @@ namespace WFARTHA.Entities
         public string REGION { get; set; }
         public string STCD1 { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB> DET_APROB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB0> DET_APROB0 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_PROVEEDOR> DET_PROVEEDOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

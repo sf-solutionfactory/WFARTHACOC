@@ -679,7 +679,9 @@ $(document).ready(function () {
                             if (na1 === _vs[i] || na1 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
+                                
                             } else {
                                 _b = false;
                                 _asnull = false;
@@ -697,6 +699,7 @@ $(document).ready(function () {
                             if (na2 === _vs[i2] || na2 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -716,6 +719,7 @@ $(document).ready(function () {
                             if (na3 === _vs[i3] || na3 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -735,6 +739,7 @@ $(document).ready(function () {
                             if (na4 === _vs[i4] || na4 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -754,6 +759,7 @@ $(document).ready(function () {
                             if (na5 === _vs[i5] || na5 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -784,29 +790,30 @@ $(document).ready(function () {
                     //
                     var cantidad = $(this).find("td.CANTIDAD input").val();
                     if (cantidad == "") {
-                        cantidad = 0;
+                        cantidad = "0";
                     }
-                    while (cantidad.indexOf(',') > -1) {
-                        cantidad = cantidad.replace('$', '').replace(',', '');
-                    }
+                    //FRT29122018 la cantidad no contiene esos caracteres por eso lo quitamos
+                    //while (cantidad.indexOf(',') > -1) {
+                    //    cantidad = cantidad.replace('$', '').replace(',', '');
+                    //}
                     cantidad = parseFloat(cantidad);
 
-                    if (monto1 == 0 && cantidad != 0) {
-                        M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
+                    if (monto1 == 0 && cantidad != "0") {
+                        msgerror = "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información";
                         _rm = false;
                     }
-                    else if (monto1 != 0 && cantidad == 0) {
-                        M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
+                    else if (monto1 != 0 && cantidad == "0") {
+                        msgerror = "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información";
                         _rm = false;
                     }
-                    else if (monto1 != 0 && cantidad != 0) {
+                    else if (monto1 != 0 && cantidad != "0") {
                         _rm = true;
                     }
 
 
 
                     if (_rm === false) {
-                        return false;
+                        return;
                     }
                     //frt28122018 se validaran los anexos  ------------------------<<
 
@@ -898,23 +905,22 @@ $(document).ready(function () {
                     }
                 }
 
-
-
-                if (_ct) {
-                    if (_cf) {
-                        if (_f) {
-                            if (_a) {
-                                if (_as) {
-                                    if (_anull) {
-                                        if (_aduplicados) {
-                                            if (_asnull) {
-                                                if (_rm) {
-
+                
+                if (_rm) {
+                    if (_ct) {
+                        if (_cf) {
+                            if (_f) {
+                                if (_a) {
+                                    if (_as) {
+                                        if (_anull) {
+                                            if (_aduplicados) {
+                                                if (_asnull) {
                                                     $('#btn_guardar').trigger("click");
                                                 } else {
                                                     statSend = false;
                                                     M.toast({ html: msgerror });
                                                 }
+
                                             } else {
                                                 statSend = false;
                                                 M.toast({ html: msgerror });
@@ -924,7 +930,6 @@ $(document).ready(function () {
                                             statSend = false;
                                             M.toast({ html: msgerror });
                                         }
-
                                     } else {
                                         statSend = false;
                                         M.toast({ html: msgerror });
@@ -937,6 +942,7 @@ $(document).ready(function () {
                                 statSend = false;
                                 M.toast({ html: msgerror });
                             }
+
                         } else {
                             statSend = false;
                             M.toast({ html: msgerror });
@@ -946,11 +952,11 @@ $(document).ready(function () {
                         statSend = false;
                         M.toast({ html: msgerror });
                     }
-
                 } else {
                     statSend = false;
                     M.toast({ html: msgerror });
                 }
+                
                 //frt28122018 Se agregan para validaciones-------------------------<<
 
 
@@ -1072,7 +1078,7 @@ $(document).ready(function () {
 
 
                     //FRT02122018 PARA VALIDAR QUE LA FACTURA NO ESTE VACIA
-                    if (valTsol() != "SRE") { //Evita validar la factura en la solicitidd SRE
+                    if (valTsol() == "SRE") { //Evita validar la factura en la solicitidd SRE
                         if (borrador != "B") {
                             var factura = $(this).find("td.FACTURA input").val();
 
@@ -1528,10 +1534,6 @@ $(document).ready(function () {
                     statSend = false;
                     M.toast({ html: msgerror });
                 }
-
-
-
-
 
 
                 $("#borr").val(''); //FRT05122018 para  saber cuando es borrador y cuando envio

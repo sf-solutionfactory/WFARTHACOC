@@ -365,7 +365,24 @@ $(document).ready(function () {
         var t = $('#table_info').DataTable();
         var _numrow = t.rows().count();
         _numrow++; //frt04122018
-        var addedRowInfo = addRowInfo(t, _numrow, "", "", "", "", "", "D", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");//Lej 13.09.2018 //MGC 03-10-2018 solicitud con orden de compra       
+        //lejgg29-12-2018
+        var _fac = $("#NO_FACTURA").val();
+        var val3 = $('#tsol').val();
+        val3 = "[" + val3 + "]";
+        val3 = val3.replace("{", "{ \"");
+        val3 = val3.replace("}", "\" }");
+        val3 = val3.replace(/\,/g, "\" , \"");
+        val3 = val3.replace(/\=/g, "\" : \"");
+        val3 = val3.replace(/\ /g, "");
+        var jsval = $.parseJSON(val3);
+        var addedRowInfo = "";
+        if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+            addedRowInfo = addRowInfo(t, _numrow, "", "", "", "", "", "D", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");//Lej 13.09.2018 //MGC 03-10-2018 solicitud con orden de compra       
+        }
+        else {
+            addedRowInfo = addRowInfo(t, _numrow, "", "", "", "", "", "D", _fac, "", "", "", "", "", "", "", "", "", "", "", "", "", "");//Lej 13.09.2018 //MGC 03-10-2018 solicitud con orden de compra       
+        }
+        //lejgg29-12-2018
         //posinfo++; frt04122018
 
         //Obtener el select de impuestos en la cabecera
@@ -596,8 +613,6 @@ $(document).ready(function () {
                     _anexos.push(na4);
                     var na5 = $(this).find("td.NumAnexo5 input").val();
                     _anexos.push(na5);
-
-
 
                     //FRT05122018 Para validar que si tiene anexos debemos tener al menos uno asociado por detalle
                     if (borrador != "B") {
@@ -894,7 +909,7 @@ $(document).ready(function () {
                                         if (_aduplicados) {
                                             if (_asnull) {
                                                 if (_rm) {
-                                                    
+
                                                     $('#btn_guardar').trigger("click");
                                                 } else {
                                                     statSend = false;
@@ -1515,7 +1530,7 @@ $(document).ready(function () {
                 }
 
 
-                
+
 
 
 
@@ -3386,6 +3401,35 @@ $('body').on('focusout', '.OPER', function (e) {
     llenarRetencionesBImp();
 });
 
+//lejgg 29-12-2018------------------------------------------I
+$('body').on('focusout', '#NO_FACTURA', function (e) {
+    var nfact = $("#NO_FACTURA").val();
+    var val3 = $('#tsol').val();
+    val3 = "[" + val3 + "]";
+    val3 = val3.replace("{", "{ \"");
+    val3 = val3.replace("}", "\" }");
+    val3 = val3.replace(/\,/g, "\" , \"");
+    val3 = val3.replace(/\=/g, "\" : \"");
+    val3 = val3.replace(/\ /g, "");
+    var jsval = $.parseJSON(val3);
+    if (jsval[0].ID !== "SRE") { //LEJGG 29-12-2018
+        //si son diferentes clavar el valor de factura en el campo oculto
+        //primero reviso si la tabla esta o no vacia
+        var t = $('#table_info').DataTable();
+        var _numrow = t.rows().count();
+        if (_numrow > 0) {//significa que hay renglones para clavar informacion
+            $("#table_info > tbody > tr[role = 'row']").each(function (index) {
+
+                //Saber si el renglón se va a sumar
+                var tr = $(this);
+                var indexopc = t.row(tr).index();
+                t.cell(indexopc, 9).data("").draw();
+                t.cell(indexopc, 9).data(nfact).draw();
+            });
+        }
+    }
+});
+//lejgg 29-12-2018------------------------------------------T
 
 $('body').on('keydown', '.OPER', function (e) {
     if ($(this).hasClass("Cambio")) {
@@ -4251,7 +4295,30 @@ function copiarTableInfoControl() {
             var pos = toNum($(this).find("td.POS").text());
             // var ca = $(this).find("td.CA").text(); //MGC 04092018 Conceptos
             var ca = t.row(indexopc).data()[8];//lejgg 09-10-2018 Conceptos
-            var factura = $(this).find("td.FACTURA input").val();
+            var factura = "";
+            var val3 = $('#tsol').val();
+            val3 = "[" + val3 + "]";
+            val3 = val3.replace("{", "{ \"");
+            val3 = val3.replace("}", "\" }");
+            val3 = val3.replace(/\,/g, "\" , \"");
+            val3 = val3.replace(/\=/g, "\" : \"");
+            val3 = val3.replace(/\ /g, "");
+            var jsval = $.parseJSON(val3);
+            if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+                factura = $(this).find("td.FACTURA input").val();
+            } else {
+                factura = t.row(indexopc).data()[9];
+                var b = isHTML(factura);
+                if (b) {
+                    if (factura !== "") {
+                        var parser_ = $($.parseHTML(factura));
+                        factura = parser_.val();
+                    }
+                    else {
+                        factura = "";
+                    }
+                }
+            }
             //var tconcepto = $(this).find("td.TCONCEPTO").text();
             var grupo = $(this).find("td.GRUPO input").val();
 
@@ -4923,3 +4990,13 @@ function activarmensaje() {
 }
 
 //END FRT14112018
+
+function isHTML(str) {
+    var a = document.createElement('div');
+    a.innerHTML = str;
+
+    for (var c = a.childNodes, i = c.length; i--;) {
+        if (c[i].nodeType == 1) return true;
+    }
+    return false;
+}

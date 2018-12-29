@@ -562,6 +562,7 @@ $(document).ready(function () {
     });
 
     $('#btn_guardarh').on("click", function (e) {
+        copiarTableInfoControl();
         var borrador = $("#borr").val();
         //frt28122018 se movio para validaciones --------------->>
         var _b = false;
@@ -590,8 +591,6 @@ $(document).ready(function () {
                 var pos = $(this).find("td.POS").text();
                 _vs.push(pos);
             });
-
-
 
             if (borrador != null) {
                 $("#table_infoP tbody tr[role='row']").each(function () {

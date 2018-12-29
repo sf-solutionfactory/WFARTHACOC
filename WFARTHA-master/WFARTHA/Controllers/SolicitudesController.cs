@@ -7956,62 +7956,9 @@ namespace WFARTHA.Controllers
                 var lstd = db.DOCUMENTOes.Where(x => x.EBELN != null).ToList();
                 for (int i = 0; i < c.Count; i++)
                 {
-                    /* var _b = false;
-                     for (int y = 0; y < lstd.Count; y++)
-                     {
-                         //si encuentra coincidencia en ebeln
-                         if (lstd[y].EBELN == c[i].EBELN)
-                         {
-                             //si hay coincidencia se comparara el estatus
-                             if (lstd[y].ESTATUS_C == "C")//signfica que esta eliminada, por lo tanto se puede agregar a la lista
-                             {
-                                 _b = true;
-                                 break;
-                             }
-                             else if (lstd[y].ESTATUS == "A")//signfica que esta contabilizado, por lo tanto se puede agregar a la lista
-                             {
-                                 _b = true;
-                                 break;
-                             }
-                         }
-                         else
-                         {
-                             if (!lstebeln.Contains(c[i].EBELN))
-                             {
-                                 _b = true;
-                                 break;
-                             }
-                         }
-                     }
-                     if (_b)
-                     {*/
                     lstebeln.Add(c[i].EBELN);
-                    // }
                 }
                 var lstddis = lstd.DistinctBy(x => x.EBELN).ToList();
-                //for (int x = 0; x < lstebeln.Count; x++)
-                //{
-                //    for (int i = 0; i < lstddis.Count; i++)
-                //    {
-                //        if (lstebeln[x] == lstddis[i].EBELN)//significa que de la lista definitiva encontro una coincidencia
-                //        {
-                //            if (lstddis[i].ESTATUS_C == "C")
-                //            {
-                //                //significa que esta eliminada, no haces nada
-                //                lstebeln2.Add(lstebeln[x]);
-                //            }
-                //            else if (lstddis[i].ESTATUS == "A")
-                //            {
-                //                //signfica que esta contabilizado, no haces nada
-                //                lstebeln2.Add(lstebeln[x]);
-                //            }
-                //            else
-                //            {
-                //                //lstebeln.Remove(lstddis[i].EBELN);
-                //            }
-                //        }
-                //    }
-                //}
                 lstebeln.RemoveAll(x => lstddis.Exists(y => y.EBELN == x && y.ESTATUS_C != "C" && y.ESTATUS != "A"));
                 JsonResult jc = Json(lstebeln, JsonRequestBehavior.AllowGet);
                 return jc;

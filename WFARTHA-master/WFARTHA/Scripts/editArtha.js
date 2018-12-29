@@ -342,6 +342,25 @@ $(document).ready(function () {
     });
 
     $('#btn_guardarh').on("click", function (e) {
+
+        //frt28122018 para poder tener las variables  y utilizarlos en la rutina---------------->>
+
+        var _b = false;
+        var _m = true;
+        var _g = true;
+        var _f = true;
+        var _as = true;
+        var _anull = true; //FRT06122018
+        var _asnull = true; //FRT06122018
+        var _aduplicados = true; //FRT07122018 
+        var _vs = [];
+
+        var msgerror = "";
+        var _rni = 0;
+
+        //frt28122018 para poder tener las variables  y utilizarlos en la rutina ---------------<<
+
+
         //Aqui verificare si es invoice o factura
         var val3 = $('#tsol').val();
         val3 = "[" + val3 + "]";
@@ -361,11 +380,203 @@ $(document).ready(function () {
         //---
         if (jsval[0].ID === "SCO") {
             copiarTableInfoPControl();
+            copiarTableAnexos(); //FRT12112018 se agrega para poder realzar barrido de archivos en tablaanexos
             var r = false;
             var ren = 0;
             var tabl = $("#table_infoP").DataTable();
+
+
+            //Validar que los anexos existan
+            $("#table_anexa > tbody  > tr[role='row']").each(function () {
+                var pos = $(this).find("td.POS").text();
+                _vs.push(pos);
+            });
+
+
+
             if (borrador != null) {
                 $("#table_infoP tbody tr[role='row']").each(function () {
+
+
+                    //frt28122018 se validaran los anexos  ------------------------>>
+                    var _anexos = [];
+                    _rni++;
+
+
+                    //Obtener valores visibles en la tabla
+                    var na1 = $(this).find("td.NumAnexo input").val();
+                    _anexos.push(na1);
+                    var na2 = $(this).find("td.NumAnexo2 input").val();
+                    _anexos.push(na2);
+                    var na3 = $(this).find("td.NumAnexo3 input").val();
+                    _anexos.push(na3);
+                    var na4 = $(this).find("td.NumAnexo4 input").val();
+                    _anexos.push(na4);
+                    var na5 = $(this).find("td.NumAnexo5 input").val();
+                    _anexos.push(na5);
+
+
+
+                    //FRT05122018 Para validar que si tiene anexos debemos tener al menos uno asociado por detalle
+                    if (borrador != "B") {
+                        if (_vs.length > 0) {
+                            if (na1 === "") {
+                                _as = false;
+                                statSend = false;
+                                _b = false;
+                                msgerror = "Fila " + _rni + " :  Falta asociar numero de anexo en la columna A1";
+                                return false;
+                            }
+                        }
+                        if (_as === false) {
+                            return false;
+                        }
+
+                    }
+                    //ENDFRT05122018 Para validar que si tiene anexos debemos tener al menos uno asociado por detalle
+                    //FRT06122018 Para validar que si no hay anexos no se pueda asociar
+                    if (_vs.length == 0) {
+                        if (na1 != "" || na2 != "" || na3 != "" || na4 != "" || na5 != "") {
+                            _b = false;
+                            _anull = false;
+                            msgerror = "Fila " + _rni + " : No existe numero de anexo " + na1 + " por asociar ";
+                        }
+                    }
+
+                    if (_anull === false) {
+                        return false;
+                    }
+                    //ENDFRT06122018 Para validar que si no hay anexos no se pueda asociar
+
+
+                    //frt07122018 para validar que no metan dos veces el anexo asociado en la misma fila
+
+                    for (var k = 0; k < 5; k++) {
+                        var duplicado = false;
+                        for (var z = 0; z < k; z++) {
+                            if (_anexos[k] != "") {
+                                if (_anexos[z] == _anexos[k]) {
+                                    duplicado = true;
+                                    break;
+                                }
+                            }
+
+                        }
+                        if (duplicado) {
+                            _b = false;
+                            _aduplicados = false;
+                            statSend = false;
+                            msgerror = "Fila " + _rni + " : No es posible duplicar anexo asociado " + _anexos[z];
+                            break;
+                        }
+                    }
+                    if (_aduplicados === false) {
+                        return false;
+                    }
+
+                    //endfrt07122018
+
+
+                    if (_vs.length > 0) {
+                        for (var i = 0; i < _vs.length; i++) {
+                            if (na1 === _vs[i] || na1 === "") {
+                                _b = true;
+                                _asnull = true;
+                                break;
+                            } else {
+                                _b = false;
+                                _asnull = false;
+                                statSend = false;
+                                msgerror = "Fila " + _rni + " : El valor ingresado en la columna A1 no es un Anexo";
+                            }
+                        }
+                        if (_b === false) {
+                            return false;
+                        }
+                        if (_asnull === false) {
+                            return false;
+                        }
+                        for (var i2 = 0; i2 < _vs.length; i2++) {
+                            if (na2 === _vs[i2] || na2 === "") {
+                                _b = true;
+                                _asnull = true;
+                                break;
+                            } else {
+                                _b = false;
+                                _asnull = false;
+                                statSend = false;
+                                //msgerror = "Fila " + _rni + " valor: " + na2 + " Columna 3"; 
+                                msgerror = "Fila " + _rni + " : El valor ingresado en la columna A2 no es un Anexo";
+                            }
+                        }
+                        if (_b === false) {
+                            return false;
+                        }
+                        if (_asnull === false) {
+                            return false;
+                        }
+                        for (var i3 = 0; i3 < _vs.length; i3++) {
+                            if (na3 === _vs[i3] || na3 === "") {
+                                _b = true;
+                                _asnull = true;
+                                break;
+                            } else {
+                                _b = false;
+                                _asnull = false;
+                                statSend = false;
+                                //msgerror = "Fila " + _rni + " valor: " + na3 + " Columna 4";
+                                msgerror = "Fila " + _rni + " : El valor ingresado en la columna A3 no es un Anexo";
+                            }
+                        }
+                        if (_b === false) {
+                            return false;
+                        }
+                        if (_asnull === false) {
+                            return false;
+                        }
+                        for (var i4 = 0; i4 < _vs.length; i4++) {
+                            if (na4 === _vs[i4] || na4 === "") {
+                                _b = true;
+                                _asnull = true;
+                                break;
+                            } else {
+                                _b = false;
+                                _asnull = false;
+                                statSend = false;
+                                //msgerror = "Fila " + _rni + " valor: " + na4 + " Columna 5";
+                                msgerror = "Fila " + _rni + " : El valor ingresado en la columna A4 no es un Anexo";
+                            }
+                        }
+                        if (_b === false) {
+                            return false;
+                        }
+                        if (_asnull === false) {
+                            return false;
+                        }
+                        for (var i5 = 0; i5 < _vs.length; i5++) {
+                            if (na5 === _vs[i5] || na5 === "") {
+                                _b = true;
+                                _asnull = true;
+                                break;
+                            } else {
+                                _b = false;
+                                _asnull = false;
+                                statSend = false;
+                                //msgerror = "Fila " + _rni + " valor: " + na5 + " Columna 6";
+                                msgerror = "Fila " + _rni + " : El valor ingresado en la columna A5 no es un Anexo";
+                            }
+                        }
+                        if (_b === false) {
+                            return false;
+                        }
+                        if (_asnull === false) {
+                            return false;
+                        }
+                    } else {
+                        _b = true;
+                    }
+
+
                     ren++;
                     //
                     var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
@@ -383,22 +594,175 @@ $(document).ready(function () {
                         cantidad = cantidad.replace('$', '').replace(',', '');
                     }
                     cantidad = parseFloat(cantidad);
+
                     if (monto1 == 0 && cantidad != 0) {
                         M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
+                        _rm = false;
                     }
                     else if (monto1 != 0 && cantidad == 0) {
                         M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
+                        _rm = false;
                     }
                     else if (monto1 != 0 && cantidad != 0) {
-                        r = true;
+                        _rm = true;
                     }
-                    if (!r) {
-                        return;
+
+
+
+                    if (_rm === false) {
+                        return false;
                     }
+                    //frt28122018 se validaran los anexos  ------------------------<<
+
+
+                    //ren++;
+                    ////
+                    //var monto1 = $(this).find("td.MONTO input").val().replace('$', '').replace(',', '');
+                    //while (monto1.indexOf(',') > -1) {
+                    //    monto1 = monto1.replace('$', '').replace(',', '');
+                    //}
+                    //monto1 = monto1.replace(/\s/g, '');
+                    //monto1 = parseFloat(monto1);
+                    ////
+                    //var cantidad = $(this).find("td.CANTIDAD input").val();
+                    //if (cantidad == "") {
+                    //    cantidad = 0;
+                    //}
+                    //while (cantidad.indexOf(',') > -1) {
+                    //    cantidad = cantidad.replace('$', '').replace(',', '');
+                    //}
+                    //cantidad = parseFloat(cantidad);
+                    //if (monto1 == 0 && cantidad != 0) {
+                    //    M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
+                    //}
+                    //else if (monto1 != 0 && cantidad == 0) {
+                    //    M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
+                    //}
+                    //else if (monto1 != 0 && cantidad != 0) {
+                    //    r = true;
+                    //}
+                    //if (!r) {
+                    //    return;
+                    //}
                 });
-                if (r) {
-                    $('#btn_guardar').trigger("click");
+
+                 //frt28122018 se validaran los anexos  ------------------------>>
+
+                //FRT27122018 Para validar cantidad de anexos solamente al enviar
+
+                var lengthT = $("table#table_anexa tbody tr[role='row']").length;
+                var _a = true;
+                if (borrador != "B") {
+                    if (lengthT == 0) {
+                        statSend = false;
+                        msgerror = "Es necesario agregar por lo menos 1 Anexo";
+                        _a = false;
+                    } else {
+                        _a = true;
+                    }
                 }
+
+                //FRT27122018
+
+
+                //FRT28122018 Validar que existan filas de egresos
+                var rn = $("table#table_infoP tbody tr[role='row']").length;
+                if (rn == 0) {
+                    statSend = false;
+                    _f = false;
+                    msgerror = "No hay filas con egresos";
+                } else {
+                    _f = true;
+                }
+                //FRT28122018 Validar que existan filas de egresos
+
+
+                if (borrador != "B") {
+                    var texto1 = $("#CONCEPTO").val();
+                    var ct1 = texto1.length;
+                    ct1 = parseFloat(ct1);
+                    if (ct1 < 50) {
+                        _ct = false;
+                        statSend = false;
+                        msgerror = "Falta explicación en cabecera";
+                    } else {
+                        _ct = true;
+                    }
+                }
+
+                if (borrador != "B") {
+                    var textof = $("#NO_FACTURA").val();
+                    var cf1 = textof.length;
+                    cf1 = parseFloat(cf1);
+                    if (cf1 == 0) {
+                        _cf = false;
+                        statSend = false;
+                        msgerror = "Falta ingresar numero de factura";
+                    } else {
+                        _cf = true;
+                    }
+                }
+
+
+                if (_ct) {
+                    if (_cf) {
+                        if (_f) {
+                            if (_a) {
+                                if (_as) {
+                                    if (_anull) {
+                                        if (_aduplicados) {
+                                            if (_asnull) {
+                                                if (_rm) {
+                                                   
+                                                    $('#btn_guardar').trigger("click");
+                                                } else {
+                                                    statSend = false;
+                                                    M.toast({ html: msgerror });
+                                                }
+                                            } else {
+                                                statSend = false;
+                                                M.toast({ html: msgerror });
+                                            }
+
+                                        } else {
+                                            statSend = false;
+                                            M.toast({ html: msgerror });
+                                        }
+
+                                    } else {
+                                        statSend = false;
+                                        M.toast({ html: msgerror });
+                                    }
+                                } else {
+                                    statSend = false;
+                                    M.toast({ html: msgerror });
+                                }
+                            } else {
+                                statSend = false;
+                                M.toast({ html: msgerror });
+                            }
+                        } else {
+                            statSend = false;
+                            M.toast({ html: msgerror });
+                        }
+
+                    } else {
+                        statSend = false;
+                        M.toast({ html: msgerror });
+                    }
+                } else {
+                    statSend = false;
+                    M.toast({ html: msgerror });
+                }
+
+                
+
+                 //frt28122018 se validaran los anexos  ------------------------<<
+
+
+                //if (r) {
+                //    $('#btn_guardar').trigger("click");
+                //}
             }
             else {
                 $('#btn_guardar').trigger("click");
@@ -517,23 +881,42 @@ $(document).ready(function () {
 
                     //END FRT06112018.3
 
-                    //FRT02122018 PARA VALIDAR QUE LA FACTURA NO ESTE VACIA
+                    if (valTsol() != "SRE") { //Evita validar la factura en la solicitidd SRE
+                        if (borrador != "B") {
+                            var factura = $(this).find("td.FACTURA input").val();
 
-                    if (borrador != "B") {
-                        var factura = $(this).find("td.FACTURA input").val().trim();
-
-
-                        if (factura == "" | factura == null) {
-                            statSend = false;
-                            msgerror = "Fila " + _rni + ": Falta ingresar numero de factura";
-                            _b = false;
-                        } else {
-                            _b = true;
+                            if (factura == "" | factura == null) {
+                                statSend = false;
+                                msgerror = "Fila " + _rni + ": Falta ingresar numero de factura";
+                                _b = false;
+                            } else {
+                                _b = true;
+                            }
+                            if (_b === false) {
+                                return false;
+                            }
                         }
-                        if (_b === false) {
-                            return false;
-                        }
+                    } else {
+                        _b = true;
                     }
+
+                    ////FRT02122018 PARA VALIDAR QUE LA FACTURA NO ESTE VACIA
+
+                    //if (borrador != "B") {
+                    //    var factura = $(this).find("td.FACTURA input").val().trim();
+
+
+                    //    if (factura == "" | factura == null) {
+                    //        statSend = false;
+                    //        msgerror = "Fila " + _rni + ": Falta ingresar numero de factura";
+                    //        _b = false;
+                    //    } else {
+                    //        _b = true;
+                    //    }
+                    //    if (_b === false) {
+                    //        return false;
+                    //    }
+                    //}
 
                     //ENDFRT02122018 PAA VALIDAR QUE LA FACTURA NO ESTE VACIA
 
@@ -826,24 +1209,40 @@ $(document).ready(function () {
                 }
 
                 //END FRT2311208 PARA VALIDACION DE 50 CARACTERES
-
+                //END FRT2311208 PARA VALIDACION DE 50 CARACTERES
+                if (valTsol() != "SRE") {
+                    var textof = $("#NO_FACTURA").val();
+                    var cf1 = textof.length;
+                    cf1 = parseFloat(cf1);
+                    if (cf1 == 0) {
+                        _cf = false;
+                        statSend = false;
+                        msgerror = "Falta ingresar numero de factura";
+                    } else {
+                        _cf = true;
+                    }
+                }
                 //FRT02122018 para validar solamente en borrador
-
-                if (_m) {
-                    if (_g) {
-                        if (_f) {
-                            if (_anull) {
-                                if (_asnull) {
-                                    if (_aduplicados) {
-                                        if (borra != "B") {
-                                            if (_b) {
-                                                if (_a) {
-                                                    if (_ct) {
-                                                        //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-                                                        copiarTableInfoControl(); //copiarTableInfoPControl();
-                                                        //copiarTableSopControl();
-                                                        copiarTableRet();
-                                                        $('#btn_guardar').trigger("click");
+                if (_cf) {
+                    if (_m) {
+                        if (_g) {
+                            if (_f) {
+                                if (_anull) {
+                                    if (_asnull) {
+                                        if (_aduplicados) {
+                                            if (borra != "B") {
+                                                if (_b) {
+                                                    if (_a) {
+                                                        if (_ct) {
+                                                            //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+                                                            copiarTableInfoControl(); //copiarTableInfoPControl();
+                                                            //copiarTableSopControl();
+                                                            copiarTableRet();
+                                                            $('#btn_guardar').trigger("click");
+                                                        } else {
+                                                            statSend = false
+                                                            M.toast({ html: msgerror });
+                                                        }
                                                     } else {
                                                         statSend = false
                                                         M.toast({ html: msgerror });
@@ -853,53 +1252,54 @@ $(document).ready(function () {
                                                     M.toast({ html: msgerror });
                                                 }
                                             } else {
-                                                statSend = false
-                                                M.toast({ html: msgerror });
+                                                //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+                                                copiarTableInfoControl(); //copiarTableInfoPControl();
+                                                //copiarTableSopControl();
+                                                copiarTableRet();
+                                                $('#btn_guardar').trigger("click");
                                             }
-                                        } else {
-                                            //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-                                            copiarTableInfoControl(); //copiarTableInfoPControl();
-                                            //copiarTableSopControl();
-                                            copiarTableRet();
-                                            $('#btn_guardar').trigger("click");
                                         }
-                                    }
-                                    else {
+                                        else {
+                                            statSend = false
+                                            M.toast({ html: msgerror });
+                                        }
+
+
+
+                                    } else {
                                         statSend = false
                                         M.toast({ html: msgerror });
                                     }
-
-
 
                                 } else {
                                     statSend = false
                                     M.toast({ html: msgerror });
                                 }
-
                             } else {
                                 statSend = false
                                 M.toast({ html: msgerror });
                             }
-                        } else {
+
+
+                        }
+                        else {
+
                             statSend = false
                             M.toast({ html: msgerror });
                         }
 
 
-                    }
-                    else {
 
+                    } else {
                         statSend = false
                         M.toast({ html: msgerror });
+
                     }
-
-
-
                 } else {
                     statSend = false
                     M.toast({ html: msgerror });
-
                 }
+                
 
 
 

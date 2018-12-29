@@ -588,22 +588,22 @@ $(document).ready(function () {
                     //
                     var cantidad = $(this).find("td.CANTIDAD input").val();
                     if (cantidad == "") {
-                        cantidad = 0;
+                        cantidad = "0";
                     }
-                    while (cantidad.indexOf(',') > -1) {
-                        cantidad = cantidad.replace('$', '').replace(',', '');
-                    }
+                    //while (cantidad.indexOf(',') > -1) {
+                    //    cantidad = cantidad.replace('$', '').replace(',', '');
+                    //}
                     cantidad = parseFloat(cantidad);
 
-                    if (monto1 == 0 && cantidad != 0) {
-                        M.toast({ html: "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" });
+                    if (monto1 == 0 && cantidad != "0") {
+                        msgerror =  "Fila " + ren + ": El Monto no puede ser cero si la Cantidad tiene información" ;
                         _rm = false;
                     }
-                    else if (monto1 != 0 && cantidad == 0) {
-                        M.toast({ html: "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" });
+                    else if (monto1 != 0 && cantidad == "0") {
+                        msgerror = "Fila " + ren + ": La Cantidad no puede ser cero si el Monto tiene información" ;
                         _rm = false;
                     }
-                    else if (monto1 != 0 && cantidad != 0) {
+                    else if (monto1 != 0 && cantidad != "0") {
                         _rm = true;
                     }
 
@@ -690,18 +690,20 @@ $(document).ready(function () {
                     }
                 }
 
-                if (borrador != "B") {
-                    var textof = $("#NO_FACTURA").val();
-                    var cf1 = textof.length;
-                    cf1 = parseFloat(cf1);
-                    if (cf1 == 0) {
-                        _cf = false;
-                        statSend = false;
-                        msgerror = "Falta ingresar numero de factura";
-                    } else {
-                        _cf = true;
-                    }
-                }
+                _cf = true;
+
+                //if (borrador != "B") {
+                //    var textof = $("#NO_FACTURA").val();
+                //    var cf1 = textof.length;
+                //    cf1 = parseFloat(cf1);
+                //    if (cf1 == 0) {
+                //        _cf = false;
+                //        statSend = false;
+                //        msgerror = "Falta ingresar numero de factura";
+                //    } else {
+                //        _cf = true;
+                //    }
+                //}
 
 
                 if (_ct) {
@@ -881,7 +883,7 @@ $(document).ready(function () {
 
                     //END FRT06112018.3
 
-                    if (valTsol() != "SRE") { //Evita validar la factura en la solicitidd SRE
+                    if (jsval[0].ID == "SRE") { //Evita validar la factura en la solicitidd SRE
                         if (borrador != "B") {
                             var factura = $(this).find("td.FACTURA input").val();
 
@@ -1065,6 +1067,7 @@ $(document).ready(function () {
                             if (na1 === _vs[i] || na1 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -1084,6 +1087,7 @@ $(document).ready(function () {
                             if (na2 === _vs[i2] || na2 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -1103,6 +1107,7 @@ $(document).ready(function () {
                             if (na3 === _vs[i3] || na3 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -1122,6 +1127,7 @@ $(document).ready(function () {
                             if (na4 === _vs[i4] || na4 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -1141,6 +1147,7 @@ $(document).ready(function () {
                             if (na5 === _vs[i5] || na5 === "") {
                                 _b = true;
                                 _asnull = true;
+                                msgerror = "";
                                 break;
                             } else {
                                 _b = false;
@@ -1208,20 +1215,22 @@ $(document).ready(function () {
                     }
                 }
 
+                _cf = true;
+
                 //END FRT2311208 PARA VALIDACION DE 50 CARACTERES
                 //END FRT2311208 PARA VALIDACION DE 50 CARACTERES
-                if (valTsol() != "SRE") {
-                    var textof = $("#NO_FACTURA").val();
-                    var cf1 = textof.length;
-                    cf1 = parseFloat(cf1);
-                    if (cf1 == 0) {
-                        _cf = false;
-                        statSend = false;
-                        msgerror = "Falta ingresar numero de factura";
-                    } else {
-                        _cf = true;
-                    }
-                }
+                //if (jsval[0].ID != "SRE") {
+                //    var textof = $("#NO_FACTURA").val();
+                //    var cf1 = textof.length;
+                //    cf1 = parseFloat(cf1);
+                //    if (cf1 == 0) {
+                //        _cf = false;
+                //        statSend = false;
+                //        msgerror = "Falta ingresar numero de factura";
+                //    } else {
+                //        _cf = true;
+                //    }
+                //}
                 //FRT02122018 para validar solamente en borrador
                 if (_cf) {
                     if (_m) {

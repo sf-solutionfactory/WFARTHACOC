@@ -400,57 +400,6 @@ $(document).ready(function () {
 
 var pedidosSel = [];
 
-//$('body').on('keydown.autocomplete', '#norden_compra', function () {
-//    var tr = $(this).closest('tr'); //Obtener el row
-//    var t = $('#table_infoP').DataTable();
-
-//    //Obtener el id de la sociedad
-//    var prov = $("#PAYER_ID").val();
-//    var pedidosNum = [];
-//    //if (prov.trim() !== "") {
-//    //    pedidosNum = ["4000000001", "4000000002", "4000000003", "4000000004", "4000000005"];
-//    //}
-//    auto(this).autocomplete({
-//        source: function (request, response) {
-//            auto.ajax({
-//                type: "POST",
-//                url: 'getPedidos',
-//                dataType: "json",
-//                data: { "Prefix": request.term, "lifnr": prov },
-//                success: function (data) {
-//                    response(auto.map(data, function (item) {
-//                        //return { label: trimStart('0', item.LIFNR) + " - " + item.NAME1, value: trimStart('0', item.LIFNR) };
-//                        return { label: trimStart('0', item.EBELN), value: trimStart('0', item.EBELN) };
-//                    }))
-//                }
-//            })
-//            //pedidosNum
-//        }
-//        ,
-//        messages: {
-//            noResults: '',
-//            results: function (resultsCount) { }
-//        },
-//        change: function (e, ui) {
-//            if (!(ui.item)) {
-//                e.target.value = "";
-//                t.rows().remove().draw(false);
-//            }
-//        },
-//        select: function (event, ui) {
-//            pedidosSel = [];
-//            var label = ui.item.label;
-//            var value = ui.item.value;
-//            //for (var i = 0; i < pedidos.length; i++) {
-//            //    if (pedidos[i].NUM_PED == value)
-//            //        pedidosSel.push(pedidos[i]);
-//            //}
-//            ////alert(pedidosSel);
-//            addPedido(value);
-//        }
-//    });
-//});
-
 //LEJGG 11/12/2018------------------------------------------------I
 $('body').on('change', '#norden_compra', function (event, param1) {
     var eb = $(this).val();
@@ -634,8 +583,10 @@ function armarTabla(info) {
         var por = parseFloat(porc);
         var cal = (m * por) / 100;
         var tot = m + cal;
+        
+        var nfact = $("#NO_FACTURA").val();//lejgg 29-12-2018
         //Ajax para calcular el iva
-        var ari = addRowInfoP(_t, ebelp, "", "", "", "", "", mat, "D", "", "", matkl, sakto, "", knt, "", kostl, toShow(m), waers, c, meins, "", "", tx, toShow(tot), pep);
+        var ari = addRowInfoP(_t, ebelp, "", "", "", "", "", mat, "D", nfact, "", matkl, sakto, "", knt, "", kostl, toShow(m), waers, c, meins, "", "", tx, toShow(tot), pep);
         //Obtener el select de impuestos en la cabecera
         var idselect = "infoSel" + _numrow;
         //totl = totl + parseFloat(m);

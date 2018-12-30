@@ -583,7 +583,7 @@ function armarTabla(info) {
         var por = parseFloat(porc);
         var cal = (m * por) / 100;
         var tot = m + cal;
-        
+
         var nfact = $("#NO_FACTURA").val();//lejgg 29-12-2018
         //Ajax para calcular el iva
         var ari = addRowInfoP(_t, ebelp, "", "", "", "", "", mat, "D", nfact, "", matkl, sakto, "", knt, "", kostl, toShow(m), waers, c, meins, "", "", tx, toShow(tot), pep);
@@ -1887,7 +1887,7 @@ $('body').on('focusout', '.MONTOP', function (e) {
     var op = (monto * porc) / 100;
     var _tot = monto + op;
     t.cell(indexopc, 24).data("").draw();//Limpiar las celdas
-    t.cell(indexopc, 24).data(_tot).draw();//clavar el nuevo valor del total
+    t.cell(indexopc, 24).data(toShow(_tot)).draw();//clavar el nuevo valor del total
 
     var _mt = toShow(monto);
     tr.find("td.MONTO input").val();

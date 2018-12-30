@@ -1135,9 +1135,9 @@
                                                 {
                                                     <tr>
                                                         @*@if (colsret.Count == 0)
-                                                            {
-                                                                <td></td>
-                                                            }*@
+                                    {
+                                        <td></td>
+                                    }*@
                                                         <td></td>
                                                         <td> @Model.D.DOCUMENTOPSTR[i].POS</td>
                                                         @if (@Model.D.Anexo != null)
@@ -1513,6 +1513,12 @@
                                 </table>
                             </div>
                             @* LEJGG 12-12-2018 *@
+                            <div id="divTotCO">
+                                <div style="text-align:right" class="lblTotP">
+                                    <label id="lbl_status" style="font-size: 1.1rem;font-weight: bold;">Total:</label>
+                                    <label id="total_infoP" style="font-size: 1.1rem;font-weight: bold;"></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

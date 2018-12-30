@@ -152,8 +152,8 @@ $(document).ready(function () {
             {
                 "name": 'TOTAL',
                 "className": 'TOTAL',
-                "orderable": false,
-                "visible": false //
+                "orderable": false//,
+                //"visible": false //
             }
         ]
     });
@@ -489,11 +489,15 @@ function mostrarTabla(ban) {
         $("#div_sinPedido").addClass("hide");
         $("#div_conPedido").removeClass("hide");
         $("#div_garantia").removeClass("hide");
+        $("#divTotCO").removeClass("hide");
         $("#conOrden").val("X");
+        updateFooterP();//lejgg 29-12-2018
+        updateTotalesOC2();
     } else {
         $("#div_conPedido").addClass("hide");
         $("#div_sinPedido").removeClass("hide");
         $("#div_garantia").addClass("hide");
+        $("#divTotCO").addClass("hide");
         $("#conOrden").val("");
     }
 }
@@ -841,6 +845,61 @@ function updateFooter() {
 
 }
 
+//lejgg 29-12-2018------------------------------------------I
+function updateFooterP() {
+    var t = $('#table_infoP').DataTable();
+    var total = 0;
+    $("#table_infoP > tbody > tr[role = 'row']").each(function (index) {
+        //Saber si el renglón se va a sumar
+        var tr = $(this);
+        var indexopc = t.row(tr).index();
+        var mt = $(this).find("td.TOTAL").text().replace('$', '');
+        mt = mt.toString().replace('$', '');
+        while (mt.indexOf(',') > -1) {
+            mt = mt.replace('$', '').replace(',', '');
+        }
+        total = total + parseFloat(mt);
+    });
+
+    total = total.toFixed(2);
+    $('#MONTO_DOC_MD').val(toShow(total));//Lej 12.12.2018
+    $('#mtTot').val($('#MONTO_DOC_MD').val());//Lej 12.12.2018
+    $('#total_infoP').text(toShow(total));//LEJGG 26-12-2018
+}
+
+function updateTotalesOC2() {
+    var t_antamor = 0;
+    var t_toant = 0;
+    var t_antxamor = 0;
+    $("#tableOC2 > tbody > tr[role = 'row']").each(function (index) {
+        var _this = $(this);
+        var tr = $(this).closest('tr'); //Obtener el row 
+        var antamor = tr.find("td.ANTAMOR").text().replace('$', '');//Anticipo amortizado
+        while (antamor.indexOf(',') > -1) {
+            antamor = antamor.replace('$', '').replace(',', '');
+        }
+        t_antamor = t_antamor + parseFloat(antamor);//realizo la sumatoria
+        var toant = tr.find("td.TOANT").text().replace('$', '');//Anticipo total
+        while (toant.indexOf(',') > -1) {
+            toant = toant.replace('$', '').replace(',', '');
+        }
+        t_toant = t_toant + parseFloat(toant);//realizo la sumatoria
+        var antxamor = tr.find("td.AntXAMOR").text().replace('$', '');//Anticipo por amortizar
+        if (antxamor == "") {//si esta vacia darle un 0 x default
+            antxamor = "0";
+        }
+        while (antxamor.indexOf(',') > -1) {
+            antxamor = antxamor.replace('$', '').replace(',', '');
+        }
+        t_antxamor = t_antxamor + parseFloat(antxamor);
+    });
+    //pinto los datos
+    $("#totalAA").text(toShow(t_antamor));
+    $("#totalAnt").text(toShow(t_toant));
+    $("#totalAntxAm").text(toShow(t_antxamor));
+}
+//lejgg 29-12-2018------------------------------------------T
+
 function convertI(i) {
     return typeof i === 'string' ?
         i.replace(/[\$,]/g, '') * 1 :
@@ -1069,37 +1128,3 @@ function datosCadena(nDoc) {
         async: false
     });
 }
-
-//lejgg 26-12-2018
-function updateTotalesOC2() {
-    var t_antamor = 0;
-    var t_toant = 0;
-    var t_antxamor = 0;
-    $("#tableOC2 > tbody > tr[role = 'row']").each(function (index) {
-        var _this = $(this);
-        var tr = $(this).closest('tr'); //Obtener el row 
-        var antamor = tr.find("td.ANTAMOR").text().replace('$', '');//Anticipo amortizado
-        while (antamor.indexOf(',') > -1) {
-            antamor = antamor.replace('$', '').replace(',', '');
-        }
-        t_antamor = t_antamor + parseFloat(antamor);//realizo la sumatoria
-        var toant = tr.find("td.TOANT").text().replace('$', '');//Anticipo total
-        while (toant.indexOf(',') > -1) {
-            toant = toant.replace('$', '').replace(',', '');
-        }
-        t_toant = t_toant + parseFloat(toant);//realizo la sumatoria
-        var antxamor = tr.find("td.AntXAMOR input").val().replace('$', '');//Anticipo por amortizar
-        if (antxamor == "") {//si esta vacia darle un 0 x default
-            antxamor = "0";
-        }
-        while (antxamor.indexOf(',') > -1) {
-            antxamor = antxamor.replace('$', '').replace(',', '');
-        }
-        t_antxamor = t_antxamor + parseFloat(antxamor);
-    });
-    //pinto los datos
-    $("#totalAA").text(toShow(t_antamor));
-    $("#totalAnt").text(toShow(t_toant));
-    $("#totalAntxAm").text(toShow(t_antxamor));
-}
-//lejgg 26-12-2018

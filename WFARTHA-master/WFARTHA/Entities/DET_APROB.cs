@@ -18,5 +18,8 @@ namespace WFARTHA.Entities
         public string ID_SOCIEDAD { get; set; }
         public string ID_USUARIO { get; set; }
         public int STEP_FASE { get; set; }
+    
+        public virtual SOCIEDAD SOCIEDAD { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
     }
 }

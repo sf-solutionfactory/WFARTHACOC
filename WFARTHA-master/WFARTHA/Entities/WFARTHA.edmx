@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -1514,6 +1514,54 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DET_APROB_SOCIEDAD">
+          <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+          <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOCIEDAD">
+              <PropertyRef Name="BUKRS" />
+            </Principal>
+            <Dependent Role="DET_APROB">
+              <PropertyRef Name="ID_SOCIEDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_APROB">
+              <PropertyRef Name="ID_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB0_SOCIEDAD">
+          <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+          <End Role="DET_APROB0" Type="Self.DET_APROB0" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOCIEDAD">
+              <PropertyRef Name="BUKRS" />
+            </Principal>
+            <Dependent Role="DET_APROB0">
+              <PropertyRef Name="ID_SOCIEDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB0_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DET_APROB0" Type="Self.DET_APROB0" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_APROB0">
+              <PropertyRef Name="ID_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DET_PROVEEDOR_PROYECTO">
           <End Role="PROVEEDOR" Type="Self.PROVEEDOR" Multiplicity="1" />
           <End Role="DET_PROVEEDOR" Type="Self.DET_PROVEEDOR" Multiplicity="*" />
@@ -2417,6 +2465,10 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
         <Function Name="SP_CABECERA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NUM_DOC" Type="numeric" Mode="In" />
         </Function>
+        <Function Name="SP_DELETE_DET_PROYECTO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BUKRS" Type="nchar" Mode="In" />
+          <Parameter Name="PSPNR" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SP_DETALLE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NUM_DOC" Type="numeric" Mode="In" />
         </Function>
@@ -2730,6 +2782,22 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
           </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB_SOCIEDAD" Association="Self.FK_DET_APROB_SOCIEDAD">
+            <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+            <End Role="DET_APROB" EntitySet="DET_APROB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB_USUARIO" Association="Self.FK_DET_APROB_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="DET_APROB" EntitySet="DET_APROB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB0_SOCIEDAD" Association="Self.FK_DET_APROB0_SOCIEDAD">
+            <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+            <End Role="DET_APROB0" EntitySet="DET_APROB0" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB0_USUARIO" Association="Self.FK_DET_APROB0_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="DET_APROB0" EntitySet="DET_APROB0" />
+          </AssociationSet>
           <AssociationSet Name="FK_DET_PROVEEDOR_PROYECTO" Association="Self.FK_DET_PROVEEDOR_PROYECTO">
             <End Role="PROVEEDOR" EntitySet="PROVEEDOR" />
             <End Role="DET_PROVEEDOR" EntitySet="DET_PROVEEDOR" />
@@ -3023,7 +3091,8 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WFARTHAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3235,6 +3304,8 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Name="ID_SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ID_USUARIO" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="STEP_FASE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="DET_APROB" ToRole="SOCIEDAD" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_DET_APROB_USUARIO" FromRole="DET_APROB" ToRole="USUARIO" />
         </EntityType>
         <EntityType Name="DET_APROB0">
           <Key>
@@ -3246,6 +3317,8 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Name="ID_SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ID_USUARIO" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="STEP_FASE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_APROB0_SOCIEDAD" FromRole="DET_APROB0" ToRole="SOCIEDAD" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_DET_APROB0_USUARIO" FromRole="DET_APROB0" ToRole="USUARIO" />
         </EntityType>
         <EntityType Name="DET_K">
           <Key>
@@ -3385,6 +3458,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Name="DPPCT" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="TOAD" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="ANTR" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="CUENTA_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="AMOR_ANT1" Relationship="Self.FK_AMOR_ANT_DOCUMENTO" FromRole="DOCUMENTO" ToRole="AMOR_ANT" />
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DOCUMENTO_SOCIEDAD" FromRole="DOCUMENTO" ToRole="SOCIEDAD" />
           <NavigationProperty Name="TSOL" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="DOCUMENTO" ToRole="TSOL" />
@@ -3397,7 +3471,6 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <NavigationProperty Name="DOCUMENTOUUIDs" Relationship="Self.FK_DOCUMENTOUUID_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOUUID" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
           <NavigationProperty Name="FOROes" Relationship="Self.FK_FORO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FORO" />
-          <Property Name="CUENTA_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -4053,6 +4126,8 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
           <Property Name="REGION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="STCD1" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_APROB" />
+          <NavigationProperty Name="DET_APROB0" Relationship="Self.FK_DET_APROB0_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_APROB0" />
           <NavigationProperty Name="DET_PROVEEDOR" Relationship="Self.FK_DET_PROVEEDOR_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_PROVEEDOR" />
           <NavigationProperty Name="DET_SOCIEDAD" Relationship="Self.FK_DET_SOCIEDAD_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_SOCIEDAD" />
           <NavigationProperty Name="DET_TIPOPRESUPUESTO" Relationship="Self.FK_DET_TIPOPRESUPUESTO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_TIPOPRESUPUESTO" />
@@ -4141,12 +4216,12 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Name="DEFAULT" Type="Boolean" />
           <Property Name="TIPO_DOCFILE" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <Property Name="FACTURA" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DET_TIPODOC" Relationship="Self.FK_DET_TIPODOC_TSOL" FromRole="TSOL" ToRole="DET_TIPODOC" />
           <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
           <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
           <NavigationProperty Name="WORKFHs" Relationship="Self.FK_WORKFP_TSOL" FromRole="TSOL" ToRole="WORKFH" />
-          <Property Name="FACTURA" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -4201,6 +4276,8 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <NavigationProperty Name="DELEGARs1" Relationship="Self.FK_DELEGAR_USUARIO1" FromRole="USUARIO" ToRole="DELEGAR" />
           <NavigationProperty Name="DET_AGENTEC" Relationship="Self.FK_DET_AGENTEC_USUARIO" FromRole="USUARIO" ToRole="DET_AGENTEC" />
           <NavigationProperty Name="DET_AGENTEC1" Relationship="Self.FK_DET_AGENTEC_USUARIO1" FromRole="USUARIO" ToRole="DET_AGENTEC" />
+          <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_USUARIO" FromRole="USUARIO" ToRole="DET_APROB" />
+          <NavigationProperty Name="DET_APROB0" Relationship="Self.FK_DET_APROB0_USUARIO" FromRole="USUARIO" ToRole="DET_APROB0" />
           <NavigationProperty Name="DET_SOCIEDAD" Relationship="Self.FK_DET_SOCIEDAD_USUARIO" FromRole="USUARIO" ToRole="DET_SOCIEDAD" />
           <NavigationProperty Name="DET_TIPOPRESUPUESTO" Relationship="Self.FK_DET_TIPOPRESUPUESTO_USUARIO" FromRole="USUARIO" ToRole="DET_TIPOPRESUPUESTO" />
           <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_USUARIO" FromRole="USUARIO" ToRole="DOCUMENTO" />
@@ -4697,6 +4774,54 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             </Principal>
             <Dependent Role="DET_AGENTEC">
               <PropertyRef Name="USUARIOA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB_SOCIEDAD">
+          <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+          <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOCIEDAD">
+              <PropertyRef Name="BUKRS" />
+            </Principal>
+            <Dependent Role="DET_APROB">
+              <PropertyRef Name="ID_SOCIEDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_APROB">
+              <PropertyRef Name="ID_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB0_SOCIEDAD">
+          <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+          <End Role="DET_APROB0" Type="Self.DET_APROB0" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOCIEDAD">
+              <PropertyRef Name="BUKRS" />
+            </Principal>
+            <Dependent Role="DET_APROB0">
+              <PropertyRef Name="ID_SOCIEDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_APROB0_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DET_APROB0" Type="Self.DET_APROB0" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_APROB0">
+              <PropertyRef Name="ID_USUARIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5677,6 +5802,22 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="USUARIO" EntitySet="USUARIOs" />
             <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
           </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB_SOCIEDAD" Association="Self.FK_DET_APROB_SOCIEDAD">
+            <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+            <End Role="DET_APROB" EntitySet="DET_APROB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB_USUARIO" Association="Self.FK_DET_APROB_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="DET_APROB" EntitySet="DET_APROB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB0_SOCIEDAD" Association="Self.FK_DET_APROB0_SOCIEDAD">
+            <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+            <End Role="DET_APROB0" EntitySet="DET_APROB0" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_APROB0_USUARIO" Association="Self.FK_DET_APROB0_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="DET_APROB0" EntitySet="DET_APROB0" />
+          </AssociationSet>
           <AssociationSet Name="FK_DET_PROVEEDOR_PROYECTO" Association="Self.FK_DET_PROVEEDOR_PROYECTO">
             <End Role="PROVEEDOR" EntitySet="PROVEEDORs" />
             <End Role="DET_PROVEEDOR" EntitySet="DET_PROVEEDOR" />
@@ -5950,13 +6091,17 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
           </AssociationSet>
           <FunctionImport Name="SP_CABECERA" ReturnType="Collection(WFARTHAModel.SP_CABECERA_Result)">
-          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="SP_DELETE_DET_PROYECTO">
+            <Parameter Name="BUKRS" Mode="In" Type="String" />
+            <Parameter Name="PSPNR" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_DETALLE" ReturnType="Collection(WFARTHAModel.SP_DETALLE_Result)">
-          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
-          <FunctionImport Name="SP_FIRMAS">
-          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <FunctionImport Name="SP_FIRMAS" ReturnType="Collection(WFARTHAModel.SP_FIRMAS_Result)">
+            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_REPORTESOLS">
             <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
@@ -6010,6 +6155,18 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <Property Type="Decimal" Name="MONTO" Nullable="true" Precision="18" Scale="5" />
           <Property Type="Decimal" Name="TOTAL" Nullable="true" Precision="18" Scale="5" />
           <Property Type="String" Name="TEXTO" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_FIRMAS_Result">
+          <Property Type="Int32" Name="fasen" Nullable="true" />
+          <Property Type="Decimal" Name="num_doc" Nullable="true" Precision="10" Scale="0" />
+          <Property Type="String" Name="faseletrero" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="loop" Nullable="true" />
+          <Property Type="String" Name="usuariocadena" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="usuarioa_id" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="usuariod_id" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="estatus" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="fechac" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="fecham" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6276,7 +6433,6 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <EntitySetMapping Name="DOCUMENTOes">
             <EntityTypeMapping TypeName="WFARTHAModel.DOCUMENTO">
               <MappingFragment StoreEntitySet="DOCUMENTO">
-                <ScalarProperty Name="CUENTA_ID" ColumnName="CUENTA_ID" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="NUM_PRE" ColumnName="NUM_PRE" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
@@ -6348,6 +6504,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
                 <ScalarProperty Name="DPPCT" ColumnName="DPPCT" />
                 <ScalarProperty Name="TOAD" ColumnName="TOAD" />
                 <ScalarProperty Name="ANTR" ColumnName="ANTR" />
+                <ScalarProperty Name="CUENTA_ID" ColumnName="CUENTA_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6989,7 +7146,6 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="WFARTHAModel.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
-                <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="RANGO_ID" ColumnName="RANGO_ID" />
@@ -6998,6 +7154,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
                 <ScalarProperty Name="DEFAULT" ColumnName="DEFAULT" />
                 <ScalarProperty Name="TIPO_DOCFILE" ColumnName="TIPO_DOCFILE" />
                 <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7365,6 +7522,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_DELETE_DET_PROYECTO" FunctionName="WFARTHAModel.Store.SP_DELETE_DET_PROYECTO" />
           <FunctionImportMapping FunctionImportName="SP_DETALLE" FunctionName="WFARTHAModel.Store.SP_DETALLE">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WFARTHAModel.SP_DETALLE_Result">
@@ -7391,7 +7549,22 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_FIRMAS" FunctionName="WFARTHAModel.Store.SP_FIRMAS" />
+          <FunctionImportMapping FunctionImportName="SP_FIRMAS" FunctionName="WFARTHAModel.Store.SP_FIRMAS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WFARTHAModel.SP_FIRMAS_Result">
+                <ScalarProperty Name="fasen" ColumnName="fasen" />
+                <ScalarProperty Name="num_doc" ColumnName="num_doc" />
+                <ScalarProperty Name="faseletrero" ColumnName="faseletrero" />
+                <ScalarProperty Name="loop" ColumnName="loop" />
+                <ScalarProperty Name="usuariocadena" ColumnName="usuariocadena" />
+                <ScalarProperty Name="usuarioa_id" ColumnName="usuarioa_id" />
+                <ScalarProperty Name="usuariod_id" ColumnName="usuariod_id" />
+                <ScalarProperty Name="estatus" ColumnName="estatus" />
+                <ScalarProperty Name="fechac" ColumnName="fechac" />
+                <ScalarProperty Name="fecham" ColumnName="fecham" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_REPORTESOLS" FunctionName="WFARTHAModel.Store.SP_REPORTESOLS" />
         </EntityContainerMapping>
       </Mapping>
@@ -7410,7 +7583,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

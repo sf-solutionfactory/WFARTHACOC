@@ -4,103 +4,103 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e0346a5e767245cca89d4f4b25b41289" Name="Diagram1">
-        <EntityTypeShape EntityType="WFARTHAModel.ACCION" Width="1.5" PointX="17.5" PointY="31.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.AMOR_ANT" Width="1.5" PointX="22.5" PointY="41.875" IsExpanded="true" />
+      <Diagram DiagramId="a2490307d81743ec8e09ca338b99784f" Name="Diagram1">
+        <EntityTypeShape EntityType="WFARTHAModel.ACCION" Width="1.5" PointX="16.5" PointY="31" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.AMOR_ANT" Width="1.5" PointX="22.5" PointY="47.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.APPSETTING" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.BANCO" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.CAMPOS" Width="1.5" PointX="3.75" PointY="38.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.CARPETA" Width="1.5" PointX="1.5" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.CARPETAT" Width="1.5" PointX="3" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.CAMPOS" Width="1.5" PointX="3.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.CARPETA" Width="1.5" PointX="1.5" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.CARPETAT" Width="1.5" PointX="3" PointY="52" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.CECO" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.CLAVES_CONTA" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.CONCEPTO" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.CONDICIONES_PAGO" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.CONMAIL" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DELEGAR" Width="1.5" PointX="11.25" PointY="40.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTEC" Width="1.5" PointX="11.25" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DELEGAR" Width="1.5" PointX="11.25" PointY="43.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTEC" Width="1.5" PointX="11.25" PointY="47" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECA" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECC" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB0" Width="1.5" PointX="4.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_K" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_PEP" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_PROVEEDOR" Width="1.5" PointX="14.25" PointY="30.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_SOCIEDAD" Width="1.5" PointX="14.25" PointY="42.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPODOC" Width="1.5" PointX="11.25" PointY="53.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPOPRESUPUESTO" Width="1.5" PointX="14.25" PointY="39.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTO" Width="1.5" PointX="17.25" PointY="35.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOA" Width="1.5" PointX="27.75" PointY="42" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOA1" Width="1.5" PointX="19.5" PointY="40" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOCOC" Width="1.5" PointX="27.75" PointY="46.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOLOG" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOP" Width="1.5" PointX="25.5" PointY="41.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOPRE" Width="1.5" PointX="19.5" PointY="43.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOR" Width="1.5" PointX="19.5" PointY="51.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTORP" Width="1.5" PointX="30.75" PointY="42.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOSAP" Width="1.5" PointX="19.5" PointY="55.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOUUID" Width="1.5" PointX="19.5" PointY="59.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKBE" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKBE_DUMMY" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKKO" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKKO_DUMMY" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKPO" Width="1.5" PointX="20.25" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.EKPO_DUMMY" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.ESTATUS_PAGO" Width="1.5" PointX="10.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.FLUJO" Width="1.5" PointX="22" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.FORMATO" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.FORO" Width="1.5" PointX="22.5" PointY="47.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.FOROD" Width="1.5" PointX="24.75" PointY="47.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.IMPUESTO" Width="1.5" PointX="23.25" PointY="51.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.IMPUESTOT" Width="1.5" PointX="3" PointY="45.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.MIEMBRO" Width="1.5" PointX="14.25" PointY="45.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.MONEDA" Width="1.5" PointX="9.75" PointY="28.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PAGINA" Width="1.5" PointX="1.5" PointY="38.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PAGINAT" Width="1.5" PointX="3.75" PointY="35.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PERMISO_PAGINA" Width="1.5" PointX="3.75" PointY="32.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.POSICION" Width="1.5" PointX="6.75" PointY="54.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PROVEEDOR" Width="1.5" PointX="12" PointY="20" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PROVEEDOR_BANCO" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PROYECTO" Width="1.5" PointX="9.75" PointY="32.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PUESTO" Width="1.5" PointX="6.75" PointY="42.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PUESTOT" Width="1.5" PointX="3" PointY="51.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.RAMA_PEP" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.RANGO" Width="1.5" PointX="6.75" PointY="36.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.RETENCION" Width="1.5" PointX="28.5" PointY="38.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.RETENCION_PROV" Width="1.5" PointX="30.75" PointY="34" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.RETENCIONT" Width="1.5" PointX="6" PointY="48.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.ROL" Width="1.5" PointX="12" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.ROLT" Width="1.5" PointX="14.25" PointY="50.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.SOCIEDAD" Width="1.5" PointX="12" PointY="29" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.SPRA" Width="1.5" PointX="0.75" PointY="48" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TCAMBIO" Width="1.5" PointX="12" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TEXTO" Width="1.5" PointX="6" PointY="45.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TIPOPRESUPUESTO" Width="1.5" PointX="12" PointY="47.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TIPOPRESUPUESTOT" Width="1.5" PointX="6" PointY="51.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TSOL" Width="1.5" PointX="9" PointY="36" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TSOLT" Width="1.5" PointX="11.25" PointY="55.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TSOPORTE" Width="1.5" PointX="0.75" PointY="42.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.TSOPORTET" Width="1.5" PointX="3" PointY="42.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.USUARIO" Width="1.5" PointX="9" PointY="40.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WARNING" Width="1.5" PointX="9" PointY="48.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WORKFH" Width="1.5" PointX="11.25" PointY="36.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WORKFP" Width="1.5" PointX="19.75" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WORKFT" Width="1.5" PointX="19.75" PointY="47.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WORKFV" Width="1.5" PointX="13.5" PointY="35.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.IIMPUESTO" Width="1.5" PointX="25.5" PointY="51.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.ASIGN_PROY_SOC" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.CARPETAV" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECAV" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECCV" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB0V" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_APROBV" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_PROVEEDORV" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_PROYECTO_DEC_V" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_PROYECTOV" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPOPRESUPUESTOV" Width="1.5" PointX="14.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOV" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.PAGINAV" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFARTHAModel.WARNINGV" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB" Width="1.5" PointX="14.25" PointY="45.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB0" Width="1.5" PointX="14.25" PointY="42.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_K" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_PEP" Width="1.5" PointX="4.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_PROVEEDOR" Width="1.5" PointX="11.25" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_SOCIEDAD" Width="1.5" PointX="14.25" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPODOC" Width="1.5" PointX="14.25" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPOPRESUPUESTO" Width="1.5" PointX="11.25" PointY="40.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTO" Width="1.5" PointX="17.25" PointY="38.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOA" Width="1.5" PointX="26.75" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOA1" Width="1.5" PointX="19.5" PointY="43.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOCOC" Width="1.5" PointX="26.75" PointY="45.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOLOG" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOP" Width="1.5" PointX="24.5" PointY="40.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOPRE" Width="1.5" PointX="19.5" PointY="46.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOR" Width="1.5" PointX="19.5" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTORP" Width="1.5" PointX="29.75" PointY="41.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOSAP" Width="1.5" PointX="19.5" PointY="58.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOUUID" Width="1.5" PointX="19.5" PointY="63" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKBE" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKBE_DUMMY" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKKO" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKKO_DUMMY" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKPO" Width="1.5" PointX="20.25" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.EKPO_DUMMY" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.ESTATUS_PAGO" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.FLUJO" Width="1.5" PointX="21" PointY="36.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.FORMATO" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.FORO" Width="1.5" PointX="19.5" PointY="49.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.FOROD" Width="1.5" PointX="24.75" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.IMPUESTO" Width="1.5" PointX="22.25" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.IMPUESTOT" Width="1.5" PointX="3" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.MIEMBRO" Width="1.5" PointX="11.25" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.MONEDA" Width="1.5" PointX="6.75" PointY="29.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PAGINA" Width="1.5" PointX="1.5" PointY="41.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PAGINAT" Width="1.5" PointX="3.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PERMISO_PAGINA" Width="1.5" PointX="3.75" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.POSICION" Width="1.5" PointX="6.75" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PROVEEDOR" Width="1.5" PointX="9" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PROVEEDOR_BANCO" Width="1.5" PointX="4.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PROYECTO" Width="1.5" PointX="6.75" PointY="33.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PUESTO" Width="1.5" PointX="6.75" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PUESTOT" Width="1.5" PointX="3" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.RAMA_PEP" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.RANGO" Width="1.5" PointX="9.75" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.RETENCION" Width="1.5" PointX="27.5" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.RETENCION_PROV" Width="1.5" PointX="29.75" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.RETENCIONT" Width="1.5" PointX="6" PointY="51.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.ROL" Width="1.5" PointX="9" PointY="55.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.ROLT" Width="1.5" PointX="11.25" PointY="56" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.SOCIEDAD" Width="1.5" PointX="9" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.SPRA" Width="1.5" PointX="0.75" PointY="51.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TCAMBIO" Width="1.5" PointX="9" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TEXTO" Width="1.5" PointX="6" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TIPOPRESUPUESTO" Width="1.5" PointX="9" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TIPOPRESUPUESTOT" Width="1.5" PointX="6" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TSOL" Width="1.5" PointX="12" PointY="36.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TSOLT" Width="1.5" PointX="14.25" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TSOPORTE" Width="1.5" PointX="0.75" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.TSOPORTET" Width="1.5" PointX="3" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.USUARIO" Width="1.5" PointX="9" PointY="43.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WARNING" Width="1.5" PointX="9" PointY="51.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WORKFH" Width="1.5" PointX="14.25" PointY="38.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WORKFP" Width="1.5" PointX="18.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WORKFT" Width="1.5" PointX="21.75" PointY="43.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WORKFV" Width="1.5" PointX="16.5" PointY="34.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.IIMPUESTO" Width="1.5" PointX="24.5" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.ASIGN_PROY_SOC" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.CARPETAV" Width="1.5" PointX="12.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECAV" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_AGENTECCV" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_APROB0V" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_APROBV" Width="1.5" PointX="10.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_PROVEEDORV" Width="1.5" PointX="12.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_PROYECTO_DEC_V" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_PROYECTOV" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DET_TIPOPRESUPUESTOV" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.DOCUMENTOV" Width="1.5" PointX="14.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.PAGINAV" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFARTHAModel.WARNINGV" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="WFARTHAModel.FK_WORKFP_ACCION" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_AMOR_ANT_DOCUMENTO" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_AMOR_ANT_EKPO" ManuallyRouted="false" />
@@ -114,6 +114,10 @@
         <AssociationConnector Association="WFARTHAModel.FK_DELEGAR_USUARIO1" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_DET_AGENTEC_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_DET_AGENTEC_USUARIO1" ManuallyRouted="false" />
+        <AssociationConnector Association="WFARTHAModel.FK_DET_APROB_SOCIEDAD" ManuallyRouted="false" />
+        <AssociationConnector Association="WFARTHAModel.FK_DET_APROB_USUARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="WFARTHAModel.FK_DET_APROB0_SOCIEDAD" ManuallyRouted="false" />
+        <AssociationConnector Association="WFARTHAModel.FK_DET_APROB0_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_DET_PROVEEDOR_PROYECTO" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_DET_PROVEEDOR_SOCIEDAD" ManuallyRouted="false" />
         <AssociationConnector Association="WFARTHAModel.FK_DET_SOCIEDAD_SOCIEDAD" ManuallyRouted="false" />

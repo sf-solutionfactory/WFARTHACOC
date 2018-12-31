@@ -7,7 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
 //FRT 12122018 para poder mostra listado de sociedad y tipo de usuario
 using System;
 using System.Collections.Generic;
@@ -27,10 +26,9 @@ namespace WFARTHA.Entities
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class USUARIO
     {
-
         //FRT 12122018 para poder mostra listado de sociedad y tipo de usuario
         [DataType(DataType.Text)]
         [DisplayName("Users")]
@@ -39,7 +37,6 @@ namespace WFARTHA.Entities
         public List<SelectListItem> SociedadLista { get; set; }
         //ENDFRT 12122018 para poder mostra listado de sociedad y tipo de usuario
 
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public USUARIO()
         {
@@ -47,6 +44,8 @@ namespace WFARTHA.Entities
             this.DELEGARs1 = new HashSet<DELEGAR>();
             this.DET_AGENTEC = new HashSet<DET_AGENTEC>();
             this.DET_AGENTEC1 = new HashSet<DET_AGENTEC>();
+            this.DET_APROB = new HashSet<DET_APROB>();
+            this.DET_APROB0 = new HashSet<DET_APROB0>();
             this.DET_SOCIEDAD = new HashSet<DET_SOCIEDAD>();
             this.DET_TIPOPRESUPUESTO = new HashSet<DET_TIPOPRESUPUESTO>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
@@ -93,6 +92,7 @@ namespace WFARTHA.Entities
                 });
             }
             //ENDFRT 12122018 para poder mostra listado de sociedad y tipo de usuario
+
         }
 
         public string ID { get; set; }
@@ -119,6 +119,10 @@ namespace WFARTHA.Entities
         public virtual ICollection<DET_AGENTEC> DET_AGENTEC { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_AGENTEC> DET_AGENTEC1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB> DET_APROB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB0> DET_APROB0 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_SOCIEDAD> DET_SOCIEDAD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

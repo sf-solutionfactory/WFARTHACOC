@@ -375,8 +375,9 @@ $(document).ready(function () {
         val3 = val3.replace(/\=/g, "\" : \"");
         val3 = val3.replace(/\ /g, "");
         var jsval = $.parseJSON(val3);
+        var band = isFactura(jsval[0].ID);
         var addedRowInfo = "";
-        if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+        if (!band) { //lejgg 27-12-2018
             addedRowInfo = addRowInfo(t, _numrow, "", "", "", "", "", "D", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");//Lej 13.09.2018 //MGC 03-10-2018 solicitud con orden de compra       
         }
         else {
@@ -680,7 +681,7 @@ $(document).ready(function () {
                                 _asnull = true;
                                 msgerror = "";
                                 break;
-                                
+
                             } else {
                                 _b = false;
                                 _asnull = false;
@@ -904,7 +905,7 @@ $(document).ready(function () {
                     }
                 }
 
-                
+
                 if (_rm) {
                     if (_ct) {
                         if (_cf) {
@@ -955,7 +956,7 @@ $(document).ready(function () {
                     statSend = false;
                     M.toast({ html: msgerror });
                 }
-                
+
                 //frt28122018 Se agregan para validaciones-------------------------<<
 
 
@@ -2677,7 +2678,8 @@ function obtenerRetenciones(flag) {
         val3 = val3.replace(/\=/g, "\" : \"");
         val3 = val3.replace(/\ /g, "");
         var jsval = $.parseJSON(val3);
-        if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+        var band = isFactura(jsval[0].ID);
+        if (!band) { //lejgg 27-12-2018
             arrCols = [
                 {
                     "className": 'select_row',
@@ -3413,7 +3415,8 @@ $('body').on('focusout', '#NO_FACTURA', function (e) {
     val3 = val3.replace(/\=/g, "\" : \"");
     val3 = val3.replace(/\ /g, "");
     var jsval = $.parseJSON(val3);
-    if (jsval[0].ID !== "SRE") { //LEJGG 29-12-2018
+    var band = isFactura(jsval[0].ID);
+    if (band) { //LEJGG 29-12-2018
         //si son diferentes clavar el valor de factura en el campo oculto
         //primero reviso si la tabla esta o no vacia
         var t = $('#table_info').DataTable();
@@ -4305,7 +4308,8 @@ function copiarTableInfoControl() {
             val3 = val3.replace(/\=/g, "\" : \"");
             val3 = val3.replace(/\ /g, "");
             var jsval = $.parseJSON(val3);
-            if (jsval[0].ID === "SRE") { //lejgg 27-12-2018
+            var band = isFactura(jsval[0].ID);
+            if (!band) { //lejgg 27-12-2018
                 factura = $(this).find("td.FACTURA input").val();
             } else {
                 factura = t.row(indexopc).data()[9];

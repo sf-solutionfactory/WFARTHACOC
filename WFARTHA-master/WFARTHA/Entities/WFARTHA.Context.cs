@@ -133,6 +133,19 @@ namespace WFARTHA.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_CABECERA_Result>("SP_CABECERA", nUM_DOCParameter);
         }
     
+        public virtual int SP_DELETE_DET_PROYECTO(string bUKRS, string pSPNR)
+        {
+            var bUKRSParameter = bUKRS != null ?
+                new ObjectParameter("BUKRS", bUKRS) :
+                new ObjectParameter("BUKRS", typeof(string));
+    
+            var pSPNRParameter = pSPNR != null ?
+                new ObjectParameter("PSPNR", pSPNR) :
+                new ObjectParameter("PSPNR", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_DET_PROYECTO", bUKRSParameter, pSPNRParameter);
+        }
+    
         public virtual ObjectResult<SP_DETALLE_Result> SP_DETALLE(Nullable<decimal> nUM_DOC)
         {
             var nUM_DOCParameter = nUM_DOC.HasValue ?
@@ -142,13 +155,13 @@ namespace WFARTHA.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_DETALLE_Result>("SP_DETALLE", nUM_DOCParameter);
         }
     
-        public virtual int SP_FIRMAS(Nullable<decimal> nUM_DOC)
+        public virtual ObjectResult<SP_FIRMAS_Result> SP_FIRMAS(Nullable<decimal> nUM_DOC)
         {
             var nUM_DOCParameter = nUM_DOC.HasValue ?
                 new ObjectParameter("NUM_DOC", nUM_DOC) :
                 new ObjectParameter("NUM_DOC", typeof(decimal));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_FIRMAS", nUM_DOCParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_FIRMAS_Result>("SP_FIRMAS", nUM_DOCParameter);
         }
     
         public virtual int SP_REPORTESOLS(Nullable<decimal> nUM_DOC, string bUKRS, string uSER, Nullable<int> num)

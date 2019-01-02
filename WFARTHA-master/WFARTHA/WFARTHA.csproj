@@ -469,6 +469,9 @@
     <Compile Include="Entities\SP_DETALLE_Result.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\SP_FIRMAS_Result.cs">
+      <DependentUpon>WFARTHA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TCAMBIO.cs">
       <DependentUpon>WFARTHA.tt</DependentUpon>
     </Compile>

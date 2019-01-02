@@ -4,9 +4,7 @@ var firmaVal = "";
 $(document).ready(function () {
     //--LEJGG 16-12-2018
     $('#table_infoP').DataTable({
-
         language: {
-            //"url": "../Scripts/lang/@Session["spras"].ToString()" + ".json"
             "url": "../Scripts/lang/ES.json"
         },
         "paging": false,
@@ -467,7 +465,7 @@ $(document).ready(function () {
 });
 
 $(window).on('load', function () {
-
+    obtenerCuentaPago($('#D_PAYER_ID').val());
     $('.materialize-textarea').css("height", "0px");
     //Lejgg28/11/2018
     alinearIzq();
@@ -480,8 +478,76 @@ $(window).on('load', function () {
     //var tsol = tsolVal(val3);
     mostrarTabla(val3);
     llenarCOC(val3);
-     //lejgg 12-12-2018
+    //lejgg 12-12-2018
+
+    //Lejgg-31-12-2018-------------------------I
+    //Obtener si es factura o no
+    var factura = isFactura(val3);
+
+    //Limpiar el campo de factura
+    if (factura) {
+        $('#div_factura').css("display", "inherit");
+    } else {
+        $('#div_factura').css("display", "none");
+    }
+    //Lejgg-31-12-2018-------------------------T
 });
+
+
+function isFactura(idtsol) {
+    FacturaValC = false;
+    var res = false;
+    if (idtsol != "") {
+        $.ajax({
+            type: "POST",
+            url: '../getTsolFactura',
+            dataType: "json",
+            data: { "tsol": idtsol },
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    asignarValFactura(data);
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+            },
+            async: false
+        });
+    }
+    res = FacturaValC;
+    return res;
+}
+
+function asignarValFactura(val) {
+    FacturaValC = val;
+}
+
+function obtenerCuentaPago(prov) {
+    $("#CUENTA_ID").empty();
+    if (prov != null && prov != "") {
+        $.ajax({
+            type: "POST",
+            url: '../obtenerCuentas',
+            dataType: "json",
+            data: { "prov": prov },
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    //LLenar el DropDownList
+                    var $dropdown = $("#CUENTA_ID");
+                    $.each(data, function (i, dataj) {
+                        var _val = dataj.Value;
+                        $dropdown.append($("<option />").val(_val).text(dataj.Text));
+                    }); //Fin de for
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+            },
+            async: false
+        });
+        var eleml = document.getElementById('CUENTA_ID');
+        var instance = M.Select.init(eleml, []);
+    }
+}
 
 //LEJGG 12-12-2018
 function mostrarTabla(ban) {
@@ -524,112 +590,226 @@ function alinearIzq() {
 }
 
 function formatoTabla() {
-    var colsArray = [
-        {//MGC 30-10-2018 Tipo de presupuesto
-            "className": 'select_row',
-            "data": null,
-            "defaultContent": '',
-            "orderable": false,
-            "visible": false //MGC 30-10-2018 Tipo de presupuesto
-        },//MGC 30-10-2018 Tipo de presupuesto
-        {
-            "name": 'Fila',
-            "className": 'POS',
-            "orderable": false
-        },
-        {
-            "name": 'A1',
-            "className": 'NumAnexo',
-            "orderable": false
-        },
-        {
-            "name": 'A2',
-            "className": 'NumAnexo2',
-            "orderable": false
-        },
-        {
-            "name": 'A3',
-            "className": 'NumAnexo3',
-            "orderable": false
-        },
-        {
-            "name": 'A4',
-            "className": 'NumAnexo4',
-            "orderable": false
-        },
-        {
-            "name": 'A5',
-            "className": 'NumAnexo5',
-            "orderable": false
-        },
-        {
-            "name": 'TXTPOS',
-            "className": 'TXTPOS',
-            "orderable": false
-        },
-        {
-            "name": 'CA',
-            "className": 'CA',
-            "orderable": false,
-            "visible": false
-        },
-        {
-            "name": 'FACTURA',
-            "className": 'FACTURA',
-            "orderable": false
-        },
-        {
-            "name": 'TCONCEPTO',
-            "className": 'TCONCEPTO',
-            "orderable": false,
-            "visible": false//MGC 22-10-2018 Etiquetas
-        },
-        {
-            "name": 'CONCEPTO',
-            "className": 'GRUPO',
-            "orderable": false
-        },
-        {
-            "name": 'CUENTA',
-            "className": 'CUENTA',
-            "orderable": false,
-            "visible": false//lej 11.09.2018
-        },
-        {
-            "name": 'CUENTANOM',
-            "className": 'CUENTANOM',
-            "orderable": false,
-            "visible": false//lej 11.09.2018
-        },
-        {
-            "name": 'TIPOIMP',
-            "className": 'TIPOIMP',
-            "orderable": false,
-            "visible": false//MGC 22-10-2018 Etiquetas
-        },
-        {
-            "name": 'IMPUTACION',
-            "className": 'IMPUTACION',
-            "orderable": false,
-            "visible": false//lej 11.09.2018
-        },
-        {
-            "name": 'CCOSTO',
-            "className": 'CCOSTO',
-            "orderable": false
+    var val3 = $('#TSOL_ID').val();
+    var colsArray = [];
+    var band = isFactura(val3);
+    if (!band) {
+        colsArray = [
+            {//MGC 30-10-2018 Tipo de presupuesto
+                "className": 'select_row',
+                "data": null,
+                "defaultContent": '',
+                "orderable": false,
+                "visible": false //MGC 30-10-2018 Tipo de presupuesto
+            },//MGC 30-10-2018 Tipo de presupuesto
+            {
+                "name": 'Fila',
+                "className": 'POS',
+                "orderable": false
+            },
+            {
+                "name": 'A1',
+                "className": 'NumAnexo',
+                "orderable": false
+            },
+            {
+                "name": 'A2',
+                "className": 'NumAnexo2',
+                "orderable": false
+            },
+            {
+                "name": 'A3',
+                "className": 'NumAnexo3',
+                "orderable": false
+            },
+            {
+                "name": 'A4',
+                "className": 'NumAnexo4',
+                "orderable": false
+            },
+            {
+                "name": 'A5',
+                "className": 'NumAnexo5',
+                "orderable": false
+            },
+            {
+                "name": 'TXTPOS',
+                "className": 'TXTPOS',
+                "orderable": false
+            },
+            {
+                "name": 'CA',
+                "className": 'CA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'FACTURA',
+                "className": 'FACTURA',
+                "orderable": false
+            },
+            {
+                "name": 'TCONCEPTO',
+                "className": 'TCONCEPTO',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'CONCEPTO',
+                "className": 'GRUPO',
+                "orderable": false
+            },
+            {
+                "name": 'CUENTA',
+                "className": 'CUENTA',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CUENTANOM',
+                "className": 'CUENTANOM',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'TIPOIMP',
+                "className": 'TIPOIMP',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'IMPUTACION',
+                "className": 'IMPUTACION',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CCOSTO',
+                "className": 'CCOSTO',
+                "orderable": false
 
-        },
-        {
-            "name": 'MONTO',
-            "className": 'MONTO',
-            "orderable": false
-        },
-        {
-            "name": 'IVA',
-            "className": 'IVA',
-            "orderable": false
-        }
-    ];
+            },
+            {
+                "name": 'MONTO',
+                "className": 'MONTO',
+                "orderable": false
+            },
+            {
+                "name": 'IVA',
+                "className": 'IVA',
+                "orderable": false
+            }
+        ];
+    }
+    else {
+        colsArray = [
+            {//MGC 30-10-2018 Tipo de presupuesto
+                "className": 'select_row',
+                "data": null,
+                "defaultContent": '',
+                "orderable": false,
+                "visible": false //MGC 30-10-2018 Tipo de presupuesto
+            },//MGC 30-10-2018 Tipo de presupuesto
+            {
+                "name": 'Fila',
+                "className": 'POS',
+                "orderable": false
+            },
+            {
+                "name": 'A1',
+                "className": 'NumAnexo',
+                "orderable": false
+            },
+            {
+                "name": 'A2',
+                "className": 'NumAnexo2',
+                "orderable": false
+            },
+            {
+                "name": 'A3',
+                "className": 'NumAnexo3',
+                "orderable": false
+            },
+            {
+                "name": 'A4',
+                "className": 'NumAnexo4',
+                "orderable": false
+            },
+            {
+                "name": 'A5',
+                "className": 'NumAnexo5',
+                "orderable": false
+            },
+            {
+                "name": 'TXTPOS',
+                "className": 'TXTPOS',
+                "orderable": false
+            },
+            {
+                "name": 'CA',
+                "className": 'CA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'FACTURA',
+                "className": 'FACTURA',
+                "orderable": false,
+                "visible": false
+            },
+            {
+                "name": 'TCONCEPTO',
+                "className": 'TCONCEPTO',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'CONCEPTO',
+                "className": 'GRUPO',
+                "orderable": false
+            },
+            {
+                "name": 'CUENTA',
+                "className": 'CUENTA',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CUENTANOM',
+                "className": 'CUENTANOM',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'TIPOIMP',
+                "className": 'TIPOIMP',
+                "orderable": false,
+                "visible": false//MGC 22-10-2018 Etiquetas
+            },
+            {
+                "name": 'IMPUTACION',
+                "className": 'IMPUTACION',
+                "orderable": false,
+                "visible": false//lej 11.09.2018
+            },
+            {
+                "name": 'CCOSTO',
+                "className": 'CCOSTO',
+                "orderable": false
+
+            },
+            {
+                "name": 'MONTO',
+                "className": 'MONTO',
+                "orderable": false
+            },
+            {
+                "name": 'IVA',
+                "className": 'IVA',
+                "orderable": false
+            }
+        ];
+    }
     //Variable para saber cuantos tipos de impuestos tiene
     tRet = [];
     tRet2 = [];

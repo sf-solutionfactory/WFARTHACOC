@@ -430,7 +430,7 @@
                 }
                 //MGC 17-12-2018 Reprocesar Archivo preliminar------------------------------------------->
                 //Checar si ESTATUS = "N", ESTATUS_PRE = "E" y si el usuario creador es el usuario actual **********Creación"
-                else if ((Model.D.ESTATUS != null && Model.D.ESTATUS.Equals("N")) &&  (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E")))
+                else if ((Model.D.ESTATUS != null && Model.D.ESTATUS.Equals("N")) && (Model.D.ESTATUS_PRE != null && Model.D.ESTATUS_PRE.Equals("E")))
                 {
                     if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                     {
@@ -545,12 +545,12 @@
                                         @*//FRT 13-12-2018 Para mostrar fecha al contabilizar -------------------------------------------------->*@
                                         <div class="input-field col s2 offset-s1" style="width:auto;margin-left:0px;margin-top:0px">
                                             @*<div class="col-md-10">
-                                                <label style="display:none" id="lbl_fechaconta">Fecha de contabilizacion</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.F.FECHACON, new { htmlAttributes = new { @id = "", @style = "display: none", @class = "form-control datepicker", Value = DateTime.Now.ToShortDateString(), @type = "date" } })
-                                            </div>*@
-                                            <input type="date" name="txt_fechaconta" id="txt_fechaconta" value="" style="display:none" class="form-control datepicker"/>
+                                                    <label style="display:none" id="lbl_fechaconta">Fecha de contabilizacion</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.F.FECHACON, new { htmlAttributes = new { @id = "", @style = "display: none", @class = "form-control datepicker", Value = DateTime.Now.ToShortDateString(), @type = "date" } })
+                                                </div>*@
+                                            <input type="date" name="txt_fechaconta" id="txt_fechaconta" value="" style="display:none" class="form-control datepicker" />
                                             <label for="txt_fechaconta" id="lbl_fechaconta"></label>
 
                                         </div>
@@ -839,6 +839,25 @@
                                     <input type="hidden" id="refHd" value="@Model.D.REFERENCIA" />
                                 </div>
                             </div>
+
+                            @*//MGC 26-12-2018 Factura y cuenta de pago---------->*@
+
+                            <div class="form-group col s6">
+                                @Html.Label("Cuenta de Pago", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("CUENTA_ID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            <div id="div_factura" class="form-group col s6" style="display:none">
+                                @Html.LabelFor(model => model.D.NO_FACTURA, "Factura", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.D.NO_FACTURA, new { htmlAttributes = new { @class = "form-control", @maxlength = "30", @disabled = "disabled" } })@*LEJ 04.09.2018*@
+                                </div>
+                            </div>
+
+                            @*//MGC 26-12-2018 Factura y cuenta de pago----------<*@
+
                             <div class="form-group col s6">
                                 @Html.LabelFor(model => model.D.CONCEPTO, "Explicación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -1135,9 +1154,9 @@
                                                 {
                                                     <tr>
                                                         @*@if (colsret.Count == 0)
-                                    {
-                                        <td></td>
-                                    }*@
+                                                            {
+                                                                <td></td>
+                                                            }*@
                                                         <td></td>
                                                         <td> @Model.D.DOCUMENTOPSTR[i].POS</td>
                                                         @if (@Model.D.Anexo != null)

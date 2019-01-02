@@ -396,6 +396,7 @@ namespace WFARTHA.Controllers
             doc.ESTATUS_WF = dOCUMENTO.ESTATUS_WF;
             doc.ESTATUS_PRE = dOCUMENTO.ESTATUS_PRE;//MGC 17-12-2018 Reprocesar Archivo preliminar
             doc.USUARIOC_ID = dOCUMENTO.USUARIOC_ID;//MGC 17-12-2018 Reprocesar Archivo preliminar
+            doc.NO_FACTURA = dOCUMENTO.NO_FACTURA;//lejgg-31-12-2018
             doc.EBELN = dOCUMENTO.EBELN;//lejgg 16-12-2018
             ViewBag.ebeln = dOCUMENTO.EBELN;//lejgg 16-12-2018
             ViewBag.total = dOCUMENTO.MONTO_DOC_MD;
@@ -786,8 +787,12 @@ namespace WFARTHA.Controllers
             }
 
             ViewBag.lcadena = lcandenai;//MGC 11-12-2018 Agregar Contabilizador 0
-            //MGC 22-11-2018.2 Cadena de autorización-----------------------------------------------------------------------<
+                                        //MGC 22-11-2018.2 Cadena de autorización-----------------------------------------------------------------------<
 
+            //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+            List<PROVEEDOR_BANCO> lpb = new List<PROVEEDOR_BANCO>();
+            ViewBag.CUENTA_ID = new SelectList(lpb, "BKVID", "BKEXT");
+            //MGC 26-12-2018.4 Factura y cuenta de pago----------<
 
             // frt obtener el flujo de SAP
 
@@ -2882,6 +2887,7 @@ namespace WFARTHA.Controllers
             doc.ESTATUS_PRE = dOCUMENTO.ESTATUS_PRE;//MGC 17-12-2018 Reprocesar Archivo preliminar
             doc.USUARIOC_ID = dOCUMENTO.USUARIOC_ID;//MGC 17-12-2018 Reprocesar Archivo preliminar
             doc.EBELN = dOCUMENTO.EBELN;//lejgg 16-12-2018
+            doc.NO_FACTURA = dOCUMENTO.NO_FACTURA;//lejgg 21-12-2018
             ViewBag.ebeln = dOCUMENTO.EBELN;//lejgg 16-12-2018
             List<DOCUMENTOR> retl = new List<DOCUMENTOR>();
             List<DOCUMENTOR_MOD> retlt = new List<DOCUMENTOR_MOD>();
@@ -3009,6 +3015,11 @@ namespace WFARTHA.Controllers
 
             //ViewBag.PROVE = new SelectList(sc.PROVEEDORs, "LIFNR", "LIFNR");//MGC 25-10-2018 Modificación a la relación de proveedores-sociedad
             ViewBag.PROVE = new SelectList(detprov, "LIFNR", "LIFNR");//MGC 25-10-2018 Modificación a la relación de proveedores-sociedad
+
+            //MGC 26-12-2018.4 Factura y cuenta de pago---------->
+            List<PROVEEDOR_BANCO> lpb = new List<PROVEEDOR_BANCO>();
+            ViewBag.CUENTA_ID = new SelectList(lpb, "BKVID", "BKEXT");
+            //MGC 26-12-2018.4 Factura y cuenta de pago----------<
 
             //MGC 04092018 Conceptos
             //Obtener los valores de los impuestos

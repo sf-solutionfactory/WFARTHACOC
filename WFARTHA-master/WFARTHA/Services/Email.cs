@@ -89,7 +89,7 @@ namespace WFARTHA.Services
                         //mail.Body = result;//B20180803 MGC Correos
                         if (image == "")
                         {
-                            image = System.Web.HttpContext.Current.Server.MapPath("~/images/logo.svg");
+                            image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo.jpg");
                         }
 
                         mail.AlternateViews.Add(Mail_Body(result, image));//B20180803 MGC Correos
@@ -146,14 +146,14 @@ namespace WFARTHA.Services
 
                 //string cuerpo = string.Format("Estimado: {1} {2} {3}: {0}Las credenciales para utilizar el portal son las siguientes:{0}Usuario: {4}{0}Contraseña: {5}", Environment.NewLine, nombre,paterno, materno,id,pass);
                 string cuerpo = "Estimado: "+ nombre +" "+ paterno +" "+ materno + " \r\n Las credenciales para utilizar el portal son las siguientes:\r\nUsuario: " + id + "\r\nContraseña:" + pass + "";
-                    
 
-                    
+
+
 
                 //mail.Body = result;//B20180803 MGC Correos
 
                 var image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo.jpg");
-              
+
                 mail.AlternateViews.Add(Mail_Body_Usuario(image,cuerpo));//B20180803 MGC Correos
                 mail.IsBodyHtml = true;//B20180803 MGC Correos
 

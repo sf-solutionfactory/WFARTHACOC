@@ -215,7 +215,7 @@ namespace WFARTHA.Models
                 //MGC 08-10-2018 Obtener los datos para el correo comentar provisional
                 Email em = new Email();
                 string UrlDirectory = getURLPortal();
-                //string image = Server.MapPath("~/images/artha_logo.jpg");
+                //string image = Server.MapPath("~/images/artha_logo2.png");
                 string image = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string page = "Index";
                 try

@@ -89,7 +89,7 @@ namespace WFARTHA.Services
                         //mail.Body = result;//B20180803 MGC Correos
                         if (image == "")
                         {
-                            image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo.jpg");
+                            image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo2.png");
                         }
 
                         mail.AlternateViews.Add(Mail_Body(result, image));//B20180803 MGC Correos
@@ -152,7 +152,7 @@ namespace WFARTHA.Services
 
                 //mail.Body = result;//B20180803 MGC Correos
 
-                var image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo.jpg");
+                var image = System.Web.HttpContext.Current.Server.MapPath("~/images/artha_logo2.png");
 
                 mail.AlternateViews.Add(Mail_Body_Usuario(image,cuerpo));//B20180803 MGC Correos
                 mail.IsBodyHtml = true;//B20180803 MGC Correos

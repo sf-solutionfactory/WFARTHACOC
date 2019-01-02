@@ -14,7 +14,7 @@ using WFARTHA.Entities;
 using WFARTHA.Models;
 using WFARTHA.Services;
 
-namespace TAT001.Controllers.Catalogos
+namespace WFARTHA.Controllers.Catalogos
 {
     [Authorize]
     public class ConmailController : Controller

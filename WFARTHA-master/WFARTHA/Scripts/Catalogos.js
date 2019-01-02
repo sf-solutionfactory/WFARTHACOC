@@ -129,4 +129,152 @@
         }
 
     });
+
+
+    $('#btn_guardarhcc').on('click', function () {
+        var usuarioc = $("#AGENTE_SIG").val();
+
+        var _usuariocnull = true;
+
+
+
+        if (usuarioc == null || usuarioc == "") {
+            _usuariocnull = false;
+            msgerror = "Debes seleccionar agente";
+        }
+
+        if (_usuariocnull) {
+            $('#btn_guardarcc').trigger("click");
+        } else {
+            M.toast({ html: msgerror });
+        }
+
+    });
+
+
+    $('#btn_guardarhca').on('click', function () {
+        var usuarioc = $("#USUARIOC_ID").val();
+        var usuarioa = $("#USUARIOA_ID").val();
+        var ruta = $("#ID_RUTA_AGENTE").val();
+
+        var _usuariocnull = true;
+        var _usuarioanulli = true;
+        var _rutanull = true;
+
+
+        if (usuarioc == null || usuarioc == "") {
+            _usuariocnull = false;
+            msgerror = "Debes seleccionar usuario creador";
+        } else {
+            if (usuarioa == null || usuarioa == "") {
+                _usuarioanulli = false;
+                msgerror = "Debes seleccionar agente";
+            } else {
+                if (ruta == null || ruta == "") {
+                    _rutanull = false;
+                    msgerror = "La ruta es obligatoria";
+                }
+            }
+        }
+
+        if (_usuariocnull) {
+            if (_usuarioanulli) {
+                if (_rutanull) {
+                    $('#btn_guardarca').trigger("click");
+                } else {
+                    M.toast({ html: msgerror });
+                }
+            } else {
+                M.toast({ html: msgerror });
+            }
+        } else {
+            M.toast({ html: msgerror });
+        }
+
+    });
+
+    $('#btn_guardarhps').on('click', function () {
+        var bukrs = $("#BUKRS").val();
+        var id_user = $("#ID_USER").val();
+        var tipopre = $("#TIPOPRE").val();
+
+        var _bukrsnull = true;
+        var _id_usernull = true;
+        var _tipoprenull = true;
+        var _existe = true;
+
+
+        if (bukrs == null || bukrs == "") {
+            _bukrsnull = false;
+            msgerror = "Es necesario seleccionar una sociedad";
+        } else {
+            if (id_user == null || id_user == "") {
+                _id_usernull = false;
+                msgerror = "Es necesario seleccionar un usuario";
+            } else {
+                if (tipopre == null || tipopre == "") {
+                    _tipoprenull = false;
+                    msgerror = "Es necesario seleccionar un tipo de presupuesto";
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: 'getUsuarioSociedad',
+                        data: { 'id': id_user, 'bukrs': bukrs },
+                        dataType: "json",
+                        success: function (data) {
+                            if (!data) {
+                                _existe = true;
+                            } else {
+                                msgerror = "Ya existe un usuario y sociedad registrado con ese ID";
+                                _existe = false;
+                            }
+                        },
+                        error: function (xhr, httpStatusMessage, customErrorMessage) {
+                            M.toast({ html: httpStatusMessage });
+                        },
+                        async: false
+                    });
+                }
+            }
+        }
+
+
+        if (_bukrsnull) {
+            if (_id_usernull) {
+                if (_tipoprenull) {
+                    if (_existe) {
+                        $('#btn_guardarps').trigger("click");
+                    } else {
+                        M.toast({ html: msgerror });
+                    }
+                } else {
+                    M.toast({ html: msgerror });
+                }
+            } else {
+                M.toast({ html: msgerror });
+            }
+        } else {
+            M.toast({ html: msgerror });
+        }
+
+    });
+
+    $('#btn_guardarhpse').on('click', function () {
+
+        var tipopre = $("#TIPOPRE").val();
+        var _tipoprenull = true;
+
+
+
+        if (tipopre == null || tipopre == "") {
+            _tipoprenull = false;
+            msgerror = "Es necesario seleccionar un tipo de presupuesto";
+        }
+        if (_tipoprenull) {
+            $('#btn_guardarpse').trigger("click");
+        } else {
+            M.toast({ html: msgerror });
+        }
+
+    });
 });

@@ -75,7 +75,7 @@ namespace WFARTHA.Controllers.Catalogos
 
         }
 
-
+        [HttpPost]
         public ActionResult Delete(String BUKRS, String ID_USER)
         {
             DET_TIPOPRESUPUESTO dET_TIPOPRESUPUESTO = db.DET_TIPOPRESUPUESTO.Find(BUKRS, ID_USER);
@@ -89,8 +89,19 @@ namespace WFARTHA.Controllers.Catalogos
         {
             int pagina = 884; //ID EN BASE DE DATOS
             FnCommon.ObtenerConfPage(db, pagina, User.Identity.Name, this.ControllerContext.Controller);
+            SociedadesUsuario obj = new SociedadesUsuario();
             DET_TIPOPRESUPUESTO dET_TIPOPRESUPUESTO = db.DET_TIPOPRESUPUESTO.Find(BUKRS, ID_USER);
-            return View(dET_TIPOPRESUPUESTO);
+            try
+            {
+                obj.BUKRS = dET_TIPOPRESUPUESTO.BUKRS;
+                obj.ID_USER = dET_TIPOPRESUPUESTO.ID_USER;
+                obj.TIPOPRE = dET_TIPOPRESUPUESTO.TIPOPRE;
+            }
+            catch
+            {
+
+            }
+            return View(obj);
         }
 
         [HttpPost]
@@ -105,6 +116,31 @@ namespace WFARTHA.Controllers.Catalogos
             db.Entry(dET_TIPOPRESUPUESTO).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        //FRT14122018 validar si existe el usuario-sociedad
+
+        [HttpPost]//FRT27112018
+        public JsonResult getUsuarioSociedad(string id, string bukrs)
+        {
+
+            var st = false;
+
+            string displayName = null;
+            var keyValue = db.DET_TIPOPRESUPUESTO.FirstOrDefault(a => a.ID_USER == id && a.BUKRS == bukrs);
+
+
+            if (keyValue != null)
+            {
+                st = true;
+            }
+            else
+            {
+                st = false;
+            }
+
+            JsonResult jc = Json(st, JsonRequestBehavior.AllowGet);
+            return jc;
         }
 
 

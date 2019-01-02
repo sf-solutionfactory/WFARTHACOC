@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="card-panel">
-    @*<div class="row">*@
+    <div class="row">
     <div class="row" style="margin-bottom:0;">
         <div class="input-field col s3 m3 l3">
             <select id="selecc">
@@ -51,10 +51,12 @@
                         @Html.DisplayNameFor(model => model.L.FirstOrDefault().ID)
                     </th>
                     <th class="lblNombre">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)*@
+                        @Html.DisplayName("Nombre")
                     </th>
                     <th class="lblEmail">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().EMAIL)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().EMAIL)*@
+                        @Html.DisplayName("Email")
                     </th>
                     @*<th>
                             @Html.DisplayNameFor(model => model.L.FirstOrDefault().MANAGER)
@@ -63,7 +65,8 @@
                             @Html.DisplayNameFor(model => model.L.FirstOrDefault().BACKUP_ID)
                         </th>*@
                     <th class="lblPuesto">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().PUESTO_ID)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().PUESTO_ID)*@
+                        @Html.DisplayName("Puesto")
                     </th>
                     @*<th>
                             @Html.DisplayNameFor(model => model.L.PUESTO.ACTIVO)
@@ -93,7 +96,7 @@
                                 @Html.DisplayFor(modelItem => item.BACKUP_ID)
                             </td>*@
                         <td>
-                            @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
+                            @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
                         </td>
                         @*<td>
                                 @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.FirstOrDefault().)
@@ -105,19 +108,31 @@
                             <a href="@Url.Action("Details", new { id = item.ID })">
                                 <i class='material-icons blue-text'>search</i>
                             </a>&nbsp;
-                            <a href="" onclick="DELETE('@item.ID')">
-                                <span id="borrar" hidden>
-                                    @item.ID
-                                </span>
-                                <i class='material-icons red-text'>delete</i>
-                            </a>
+                            @if (item.ACTIVO == true)
+                            {
+                                <a href="" onclick="DELETE('@item.ID')">
+                                    <span id="borrar" hidden>
+                                        @item.ID
+                                    </span>
+                                    <i class='material-icons red-text'>delete</i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="" onclick="ACTIVAR('@item.ID')">
+                                    <span id="activar" hidden>
+                                        @item.ID
+                                    </span>
+                                    <i class='material-icons green-text'>cached</i>
+                                </a>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    @*</div>*@
+    </div>
 </div>
 
 @if (ViewBag.Error != null)
@@ -226,6 +241,27 @@
                 }
             });
             M.toast({ html: 'Se elimino el usuario' });
+        }
+    }
+
+    function ACTIVAR(id) {
+        //var id = $('#borrar').text();
+        var mensaje = confirm("Confirma activar el usuario " + id);
+        console.log(id);
+        if (mensaje) {
+            $.ajax({
+                type: "POST",
+                url: 'ActivarConfirmed',
+                data: { id: id },
+                dataType: "json",
+                success: function () {
+
+                },
+                error: function (request, status, error) {
+                    //alert(request.responseText);
+                }
+            });
+            M.toast({ html: 'Se activo el usuario' });
         }
     }
 

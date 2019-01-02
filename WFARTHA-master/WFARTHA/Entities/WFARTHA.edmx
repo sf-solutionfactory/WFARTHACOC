@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WFARTHAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -956,20 +956,6 @@ warning 6002: The table/view 'PAGOSDEV.dbo.IIMPUESTO' does not have a primary ke
           <Property Name="REGION" Type="nchar" MaxLength="10" />
           <Property Name="STCD1" Type="nchar" MaxLength="16" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'PAGOSDEV.dbo.SPFIRMA' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="SPFIRMA">
-          <Property Name="fasen" Type="int" />
-          <Property Name="num_doc" Type="numeric" Precision="10" Scale="0" />
-          <Property Name="faseletrero" Type="char" MaxLength="20" />
-          <Property Name="loop" Type="int" />
-          <Property Name="usuariocadena" Type="nvarchar" MaxLength="16" />
-          <Property Name="usuarioa_id" Type="nvarchar" MaxLength="16" />
-          <Property Name="usuariod_id" Type="nvarchar" MaxLength="16" />
-          <Property Name="estatus" Type="nchar" MaxLength="1" />
-          <Property Name="fechac" Type="datetime" />
-          <Property Name="fecham" Type="datetime" />
-        </EntityType>-->
         <EntityType Name="SPRAS">
           <Key>
             <PropertyRef Name="ID" />
@@ -2462,6 +2448,10 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SP_ADD_DET_PROYECTO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BUKRS" Type="nchar" Mode="In" />
+          <Parameter Name="PSPNR" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SP_CABECERA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NUM_DOC" Type="numeric" Mode="In" />
         </Function>
@@ -3091,8 +3081,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WFARTHAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -6091,23 +6080,27 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
           </AssociationSet>
           <FunctionImport Name="SP_CABECERA" ReturnType="Collection(WFARTHAModel.SP_CABECERA_Result)">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_DELETE_DET_PROYECTO">
             <Parameter Name="BUKRS" Mode="In" Type="String" />
             <Parameter Name="PSPNR" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_DETALLE" ReturnType="Collection(WFARTHAModel.SP_DETALLE_Result)">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_FIRMAS" ReturnType="Collection(WFARTHAModel.SP_FIRMAS_Result)">
-            <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
+          <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="SP_REPORTESOLS">
             <Parameter Name="NUM_DOC" Mode="In" Type="Decimal" />
             <Parameter Name="BUKRS" Mode="In" Type="String" />
             <Parameter Name="USER" Mode="In" Type="String" />
             <Parameter Name="num" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_ADD_DET_PROYECTO" ReturnType="Collection(Int32)">
+            <Parameter Name="BUKRS" Mode="In" Type="String" />
+            <Parameter Name="PSPNR" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_CABECERA_Result">
@@ -7566,6 +7559,7 @@ warning 6002: The table/view 'PAGOSDEV.dbo.WARNINGV' does not have a primary key
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_REPORTESOLS" FunctionName="WFARTHAModel.Store.SP_REPORTESOLS" />
+          <FunctionImportMapping FunctionImportName="SP_ADD_DET_PROYECTO" FunctionName="WFARTHAModel.Store.SP_ADD_DET_PROYECTO" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

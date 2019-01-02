@@ -1,53 +1,82 @@
-﻿@model WFARTHA.Entities.DET_TIPOPRESUPUESTO
+﻿@model WFARTHA.Models.SociedadesUsuario
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 924;
-    ViewBag.carpeta_r = 900;
+    ViewBag.pagina_r = 883;
+    ViewBag.carpeta_r = 500;
 }
+
+
+
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/Catalogos.js"></script>
+
+<div class="row" style="margin-bottom:0">
+    <div class="col s12 right-align">
+        <a id="btn_guardarhpse" class="btn btn-small">Enviar</a>
+    </div>
+
+</div>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>DET_TIPOPRESUPUESTO</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.BUKRS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BUKRS, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BUKRS, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ID_USER, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ID_USER, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ID_USER, "", new { @class = "text-danger" })
-            </div>
+    <div class="row">
+        <div class="col s12 right-align">
+            <button type="submit" id="btn_guardarpse" style="display:none" class="btn btn-default">Guardar</button>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TIPOPRE, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TIPOPRE, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TIPOPRE, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="row">
+        <div class="col s12 left-align">
+            @if (@TempData["MensajeUsuario"] != null)
+            {
+                <label id="lbl_mensajeusuario"></label>
+            }
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.LabelFor(model => model.BUKRS, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.BUKRS, Model.sociedadLista, "Seleccione Sociedad", new { @class = "browser-default", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.BUKRS, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.LabelFor(model => model.ID_USER, "Usuario", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.ID_USER, Model.usersLista, "Seleccione Usuario", new { @class = "browser-default", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.ID_USER, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+
+                            @Html.LabelFor(model => model.TIPOPRE, "Tipo Presupuesto", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DropDownListFor(model => model.TIPOPRE, Model.presupuestoLista, "Seleccione Presupuesto", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.TIPOPRE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@if (ViewBag.Error != null)
+{
+    <script>
+            M.toast({ html: '@ViewBag.Error', classes: 'red' });
+    </script>
 
 
+
+}

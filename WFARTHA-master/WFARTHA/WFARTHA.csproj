@@ -207,6 +207,7 @@
     <Compile Include="Common\FnCommon.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Catalogos\AppsettingController.cs" />
+    <Compile Include="Controllers\Catalogos\CadenaAutorizacion.cs" />
     <Compile Include="Controllers\Catalogos\ConmailController.cs" />
     <Compile Include="Controllers\Catalogos\ProyectoSociedadController.cs" />
     <Compile Include="Controllers\Catalogos\SociedadesUsuarioController.cs" />
@@ -541,6 +542,8 @@
     <Compile Include="Models\AppsettingNuevo.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
     <Compile Include="Models\ArchivoPreliminar.cs" />
+    <Compile Include="Models\CadenaAutorizacion.cs" />
+    <Compile Include="Models\CadenaAutorizacionNuevo.cs" />
     <Compile Include="Models\CadenaAutorizadores.cs" />
     <Compile Include="Models\clsDisctint.cs" />
     <Compile Include="Models\Conmail.cs" />
@@ -866,11 +869,16 @@
     <Content Include="Views\Report\ReportTemplate2.cshtml" />
     <Content Include="Views\Solicitudes\_PartialConTr5.cshtml" />
     <Content Include="Views\Solicitudes\_PartialConOC.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Create.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Details.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Edit.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Descargas\" />
     <Folder Include="PdfTemp\" />
+    <Folder Include="Views\CadenaAutorizacionNuevo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

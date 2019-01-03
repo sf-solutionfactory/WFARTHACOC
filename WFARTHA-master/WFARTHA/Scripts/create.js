@@ -563,7 +563,6 @@ $(document).ready(function () {
     });
 
     $('#btn_guardarh').on("click", function (e) {
-        copiarTableInfoControl();
         var borrador = $("#borr").val();
         //frt28122018 se movio para validaciones --------------->>
         var _b = false;
@@ -4228,7 +4227,26 @@ function copiarTableRet() {
             async: false
         });
     }
+}
 
+function getindret(ret) {
+    var res = "";
+    var t = $('#table_ret').DataTable();
+    $("#table_ret > tbody  > tr[role='row']").each(function () {
+        //Obtener el row para el plugin
+        var tr = $(this);
+        var indexopc = t.row(tr).index();
+        //Obtener la sociedad oculta
+        var soc = t.row(indexopc).data()[0];
+        //Obtener el proveedor oculto
+        var prov = t.row(indexopc).data()[1];
+        //Obtener valores visibles en la tabla
+        var tret = toNum($(this).find("td.TRET").text());
+        if (ret === tret) {
+            res = toNum($(this).find("td.INDRET").text());
+        }
+    });
+    return res;
 }
 
 function copiarTableInfoControl() {
@@ -4261,8 +4279,9 @@ function copiarTableInfoControl() {
         $("#table_inforeth>thead>tr").append("<th>B.Imp.</th>");//Base imponible
         // }
         //Lej 14.09.18----------------
+        var _rw = 0;
         $("#table_info > tbody  > tr[role='row']").each(function () {
-
+            _rw++;
             //Obtener el row para el plugin
             var tr = $(this);
             var indexopc = t.row(tr).index();
@@ -4387,15 +4406,18 @@ function copiarTableInfoControl() {
             item3 = "";
             //-----------------------
             for (j = 0; j < tRet2.length; j++) {
-                //var xvl = $(this).find("td.BaseImp" + tRet2[j] + " input").val();
-                //baseImp.push($(this).find("td.BaseImp" + tRet2[j] + " input").val());//LEJ 14.09.2018
-                //ImpRet.push($(this).find("td.ImpRet" + tRet2[j] + " input").val());//LEJ 14.09.2018
+                var WT_WITHCD = getindret(tRet2[j]);
                 //llenare mis documentorp's
                 var item2 = {};
                 item2["NUM_DOC"] = 0;
-                item2["POS"] = pos;
+                item2["POS"] = toNum(_rw + "");
                 item2["WITHT"] = tRet2[j];
-                item2["WT_WITHCD"] = "01";
+                if (WT_WITHCD != "") {
+                    item2["WT_WITHCD"] = WT_WITHCD;
+                }
+                else {
+                    item2["WT_WITHCD"] = "01";
+                }
                 var b1 = $(this).find("td.BaseImp" + tRet2[j] + " input").val().replace('$', '').replace(',', '');
                 while (b1.indexOf(',') > -1) {
                     b1 = b1.replace('$', '').replace(',', '');

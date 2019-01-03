@@ -1,10 +1,10 @@
 ﻿@model WFARTHA.Models.DOCUMENTO_MOD
-
 @if (Model.DOCUMENTORP != null)
 {
     for (var i = 0; i < Model.DOCUMENTORP.Count; i++)
     {
         <tr>
+            <td>@Html.EditorFor(m => m.DOCUMENTORP[i].POS)</td>
             <td>@Html.EditorFor(m => m.DOCUMENTORP[i].WITHT)</td>
             <td>@Html.EditorFor(m => m.DOCUMENTORP[i].WT_WITHCD)</td>
             <td>@Html.EditorFor(m => m.DOCUMENTORP[i].BIMPONIBLE)</td>
@@ -12,4 +12,3 @@
         </tr>
     }
 }
-

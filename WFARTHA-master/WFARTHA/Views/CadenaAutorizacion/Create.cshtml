@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="input-field col s12">
-                        @Html.EditorFor(model => model.ID_RUTA_AGENTE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.ID_RUTA_AGENTE,"Solicitante", new { htmlAttributes = new { @class = "form-control" } })
                         @Html.Label("Ingrese Ruta de Agente ", htmlAttributes: new { @id = "lbl_nombre" })
                         @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
                     </div>

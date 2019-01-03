@@ -45,16 +45,20 @@
             <thead>
                 <tr>
                     <th class="lblVersion">
-                        @Html.DisplayNameFor(model => model.C.FirstOrDefault().VERSION)
+                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().VERSION)*@
+                        @Html.DisplayName("Versión")
                     </th>
                     <th class="lblSociedad">
-                        @Html.DisplayNameFor(model => model.C.FirstOrDefault().USUARIOC_ID)
+                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().USUARIOC_ID)*@
+                        @Html.DisplayName("Usuario")
                     </th>
                     <th class="lblUsuario">
-                        @Html.DisplayNameFor(model => model.C.FirstOrDefault().ID_RUTA_AGENTE)
+                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().ID_RUTA_AGENTE)*@
+                        @Html.DisplayName("Ruta")
                     </th>
                     <th class="lblUsuario">
-                        @Html.DisplayNameFor(model => model.C.FirstOrDefault().USUARIOA_ID)
+                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().USUARIOA_ID)*@
+                        @Html.DisplayName("Solicitante")
                     </th>
                     <th></th>
                 </tr>

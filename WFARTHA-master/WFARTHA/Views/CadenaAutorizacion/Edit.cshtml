@@ -41,7 +41,7 @@
                 </div>
                 <div class="input-field col s2 offset-s1">
                     <div class=" dropdown col s12">
-                        @Html.Label("ID Ruta agente", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.Label("Ruta agente", htmlAttributes: new { @id = "lbl_usuario" })
                         @Html.EditorFor(model => model.ID_RUTA_AGENTE, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
                     </div>

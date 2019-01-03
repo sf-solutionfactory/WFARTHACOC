@@ -35,7 +35,7 @@
                 </div>
                 <div class="input-field col s2 offset-s1">
                     <div class=" dropdown col s12">
-                        @Html.Label("ID Ruta agente", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.Label("Ruta agente", htmlAttributes: new { @id = "lbl_usuario" })
                         @Html.EditorFor(model => model.ID_RUTA_AGENTE, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
                     </div>
@@ -82,19 +82,24 @@
                 <thead>
                     <tr>
                         <th class="lblVersion">
-                            @Html.DisplayNameFor(model => model.A.FirstOrDefault().ID_RUTA_AGENTE)
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().ID_RUTA_AGENTE)*@
+                            @Html.DisplayName("Ruta")
                         </th>
                         <th class="lblSociedad">
-                            @Html.DisplayNameFor(model => model.A.FirstOrDefault().VERSION)
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().VERSION)*@
+                            @Html.DisplayName("Versión")
                         </th>
                         <th class="lblUsuario">
-                            @Html.DisplayNameFor(model => model.A.FirstOrDefault().STEP_FASE)
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().STEP_FASE)*@
+                            @Html.DisplayName("Fase")
                         </th>
-                        <th class="lblUsuario">
+                        @*<th class="lblUsuario">
                             @Html.DisplayNameFor(model => model.A.FirstOrDefault().LIM_SUP)
-                        </th>
+                            @Html.DisplayName("Monto")
+                        </th>*@
                         <th class="lblUsuario">
-                            @Html.DisplayNameFor(model => model.A.FirstOrDefault().AGENTE_SIG)
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().AGENTE_SIG)*@
+                            @Html.DisplayName("Agente")
                         </th>
                     </tr>
                 </thead>
@@ -112,9 +117,9 @@
                                 @Html.DisplayFor(modelItem => item.STEP_FASE)
                             </td>
 
-                            <td>
+                            @*<td>
                                 @Html.DisplayFor(modelItem => item.LIM_SUP)
-                            </td>
+                            </td>*@
                             <td>
                                 @Html.DisplayFor(modelItem => item.USUARIO)
                             </td>

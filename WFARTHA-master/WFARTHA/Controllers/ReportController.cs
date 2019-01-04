@@ -490,10 +490,14 @@ namespace WFARTHA.Controllers
                     string firmas = "";
                     string pag = "";
                     List<ReportFirmasResult> f = db.Database.SqlQuery<ReportFirmasResult>("SP_FIRMAS @NUM_DOC", new SqlParameter("@NUM_DOC", d.NUM_DOC)).ToList();
-                    foreach (ReportFirmasResult ff in f)
-                    {
-                        firmas += ff.usuariocadena + "\n" + ff.faseletrero;
-                    }
+                    ReportFirmasResult fir = f.OrderByDescending(x => x.fecham).FirstOrDefault();
+                    if (fir.estatus == "A") { firmas = fir.usuariocadena + "\n(Aprobado)"; }
+                    else if (fir.estatus == "R") { firmas = fir.usuariocadena + "\n(Rechazado)"; }
+                    else if (fir.estatus == "P") { firmas = fir.usuariocadena + "\n(Pendiente)"; }
+                    //foreach (ReportFirmasResult ff in f)
+                    //{
+                    //    firmas += ff.usuariocadena + "\n" + ff.faseletrero;
+                    //}
                     string flu = db.FLUJOes.Where(x => x.NUM_DOC == d.NUM_DOC).OrderByDescending(x => x.POS).Select(x => x.USUARIOA_ID).FirstOrDefault();
                     string estatus = "";
                     if (d.ESTATUS_C != null)

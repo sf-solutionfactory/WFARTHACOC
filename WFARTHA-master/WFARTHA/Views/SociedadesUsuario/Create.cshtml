@@ -2,14 +2,23 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 883;
+    ViewBag.pagina_r = 884;
     ViewBag.carpeta_r = 500;
 }
 
 
 
-
 <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/Catalogos.js"></script>
+
+
+
+ <div class="row" style="margin-bottom:0">
+    <div class="col s12 right-align">
+        <a id="btn_guardarhps" class="btn btn-small">Enviar</a>
+    </div>
+
+</div>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()

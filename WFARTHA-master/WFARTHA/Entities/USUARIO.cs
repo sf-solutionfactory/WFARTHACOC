@@ -26,7 +26,7 @@ namespace WFARTHA.Entities
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class USUARIO
     {
         //FRT 12122018 para poder mostra listado de sociedad y tipo de usuario

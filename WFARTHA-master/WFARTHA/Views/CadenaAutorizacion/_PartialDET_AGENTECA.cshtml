@@ -1,0 +1,16 @@
+﻿@model WFARTHA.Models.DET_AGENTECA_MOD
+
+@if (Model.LDET_ACA != null)
+{
+    for (var i = 0; i < Model.LDET_ACA.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.EditorFor(m => m.LDET_ACA[i].AGENTE_SIG)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.LDET_ACA[i].STEP_FASE)
+            </td>
+        </tr>
+    }
+}

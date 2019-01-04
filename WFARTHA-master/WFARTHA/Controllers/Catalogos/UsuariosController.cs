@@ -14,7 +14,7 @@ using WFARTHA.Entities;
 using WFARTHA.Models;
 using WFARTHA.Services;
 
-namespace TAT001.Controllers.Catalogos
+namespace WFARTHA.Controllers.Catalogos
 {
     [Authorize]
     public class UsuariosController : Controller
@@ -57,7 +57,8 @@ namespace TAT001.Controllers.Catalogos
             //ViewBag.SPRAS_ID = new SelectList(db.SPRAS, "ID", "DESCRIPCION");
             //ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS");
 
-            var uSUARIOs = db.USUARIOs.Where(u => u.ACTIVO == true).Include(u => u.PUESTO).Include(u => u.SPRA);
+            //var uSUARIOs = db.USUARIOs.Where(u => u.ACTIVO == true).Include(u => u.PUESTO).Include(u => u.SPRA);
+            var uSUARIOs = db.USUARIOs.Include(u => u.PUESTO).Include(u => u.SPRA);
             UsuarioNuevo un = new UsuarioNuevo();
             un.L = uSUARIOs.ToList();
             return View(un);
@@ -104,7 +105,7 @@ namespace TAT001.Controllers.Catalogos
                 return HttpNotFound();
             }
             //ViewBag.PUESTO_ID = new SelectList(db.PUESTOes, "ID", "ID", uSUARIO.PUESTO_ID);
-            string spra = Session["spras"].ToString();
+            string spra = "ES";// Session["spras"].ToString();
             ViewBag.SPRAS_ID = new SelectList(db.SPRAS, "ID", "DESCRIPCION", uSUARIO.SPRAS_ID);
             ViewBag.PUESTO_ID = new SelectList(db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(spra)), "PUESTO_ID", "TXT50", uSUARIO.PUESTO_ID);
             ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", uSUARIO.BUNIT);
@@ -250,11 +251,11 @@ namespace TAT001.Controllers.Catalogos
                 return HttpNotFound();
             }
             //ViewBag.PUESTO_ID = new SelectList(db.PUESTOes, "ID", "ID", uSUARIO.PUESTO_ID);
-            string spra = Session["spras"].ToString();
+            //string spra = Session["spras"].ToString();
             ViewBag.SPRAS_ID = new SelectList(db.SPRAS, "ID", "DESCRIPCION", uSUARIO.SPRAS_ID);
-            ViewBag.PUESTO_ID = new SelectList(db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(spra)), "PUESTO_ID", "TXT50", uSUARIO.PUESTO_ID);
+            ViewBag.PUESTO_ID = new SelectList(db.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")), "PUESTO_ID", "TXT50", uSUARIO.PUESTO_ID);
             ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", uSUARIO.BUNIT);
-            ViewBag.ROLES = db.ROLTs.Where(a => a.SPRAS_ID.Equals(spra));
+            ViewBag.ROLES = db.ROLTs.Where(a => a.SPRAS_ID.Equals("ES"));
             ViewBag.SOCIEDADES = db.SOCIEDADs;
 
             return View(uSUARIO);
@@ -374,6 +375,18 @@ namespace TAT001.Controllers.Catalogos
         {
             USUARIO uSUARIO = db.USUARIOs.Find(id);
             uSUARIO.ACTIVO = false;
+            db.Entry(uSUARIO).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult ActivarConfirmed(string id)
+        {
+            USUARIO uSUARIO = db.USUARIOs.Find(id);
+            uSUARIO.ACTIVO = true;
             db.Entry(uSUARIO).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");

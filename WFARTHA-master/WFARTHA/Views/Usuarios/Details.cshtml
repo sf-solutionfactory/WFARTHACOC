@@ -43,22 +43,22 @@
             <div class="row">
                 <div class="input-field col s12">
                     @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
-                    @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
+                    @Html.LabelFor(model => model.NOMBRE,"Nombre", htmlAttributes: new { @id = "lbl_nombre" })
                     @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
                 </div>
                 <div class="input-field col s12">
                     @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
-                    @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @id = "lbl_appPat" })
+                    @Html.LabelFor(model => model.APELLIDO_P, "Apellido Paterno", htmlAttributes: new { @id = "lbl_appPat" })
                     @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
                 </div>
                 <div class="input-field col s12">
                     @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
-                    @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @id = "lbl_appMat" })
+                    @Html.LabelFor(model => model.APELLIDO_M, "Apellido Materno",htmlAttributes: new { @id = "lbl_appMat" })
                     @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
                 </div>
                 <div class="input-field col s12">
                     @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
-                    @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @id = "lbl_email" })
+                    @Html.LabelFor(model => model.EMAIL, "Email", htmlAttributes: new { @id = "lbl_email" })
                     @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
                 </div>
 
@@ -79,7 +79,7 @@
 
                 <div class="input-field col s12">
                     @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
-                    @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
+                    @Html.LabelFor(model => model.PUESTO_ID, "Puesto", htmlAttributes: new { @id = "lbl_puesto" })
                     @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
                 </div>
 

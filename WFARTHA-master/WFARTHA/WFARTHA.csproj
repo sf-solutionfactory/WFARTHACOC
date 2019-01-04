@@ -207,6 +207,7 @@
     <Compile Include="Common\FnCommon.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Catalogos\AppsettingController.cs" />
+    <Compile Include="Controllers\Catalogos\CadenaAutorizacion.cs" />
     <Compile Include="Controllers\Catalogos\ConmailController.cs" />
     <Compile Include="Controllers\Catalogos\ProyectoSociedadController.cs" />
     <Compile Include="Controllers\Catalogos\SociedadesUsuarioController.cs" />
@@ -541,12 +542,15 @@
     <Compile Include="Models\AppsettingNuevo.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
     <Compile Include="Models\ArchivoPreliminar.cs" />
+    <Compile Include="Models\CadenaAutorizacion.cs" />
+    <Compile Include="Models\CadenaAutorizacionNuevo.cs" />
     <Compile Include="Models\CadenaAutorizadores.cs" />
     <Compile Include="Models\clsDisctint.cs" />
     <Compile Include="Models\Conmail.cs" />
     <Compile Include="Models\ConmailNuevo.cs" />
     <Compile Include="Models\ContabilizarRes.cs" />
     <Compile Include="Models\Cryptography.cs" />
+    <Compile Include="Models\DET_AGENTECA_MOD.cs" />
     <Compile Include="Models\DOCUMENTOA_TAB.cs" />
     <Compile Include="Models\DOCUMENTOA_MOD.cs" />
     <Compile Include="Models\DOCUMENTOCOC_MOD.cs" />
@@ -713,6 +717,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\Catalogos.js" />
+    <Content Include="Scripts\CatalogosCadenaAuto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\cartaV.js" />
     <Content Include="Scripts\create.js" />
@@ -868,11 +873,17 @@
     <Content Include="Views\Report\ReportTemplate2.cshtml" />
     <Content Include="Views\Solicitudes\_PartialConTr5.cshtml" />
     <Content Include="Views\Solicitudes\_PartialConOC.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Create.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Details.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Edit.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\Index.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\_PartialDET_AGENTECA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Descargas\" />
     <Folder Include="PdfTemp\" />
+    <Folder Include="Views\CadenaAutorizacionNuevo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -111,7 +111,7 @@ namespace WFARTHA.Services
             string mtest = ConfigurationManager.AppSettings["mailtest"]; //B20180803 MGC Correos
             string mailTo = "";
             if (mtest == "X")
-                mailTo = "fernando.rojas@sf-solutionfactory.com";// mailt; //B20180803 MGC Correos  //MGC 08-10-2018.2 Obtener los datos para el correo
+                mailTo = "gallegos1993@live.com.mx";// mailt; //B20180803 MGC Correos  //MGC 08-10-2018.2 Obtener los datos para el correo
             else
                 //mailTo = workflow.USUARIO.EMAIL;//MGC 09-10-2018 Envío de correos
                 mailTo = emailsto;//MGC 09-10-2018 Envío de correos

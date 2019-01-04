@@ -169,6 +169,9 @@ namespace WFARTHA.Controllers.Catalogos
             int pagina = 602; //ID EN BASE DE DATOS
             FnCommon.ObtenerConfPage(db, pagina, User.Identity.Name, this.ControllerContext.Controller);
             Email em = new Email();
+            string apm = "";
+
+            USUARIO ur = new USUARIO();
 
             if (ModelState.IsValid)
             {
@@ -179,7 +182,15 @@ namespace WFARTHA.Controllers.Catalogos
                 USUARIO u = new USUARIO();
                 u.NOMBRE = uSUARIO.NOMBRE.Trim();
                 u.APELLIDO_P = uSUARIO.APELLIDO_P.Trim();
-                u.APELLIDO_M = uSUARIO.APELLIDO_M.Trim();
+                try
+                {
+                    u.APELLIDO_M = uSUARIO.APELLIDO_M.Trim();
+                    apm = u.APELLIDO_M;
+                }
+                catch
+                {
+                    u.APELLIDO_M = "";
+                }
                 u.PASS = passcry;
                 u.FIRMA = passcry;
                 u.EMAIL = uSUARIO.EMAIL;
@@ -190,10 +201,12 @@ namespace WFARTHA.Controllers.Catalogos
                 u.BUNIT = "";
                 db.USUARIOs.Add(u);
 
+                ur = u;
+
                 try
                 {
                     db.SaveChanges();
-                    em.enviaMailUsuario(uSUARIO.EMAIL, pass, uSUARIO.NOMBRE.Trim(), uSUARIO.APELLIDO_P.Trim(), uSUARIO.APELLIDO_M.Trim(), uSUARIO.ID.Trim());
+                    em.enviaMailUsuario(uSUARIO.EMAIL, pass, uSUARIO.NOMBRE.Trim(), uSUARIO.APELLIDO_P.Trim(), apm, uSUARIO.ID.Trim());
                     ViewBag.Error = "El usuario " + uSUARIO.ID.Trim() + " se creo con exito";
                     return RedirectToAction("Index");
                 }
@@ -205,7 +218,7 @@ namespace WFARTHA.Controllers.Catalogos
             }
 
 
-            return View(uSUARIO);
+            return View(ur);
         }
 
         //// GET: Usuarios/Edit/5

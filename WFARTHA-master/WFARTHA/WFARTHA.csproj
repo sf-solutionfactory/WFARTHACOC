@@ -550,6 +550,7 @@
     <Compile Include="Models\ConmailNuevo.cs" />
     <Compile Include="Models\ContabilizarRes.cs" />
     <Compile Include="Models\Cryptography.cs" />
+    <Compile Include="Models\DET_AGENTECA_MOD.cs" />
     <Compile Include="Models\DOCUMENTOA_TAB.cs" />
     <Compile Include="Models\DOCUMENTOA_MOD.cs" />
     <Compile Include="Models\DOCUMENTOCOC_MOD.cs" />
@@ -714,6 +715,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\Catalogos.js" />
+    <Content Include="Scripts\CatalogosCadenaAuto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\cartaV.js" />
     <Content Include="Scripts\create.js" />
@@ -873,6 +875,7 @@
     <Content Include="Views\CadenaAutorizacion\Details.cshtml" />
     <Content Include="Views\CadenaAutorizacion\Edit.cshtml" />
     <Content Include="Views\CadenaAutorizacion\Index.cshtml" />
+    <Content Include="Views\CadenaAutorizacion\_PartialDET_AGENTECA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

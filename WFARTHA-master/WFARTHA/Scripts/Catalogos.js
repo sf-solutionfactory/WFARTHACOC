@@ -132,19 +132,94 @@
 
 
     $('#btn_guardarhcc').on('click', function () {
-        var usuarioc = $("#AGENTE_SIG").val();
+        var usuarioc = $("#USUARIOC_ID").val();
+        var ruta = $("#ID_RUTA_AGENTE").val();
 
         var _usuariocnull = true;
+        var _rutanull = true;
+        var _rutar = true;
 
-
+        //MGC Número de revisores
+        //Debe de haber al menos un revisor
+        var num_rows = 0;
+        num_rows = $("table#tableca tbody tr[role='row']").length;
 
         if (usuarioc == null || usuarioc == "") {
             _usuariocnull = false;
             msgerror = "Debes seleccionar agente";
+        } else {
+            if (ruta == null || ruta == "") {
+
+                _rutanull = false;
+                msgerror = "La ruta es obligatoria";
+                //msgerror = "Tiene que agregar al menos un autorizador a la cadena";
+            } else {
+                if (num_rows == null || num_rows == 0) {
+                    _rutar = false;
+                    //msgerror = "La ruta es obligatoria";
+                    msgerror = "Tiene que agregar al menos un autorizador a la cadena";
+                }
+            }
         }
 
         if (_usuariocnull) {
-            $('#btn_guardarcc').trigger("click");
+            if (_rutanull) {
+                if (_rutar) {
+
+
+                    if (num_rows > 0) {
+                        var jsonObjDocs = [];
+                        //Agregar valores de la tabla
+                        $("#tableca > tbody  > tr[role='row']").each(function () {
+
+                            var fase = $(this).find("td.FASE").text();
+                            var agente = $(this).find("td.AGENTE").text();
+
+                            var item = {};
+                            item["STEP_FASE"] = fase;
+                            item["AGENTE_SIG"] = agente.trim();
+
+                            jsonObjDocs.push(item);
+                            item = "";
+
+                            var t = $('#tableca').DataTable();
+
+                            //Eliminar el renglón
+                            t.rows($(this)).remove().draw(false);
+
+
+                        });
+                        var docsenviar = {};
+                        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+                        $.ajax({
+                            type: "POST",
+                            url: 'getPartialDET_AGENTECA',
+                            contentType: "application/json; charset=UTF-8",
+                            data: docsenviar,
+                            success: function (data) {
+
+                                if (data !== null || data !== "") {
+
+                                    $("table#tableca tbody").append(data);
+                                }
+
+                            },
+                            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                M.toast({ html: httpStatusMessage });
+                            },
+                            async: false
+                        });
+                    }
+
+
+                    $('#btn_guardarcc').trigger("click");
+                } else {
+                    M.toast({ html: msgerror });
+                }
+            } else {
+                M.toast({ html: msgerror });
+            }
         } else {
             M.toast({ html: msgerror });
         }
@@ -155,7 +230,12 @@
     $('#btn_guardarhca').on('click', function () {
         var usuarioc = $("#USUARIOC_ID").val();
         var usuarioa = $("#USUARIOA_ID").val();
-        var ruta = $("#ID_RUTA_AGENTE").val();
+        //var ruta = $("#ID_RUTA_AGENTE").val();
+
+        //MGC Número de revisores
+        //Debe de haber al menos un revisor
+        var num_rows = 0;
+        num_rows = $("table#tableca tbody tr[role='row']").length;
 
         var _usuariocnull = true;
         var _usuarioanulli = true;
@@ -170,9 +250,11 @@
                 _usuarioanulli = false;
                 msgerror = "Debes seleccionar agente";
             } else {
-                if (ruta == null || ruta == "") {
+                //if (ruta == null || ruta == "") {
+                if (num_rows == null || num_rows == 0) {
                     _rutanull = false;
-                    msgerror = "La ruta es obligatoria";
+                    //msgerror = "La ruta es obligatoria";
+                    msgerror = "Tiene que agregar al menos un autorizador a la cadena";
                 }
             }
         }
@@ -180,6 +262,52 @@
         if (_usuariocnull) {
             if (_usuarioanulli) {
                 if (_rutanull) {
+
+                    if (num_rows > 0) {
+                        var jsonObjDocs = [];
+                        //Agregar valores de la tabla
+                        $("#tableca > tbody  > tr[role='row']").each(function () {
+
+                            var fase = $(this).find("td.FASE").text();
+                            var agente = $(this).find("td.AGENTE").text();
+
+                            var item = {};
+                            item["STEP_FASE"] = fase;
+                            item["AGENTE_SIG"] = agente;
+
+                            jsonObjDocs.push(item);
+                            item = "";
+
+                            var t = $('#tableca').DataTable();
+
+                            //Eliminar el renglón
+                            t.rows($(this)).remove().draw(false);
+
+
+                        });
+                        var docsenviar = {};
+                        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+                        $.ajax({
+                            type: "POST",
+                            url: 'getPartialDET_AGENTECA',
+                            contentType: "application/json; charset=UTF-8",
+                            data: docsenviar,
+                            success: function (data) {
+
+                                if (data !== null || data !== "") {
+
+                                    $("table#tableca tbody").append(data);
+                                }
+
+                            },
+                            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                M.toast({ html: httpStatusMessage });
+                            },
+                            async: false
+                        });
+                    }
+
                     $('#btn_guardarca').trigger("click");
                 } else {
                     M.toast({ html: msgerror });

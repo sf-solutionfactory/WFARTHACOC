@@ -36,6 +36,9 @@ namespace WFARTHA.Models
         public IEnumerable<WFARTHA.Entities.DET_AGENTECAV> A { get; set; }
         public CadenaAutorizacion N { get; set; }
 
+
+        public List<DET_AGENTECAR> LDET_ACA { get; set; }//MGC
+
         public CadenaAutorizacion()
         {
             WFARTHAEntities data = new WFARTHAEntities();

@@ -45,13 +45,16 @@
             <thead>
                 <tr>
                     <th class="lblSociedad">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().BUTXT)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().BUTXT)*@
+                        @Html.DisplayName("Sociedad")
                     </th>
                     <th class="lblUsuario">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)*@
+                        @Html.DisplayName("Usuario")
                     </th>
                     <th class="lblPresupuesto">
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().DESC)
+                        @*@Html.DisplayNameFor(model => model.L.FirstOrDefault().DESC)*@
+                        @Html.DisplayName("Tipo Presupuesto")
                     </th>
                     <th></th>
                 </tr>
@@ -59,25 +62,29 @@
             <tbody>
                 @foreach (var item in Model.L)
                 {
-                <tr style="cursor:pointer">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BUTXT)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NOMBRE)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DESC)
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Edit", "SociedadesUsuario", new { IBUKRS = item.BUKRS , ID_USER = item.ID_USER })">
-                            <i class='material-icons green-text'>edit</i>
-                        </a>&nbsp;
-                        <a href="@Url.Action("Delete", "SociedadesUsuario", new { BUKRS = item.BUKRS , ID_USER = item.ID_USER })">
-                            <i class='material-icons red-text'>delete</i>
-                        </a>&nbsp;
-                    </td>
-                </tr>
+                    <tr style="cursor:pointer">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BUTXT)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NOMBRE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DESC)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "SociedadesUsuario", new { BUKRS = item.BUKRS , ID_USER = item.ID_USER })">
+                                <i class='material-icons green-text'>edit</i>
+                            </a>&nbsp;
+                            <a href="" onclick="DELETE('@item.BUKRS','@item.ID_USER')">
+                                <span id="borrar" hidden>
+                                    @item.BUKRS,
+                                    @item.ID_USER
+                                </span>
+                                <i class='material-icons red-text'>delete</i>
+                            </a>&nbsp;
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -126,6 +133,31 @@
     function filterGlobal() {
         $('#table').DataTable().search(
             $('#global_filter').val()).draw();
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function DELETE(BUKRS, ID_USER) {
+        //var id = $('#borrar').text();
+        var mensaje = confirm("Confirma borrar el registro " + BUKRS + " - " + ID_USER);
+        console.log(BUKRS, ID_USER);
+        if (mensaje) {
+            $.ajax({
+                type: "POST",
+                url: 'Delete',
+                data: { 'BUKRS': BUKRS, 'ID_USER': ID_USER },
+                dataType: "json",
+                success: function () {
+
+                },
+                error: function (request, status, error) {
+                    //alert(request.responseText);
+                }
+            });
+            M.toast({ html: 'Se elimino el usuario' });
+        }
     }
 
 </script>

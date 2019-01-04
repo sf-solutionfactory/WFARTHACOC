@@ -1,0 +1,210 @@
+﻿@model WFARTHA.Models.CadenaAutorizacion
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 712;
+    ViewBag.carpeta_r = 500;
+}
+
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            @*<a class="btn" id="btn_changepassword" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>*@
+            <a class="btn" id="btn_editar" href="@Url.Action("Edit", new { VERSION = ViewBag.version, ID_RUTA_AGENTE = ViewBag.ruta })">Editar</a>
+        </div>
+    </div>
+
+    <div class="card-panel">
+        <div class="row" style="">
+            <div class="col s12">
+                <div class="input-field col s2 offset-s1">
+                    <div class=" dropdown col s12">
+                        @Html.Label("Usuario creador", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.EditorFor(model => model.USUARIOC_ID, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.usuarioc, @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.USUARIOC_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="input-field col s2 offset-s1">
+                    <div class=" dropdown col s12">
+                        @Html.Label("Ruta agente", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.EditorFor(model => model.ID_RUTA_AGENTE, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="input-field col s2 offset-s1">
+                    <div class=" dropdown col s12">
+                        @Html.Label("Usuario Solicitante", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.Editor("usuarioa", new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="input-field col s2 offset-s1">
+                    <div class=" dropdown col s12">
+                        @Html.Label("Version", htmlAttributes: new { @id = "lbl_usuario" })
+                        @Html.EditorFor(model => model.VERSION, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.VERSION, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-panel">
+        @*<div class="row">*@
+        @*<div class="row" style="margin-bottom:0;">
+                <div class="input-field col s3 m3 l3">
+                    <select id="selecc">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label id="btn_length">Ver por página</label>
+                </div>
+                <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
+                    <input type="text" class="global_filter" id="global_filter">
+                    <label for="global_filter" id="lbl_search">Buscar</label>
+                </div>
+            </div>*@
+        @*<script>
+                var elem = document.querySelector('select');
+                var options = [];
+                var instance = M.FormSelect.init(elem, options);
+            </script>*@
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+        <link href="~/Content/dataTable.css" rel="stylesheet" />
+        <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+        <div style="width:100%;">
+            <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th class="lblVersion">
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().ID_RUTA_AGENTE)*@
+                            @Html.DisplayName("Ruta")
+                        </th>
+                        <th class="lblSociedad">
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().VERSION)*@
+                            @Html.DisplayName("Versión")
+                        </th>
+                        <th class="lblUsuario">
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().STEP_FASE)*@
+                            @Html.DisplayName("Fase")
+                        </th>
+                        @*<th class="lblUsuario">
+                            @Html.DisplayNameFor(model => model.A.FirstOrDefault().LIM_SUP)
+                            @Html.DisplayName("Monto")
+                        </th>*@
+                        <th class="lblUsuario">
+                            @*@Html.DisplayNameFor(model => model.A.FirstOrDefault().AGENTE_SIG)*@
+                            @Html.DisplayName("Agente")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.A)
+                    {
+                        <tr style="cursor:pointer">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID_RUTA_AGENTE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VERSION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.STEP_FASE)
+                            </td>
+
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.LIM_SUP)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.USUARIO)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*</div>*@
+    </div>
+
+}
+
+@if (ViewBag.Error != null)
+{
+    <script>
+             M.toast({ html: '@ViewBag.Error' });
+    </script>
+}
+
+
+<script type="text/javascript">
+     $("a[data-form-method='post']").click(function (event) {
+         event.preventDefault();
+         var element = $(this);
+         var action = element.attr("href");
+         element.closest("form").each(function () {
+             var form = $(this);
+             form.attr("action", action);
+             form.submit();
+         });
+     });
+</script>
+<script>
+     $(document).ready(function () {
+         var table = $('#table').DataTable({
+             scrollY: "35vh",
+             language: {
+                 "url": "../Scripts/lang/ES.json"
+             },
+             columnDefs: [
+                 {
+                     targets: [0, 1, 2],
+                     className: 'mdl-data-table__cell--non-numeric'
+                 }
+             ]
+         });
+
+         var a = $('#selecc').val();
+         table.page.len(a).draw();
+         $('#selecc').on('change', function () {
+             table.page.len(this.value).draw();
+         });
+
+         $('input.global_filter').on('keyup click', function () {
+             filterGlobal();
+         });
+     });
+
+     function filterGlobal() {
+         $('#table').DataTable().search(
+             $('#global_filter').val()).draw();
+     }
+
+</script>
+
+<style>
+
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_scrollHeadInner, .mdl-data-table {
+        width: 100%;
+    }
+</style>
+

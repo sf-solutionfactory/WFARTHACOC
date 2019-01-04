@@ -33,14 +33,14 @@
                 <div class="row">
                     <div class="form-group">
                         <div class=" dropdown col s12">
-                            @Html.LabelFor(model => model.ID_USUARIO, htmlAttributes: new { @id = "lbl_usuario" })
+                            @Html.LabelFor(model => model.ID_USUARIO,"Usuario", htmlAttributes: new { @id = "lbl_usuario" })
                             @Html.DropDownListFor(model => model.ID_USUARIO, Model.usersLista, "Seleccione un Usuario", new { @class = "browser-default" })
                             @Html.ValidationMessageFor(model => model.ID_USUARIO, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
                         <div class=" dropdown col s12">
-                            @Html.LabelFor(model => model.ID_SOCIEDAD, htmlAttributes: new { @id = "lbl_sociedad" })
+                            @Html.LabelFor(model => model.ID_SOCIEDAD, "Sociedad", htmlAttributes: new { @id = "lbl_sociedad" })
                             @Html.DropDownListFor(model => model.ID_SOCIEDAD, Model.sociedadLista, "Seleccione Sociedad", new { @class = "browser-default" })
                             @Html.ValidationMessageFor(model => model.ID_SOCIEDAD, "", new { @class = "text-danger" })
                         </div>

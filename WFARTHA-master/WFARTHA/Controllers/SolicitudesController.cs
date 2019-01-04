@@ -546,12 +546,18 @@ namespace WFARTHA.Controllers
             //LEj 24.09.2018
 
             var _Se = db.DOCUMENTORPs.Where(x => x.NUM_DOC == id).ToList();
+            var _wcd = "";
             var rets = _Se.Select(w => w.WITHT).Distinct().ToList();
             var rets2 = rets;
             for (int i = 0; i < rets.Count; i++)
             {
                 var _rt = rets2[i];
-                var ret = db.RETENCIONs.Where(x => x.WITHT == _rt).FirstOrDefault().WITHT_SUB;
+                if (_Se.Count > 0)
+                {
+                    _wcd = _Se.Where(a => a.WITHT == _rt).FirstOrDefault().WT_WITHCD;
+                }
+                //var ret = db.RETENCIONs.Where(x => x.WITHT == _rt).FirstOrDefault().WITHT_SUB;
+                var ret = db.RETENCIONs.Where(x => x.WITHT == _rt && x.WT_WITHCD == _wcd).FirstOrDefault().WITHT_SUB;
                 for (int j = 0; j < rets.Count; j++)
                 {
                     if (rets2[j] == ret)
@@ -2169,8 +2175,9 @@ namespace WFARTHA.Controllers
                             for (int i = 0; i < doc.DOCUMENTORP.Count; i++)
                             {
                                 //cantdidad de renglones añadidos y su posicion
-                                var _op = ((i + 2) / 2);
-                                var _pos = _op.ToString().Split('.');
+                                //var _op = ((i + 2) / 2);
+                                //var _pos = _op.ToString().Split('.');
+                                var _pos = doc.DOCUMENTORP[i].POS;
                                 try
                                 {
                                     var docr = doc.DOCUMENTOR;
@@ -2188,7 +2195,8 @@ namespace WFARTHA.Controllers
                                                 _dr.NUM_DOC = doc.NUM_DOC;
                                                 _dr.WITHT = doc.DOCUMENTORP[i].WITHT;
                                                 _dr.WT_WITHCD = doc.DOCUMENTORP[i].WT_WITHCD;
-                                                _dr.POS = int.Parse(_pos[0]);
+                                                //_dr.POS = int.Parse(_pos[0]);
+                                                _dr.POS = _pos;
                                                 _dr.BIMPONIBLE = doc.DOCUMENTORP[i].BIMPONIBLE;
                                                 _dr.IMPORTE_RET = doc.DOCUMENTORP[i].IMPORTE_RET;
                                                 db.DOCUMENTORPs.Add(_dr);
@@ -2197,7 +2205,7 @@ namespace WFARTHA.Controllers
                                                 _dr.NUM_DOC = doc.NUM_DOC;
                                                 _dr.WITHT = docr[_a].WITHT;
                                                 _dr.WT_WITHCD = doc.DOCUMENTORP[i].WT_WITHCD;
-                                                _dr.POS = int.Parse(_pos[0]);
+                                                _dr.POS = _pos;
                                                 _dr.BIMPONIBLE = doc.DOCUMENTORP[i].BIMPONIBLE;
                                                 _dr.IMPORTE_RET = doc.DOCUMENTORP[i].IMPORTE_RET;
                                                 db.DOCUMENTORPs.Add(_dr);
@@ -2211,7 +2219,7 @@ namespace WFARTHA.Controllers
                                             _dr.NUM_DOC = doc.NUM_DOC;
                                             _dr.WITHT = doc.DOCUMENTORP[i].WITHT;
                                             _dr.WT_WITHCD = doc.DOCUMENTORP[i].WT_WITHCD;
-                                            _dr.POS = int.Parse(_pos[0]);
+                                            _dr.POS = _pos;
                                             _dr.BIMPONIBLE = doc.DOCUMENTORP[i].BIMPONIBLE;
                                             _dr.IMPORTE_RET = doc.DOCUMENTORP[i].IMPORTE_RET;
                                             db.DOCUMENTORPs.Add(_dr);
@@ -2224,7 +2232,7 @@ namespace WFARTHA.Controllers
                                         dr.NUM_DOC = doc.NUM_DOC;
                                         dr.WITHT = doc.DOCUMENTORP[i].WITHT;
                                         dr.WT_WITHCD = doc.DOCUMENTORP[i].WT_WITHCD;
-                                        dr.POS = int.Parse(_pos[0]);
+                                        dr.POS = _pos;
                                         dr.BIMPONIBLE = doc.DOCUMENTORP[i].BIMPONIBLE;
                                         dr.IMPORTE_RET = doc.DOCUMENTORP[i].IMPORTE_RET;
                                         db.DOCUMENTORPs.Add(dr);
@@ -2981,15 +2989,15 @@ namespace WFARTHA.Controllers
             //LEJ 05 10 2018-----------------------------
             var _Se = db.DOCUMENTORPs.Where(x => x.NUM_DOC == id).ToList();
             var _wcd = "";
-            if (_Se.Count > 0)
-            {
-                _wcd = _Se[0].WT_WITHCD;
-            }
             var rets = _Se.Select(w => w.WITHT).Distinct().ToList();
             var rets2 = rets;
             for (int i = 0; i < rets.Count; i++)
             {
                 var _rt = rets2[i];
+                if (_Se.Count > 0)
+                {
+                    _wcd = _Se.Where(a => a.WITHT == _rt).FirstOrDefault().WT_WITHCD;
+                }
                 var ret = db.RETENCIONs.Where(x => x.WITHT == _rt && x.WT_WITHCD == _wcd).FirstOrDefault().WITHT_SUB;
                 for (int j = 0; j < rets.Count; j++)
                 {
@@ -4306,27 +4314,33 @@ namespace WFARTHA.Controllers
                     }
                     //LEJGG 23-12-2018----------------------------------------T
 
-                    if (dOCUMENTO.DOCUMENTORP != null)
+                    try
                     {
-                        for (int i = 0; i < dOCUMENTO.DOCUMENTORP.Count; i++)
+                        if (dOCUMENTO.DOCUMENTORP != null)
                         {
+                            for (int i = 0; i < dOCUMENTO.DOCUMENTORP.Count; i++)
+                            {
 
-                            var _op = ((i + 2) / 2);
-                            var _pos = _op.ToString().Split('.');
+                                // var _op = ((i + 2) / 2);
+                                //var _pos = _op.ToString().Split('.');
+                                var _pos = dOCUMENTO.DOCUMENTORP[i].POS;
 
-                            DOCUMENTORP dr = new DOCUMENTORP();
-                            dr.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            dr.WITHT = dOCUMENTO.DOCUMENTORP[i].WITHT;
-                            dr.WT_WITHCD = dOCUMENTO.DOCUMENTORP[i].WT_WITHCD;
-                            dr.POS = int.Parse(_pos[0]);
-                            dr.BIMPONIBLE = dOCUMENTO.DOCUMENTORP[i].BIMPONIBLE;
-                            dr.IMPORTE_RET = dOCUMENTO.DOCUMENTORP[i].IMPORTE_RET;
-                            db.DOCUMENTORPs.Add(dr);
-                            db.SaveChanges();
-
+                                DOCUMENTORP dr = new DOCUMENTORP();
+                                dr.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                dr.WITHT = dOCUMENTO.DOCUMENTORP[i].WITHT;
+                                dr.WT_WITHCD = dOCUMENTO.DOCUMENTORP[i].WT_WITHCD;
+                                dr.POS = _pos;
+                                dr.BIMPONIBLE = dOCUMENTO.DOCUMENTORP[i].BIMPONIBLE;
+                                dr.IMPORTE_RET = dOCUMENTO.DOCUMENTORP[i].IMPORTE_RET;
+                                db.DOCUMENTORPs.Add(dr);
+                                db.SaveChanges();
+                            }
                         }
                     }
-
+                    catch (Exception e)
+                    {
+                        //
+                    }
                     try
                     {
                         if (dOCUMENTO.DOCUMENTOR != null)
@@ -4369,9 +4383,6 @@ namespace WFARTHA.Controllers
 
                     }
                     catch (Exception e) { }
-
-
-
                     for (int i = 0; i < addDocumentoA.Count; i++) ///frt04122018 para anexos despues de aditar
                     {
                         try
@@ -4397,17 +4408,7 @@ namespace WFARTHA.Controllers
 
                     }
 
-
-
-
                     //END FRT22112018
-
-
-
-
-
-
-
 
                     //FRT22112018 Comentado para Agregar y Eliminar Detalles
 

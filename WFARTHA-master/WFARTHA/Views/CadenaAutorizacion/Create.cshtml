@@ -1,0 +1,131 @@
+﻿@model WFARTHA.Models.CadenaAutorizacion
+
+
+@{
+    /**/
+
+    //ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 713;
+    ViewBag.carpeta_r = 500;
+}
+
+<script src="~/Scripts/Catalogos.js"></script>
+<script src="~/Scripts/CatalogosCadenaAuto.js"></script>
+
+<div class="row" style="margin-bottom:0">
+    <div class="col s12 right-align">
+        <a id="btn_guardarhca" class="btn btn-small">Enviar</a>
+    </div>
+
+</div>
+@using (Html.BeginForm("Create", "CadenaAutorizacion", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col s12 l12 right-align">
+            @*<a class="btn" style="display:none" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>*@
+            <input type="submit" id="btn_guardarca" value="Guardar" style="display:none" class="btn" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 s12">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Usuario Creador", htmlAttributes: new { @id = "lbl_sociedad" })
+                            @Html.DropDownListFor(model => model.USUARIOC_ID, Model.usersLista, "Seleccione tipo de usuario", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.USUARIOC_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @*<div class="input-field col s12">
+                        @Html.EditorFor(model => model.ID_RUTA_AGENTE,"Solicitante", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label("Ingrese Ruta de Agente ", htmlAttributes: new { @id = "lbl_nombre" })
+                        @Html.ValidationMessageFor(model => model.ID_RUTA_AGENTE, "", new { @class = "text-danger" })
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="col l6 s6">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="form-group">
+                        <div class=" dropdown col s12">
+                            @Html.Label("Agente", htmlAttributes: new { @id = "lbl_sociedad" })
+                            @Html.DropDownListFor(model => model.USUARIOA_ID, Model.usersLista, "Seleccione tipo de usuario", new { @class = "browser-default" })
+                            @Html.ValidationMessageFor(model => model.USUARIOA_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Cadena de autorizadores*@
+        <div class="col s12">
+            <div class="card-panel">
+                <h5>Autorizadores</h5>
+                <div class="row">
+
+
+                    <div class="row">
+                       
+                        <div class="form-group">
+                            <div class=" dropdown col 16 s6">
+                                @Html.Label("Agente", htmlAttributes: new { @id = "lbl_sociedad" })
+                                @Html.DropDownList("AGENTE_LISTV",Model.usersLista, "Seleccione el agente", new { @class = "browser-default" })
+                                @Html.ValidationMessageFor(model => model.USUARIOA_ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                            <input type="button" id="btn_addagente" value="Agregar" style="" class="btn" />
+                       
+                    </div>
+                    
+
+                    <div style="width:100%;">
+                        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+                        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+                        <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+                        <link href="~/Content/dataTable.css" rel="stylesheet" />
+                        <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+                        <table class="table mdl-data-table striped" id="tableca" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th class="lblAgente">
+                                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().VERSION)*@
+                                        @Html.DisplayName("Agente")
+                                    </th>
+                                    <th class="lblSociedad">
+                                        @*@Html.DisplayNameFor(model => model.C.FirstOrDefault().USUARIOC_ID)*@
+                                        @Html.DisplayName("Fase")
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <table class="table display mdl-data-table striped" id="tablecah" style="display:none">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+@if (ViewBag.Error != null)
+{
+    <script>
+             M.toast({ html: '@ViewBag.Error'});
+    </script>
+}
+

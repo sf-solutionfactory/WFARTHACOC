@@ -18,7 +18,7 @@ using WFARTHA.Entities;
 using WFARTHA.Models;
 using WFARTHA.Services;
 
-namespace TAT001.Controllers.Catalogos
+namespace WFARTHA.Controllers.Catalogos
 {
     [Authorize]
     public class ProyectoSociedadController : Controller
@@ -48,20 +48,34 @@ namespace TAT001.Controllers.Catalogos
         [HttpPost]
         public ActionResult Create([Bind(Include = "ID_PSPNR,ID_BUKRS")] ProyectoSociedad proyectoSociedad)
         {
-            DET_PROYECTOV u = new DET_PROYECTOV();
-            u.ID_PSPNR = proyectoSociedad.ID_PSPNR;
-            u.ID_BUKRS = proyectoSociedad.ID_BUKRS;
+            //DET_PROYECTOV u = new DET_PROYECTOV();
+            //u.ID_PSPNR = proyectoSociedad.ID_PSPNR;
+            //u.ID_BUKRS = proyectoSociedad.ID_BUKRS;
 
-            db.DET_PROYECTOV.Add(u);
+            //db.DET_PROYECTOV.Add(u);
+
+            int us = 0;
+            System.Data.Entity.Core.Objects.ObjectResult<int?> r = null;
 
             try
             {
+                r = db.SP_ADD_DET_PROYECTO(proyectoSociedad.ID_BUKRS, proyectoSociedad.ID_PSPNR);
                 db.SaveChanges();
+
+                if(r != null)
+                {
+
+                }
+                else
+                {
+                    throw new System.ArgumentException("El registro no fue insertado");
+                }
+
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
-                ViewBag.Error = "El usuario ya existe. Introduzca un ID de usuario diferente";
+                ViewBag.Error = "El usuario ya existe. Introduzca un ID de usuario diferente. Mensaje: "+ e.Message;
                 int pagina = 723; //ID EN BASE DE DATOS
                 FnCommon.ObtenerConfPage(db, pagina, User.Identity.Name, this.ControllerContext.Controller);
                 ProyectoSociedad obj = new ProyectoSociedad();
